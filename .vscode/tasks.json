@@ -1,0 +1,10 @@
+{
+    "version": "2.0.0",
+    "tasks": [{
+        "label": "run_server",
+        "command": "python",
+        "args": ["-m", "http.server"],
+        "type": "shell",
+        "isBackground": true
+    }]
+}

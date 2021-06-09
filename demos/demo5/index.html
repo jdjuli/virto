@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <script src="https://aframe.io/releases/1.2.0/aframe.js"></script>
+        <script src="https://mixedreality.mozilla.org/ammo.js/builds/ammo.wasm.js"></script>
+        <script src="http://cdn.jsdelivr.net/gh/n5ro/aframe-physics-system@v4.0.1/dist/aframe-physics-system.min.js"></script>
+        <script src="component_salta.js"></script>
+    </head>
+    <body>
+        <a-scene physics="driver: ammo; debug: true; debugDrawMode: 1;">
+            <a-entity   geometry="primitive:box; height:0.2; width:10; depth:10"
+                        ammo-body="type: static" 
+                        ammo-shape="type: box"
+                        material="color:gray; shader:flat"
+                        position="0 0 0"></a-entity>
+            <a-entity   geometry="primitive:box; height:1; width:1; depth:1"
+                        ammo-body="type: dynamic; weight:2" 
+                        ammo-shape="type: box"
+                        material="color:red; shader:flat"
+                        position="-1 1 0"
+                        salta></a-entity>
+            <a-entity   geometry="primitive:sphere; radius:0.5"
+                        ammo-body="type: dynamic; weight:2" 
+                        ammo-shape="type: sphere"
+                        material="color:green; shader:flat"
+                        position="1 1 0"
+                        salta></a-entity>
+            <a-entity   camera wasd-controls look-controls
+                        position="0 1.7 10">
+                <a-entity cursor="rayOrigin: mouse"></a-entity>
+            </a-entity>
+        </a-scene>
+    </body>
+</html>

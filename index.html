@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8"></meta>
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+        <link rel="stylesheet" href="/css/index.css"></link>
+    </head>
+    <body>
+        <div class="wrapper">
+            <nav id="sidebar" class="nav nav-pills flex-column">
+                <div class="sidebar-header">
+                    <h3>Contenidos</h3>
+                </div>
+                <a class="nav-link" href="#introduccion">Introducción</a>
+                <a class="nav-link" href="#Componentes">Componentes</a>
+                <nav class="nav nav-pills flex-column">
+                    <a class="nav-link ml-3 my-1" href="#estaticos">Estáticos</a>
+                        <nav class="nav nav-pills flex-column">
+                            <a class="nav-link ml-5 my-1" href="#esfera_marron">esferaMarron</a>
+                            <a class="nav-link ml-5 my-1" href="#esfera_parametrica">esferaParametrica</a>
+                        </nav>
+                    <a class="nav-link ml-3 my-1" href="#dinamicos">Dinámicos</a>
+                        <nav class="nav nav-pills flex-column">
+                            <a class="nav-link ml-5 my-1" href="#salto_simple">Salto simple</a>
+                            <a class="nav-link ml-5 my-1" href="#salta_otra_entidad">Salta otra entidad</a>
+                            <a class="nav-link ml-5 my-1" href="#salto_con_fisicas">Salto con físicas</a>
+                        </nav>
+                </nav>
+            </nav>
+            <div id="content" class="container">
+                <h1>Introducción</h1><a name="introduccion"></a>
+                <p>Este repositorio contiene escenas creadas con A-Frame</p>
+                <h2>Programación de componentes</h2><a name="componentes"></a>
+                <h3>Estáticos</h3><a name="estaticos"></a>
+                <p>Estos componentes no responden a eventos, sus propiedades no se modifican en el tiempo</p>
+                <div class="card-deck mb-3">
+                    <div class="card" style="width: 18rem;"><a name="esfera_marron"></a>
+                        <div class="card-body">
+                            <h5 class="card-title">Esfera marron</h5>
+                            <p class="card-text">En este ejemplo se crea un componente llamado "esfera_marron" que establece la geometría de la entidad sobre la que se
+                                aplica en "sphere" y su color en "brawn".</p>
+                            <a href="demos/demo1/index.html" class="btn btn-primary">Demo</a>
+                        </div>
+                    </div>
+                    <div class="card" style="width: 18rem;"><a name="esfera_parametrica"></a>
+                        <div class="card-body">
+                            <h5 class="card-title">Esfera parametrica</h5>
+                            <p class="card-text">Partiendo del componente "esfera_marron", se definen los parámetros radio y color para cambiar estas propiedades de la
+                                esfera.
+                            </p>
+                            <a href="demos/demo2/index.html" class="btn btn-primary">Demo</a>
+                        </div>
+                    </div>
+                </div>
+                <h3>Dinámicos</h3><a name="dinamicos"></a>
+                <p>Los componentes de esta categoría responden a eventos</p>
+                <div class="card-deck mb-3">
+                    <div class="card" style="width: 18rem;"><a name="salto_simple"></a>
+                        <div class="card-body">
+                            <h5 class="card-title">Salto simple</h5>
+                            <p class="card-text">El componente "salta" hace que la entidad que recibe la acción de click se separe del suelo de la escena 
+                                durante 1 segundo.</p>
+                            <a href="demos/demo3/index.html" class="btn btn-primary">Demo</a>
+                        </div>
+                    </div>
+                    <div class="card" style="width: 18rem;"><a name="salta_otra_entidad"></a>
+                        <div class="card-body">
+                            <h5 class="card-title">Salta otra entidad</h5>
+                            <p class="card-text">Al aplicar el componente sobre una entidad, podemos decidir a través del parámetro "target" qué otro
+                                elemento de la escena será el que salte cuando se haga clic sobre la entidad.
+                            </p>
+                            <a href="demos/demo4/index.html" class="btn btn-primary">Demo</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-deck mb-3">
+                    <div class="card" style="width: 18rem;"><a name="salto_con_fisicas"></a>
+                        <div class="card-body">
+                            <h5 class="card-title">Salto con físicas</h5>
+                            <p class="card-text">Utilizo ammo.js y aframe-physics-system para dar un impulso a las entidades cuando se hace click en ellas
+                            </p>
+                            <a href="demos/demo5/index.html" class="btn btn-primary">Demo</a>
+                        </div>
+                        <div class="text-muted card-footer">
+                            <p>* Después de unos pocos clicks deja de funcionar</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>
