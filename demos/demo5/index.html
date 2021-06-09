@@ -14,13 +14,13 @@
                         material="color:gray; shader:flat"
                         position="0 0 0"></a-entity>
             <a-entity   geometry="primitive:box; height:1; width:1; depth:1"
-                        ammo-body="type: dynamic; activationState:disableDeactivation; weight:2" 
+                        ammo-body="type: dynamic; activationState:disableDeactivation; mass:2" 
                         ammo-shape="type: box"
                         material="color:red; shader:flat"
                         position="-1 2 0"
                         salta></a-entity>
             <a-entity   geometry="primitive:sphere; radius:0.5"
-                        ammo-body="type: dynamic; activationState:disableDeactivation; weight:2" 
+                        ammo-body="type: dynamic; activationState:disableDeactivation; mass:2" 
                         ammo-shape="type: sphere"
                         material="color:green; shader:flat"
                         position="1 2 0"
@@ -30,7 +30,7 @@
                         position="0 1.6 10">
                 <a-entity   cursor="rayOrigin: mouse"></a-entity>
                 <a-entity   geometry="primitive:box; height:1.7; width:0.5; depth:0.3"
-                            ammo-body="type: kinematic ; weight:2" 
+                            ammo-body="type: kinematic" 
                             ammo-shape="type: box"
                             material="color:green; shader:flat"
                             position="0 0 0"
