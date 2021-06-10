@@ -24,12 +24,14 @@
                             <a class="nav-link ml-5 my-1" href="#salto_simple">Salto simple</a>
                             <a class="nav-link ml-5 my-1" href="#salta_otra_entidad">Salta otra entidad</a>
                             <a class="nav-link ml-5 my-1" href="#salto_con_fisicas">Salto con físicas</a>
+                            <a class="nav-link ml-5 my-1" href="#salto_con_eventos">Salto con eventos</a>
+                            <a class="nav-link ml-5 my-1" href="#salto_temporizado">Salto temporizado</a>
                         </nav>
                 </nav>
             </nav>
             <div id="content" class="container">
                 <h1>Introducción</h1><a name="introduccion"></a>
-                <p>Este repositorio contiene escenas creadas con A-Frame</p>
+                <p>Este repositorio (<a href="https://github.com/jdjuli/jdjuli.github.io" target="_blank">link</a>) contiene escenas creadas con A-Frame</p>
                 <h2>Programación de componentes</h2><a name="componentes"></a>
                 <h3>Estáticos</h3><a name="estaticos"></a>
                 <p>Estos componentes no responden a eventos, sus propiedades no se modifican en el tiempo</p>
@@ -80,6 +82,26 @@
                             <p class="card-text">Utilizo ammo.js y aframe-physics-system para dar un impulso a las entidades cuando se hace click en ellas
                             </p>
                             <a href="demos/demo5/index.html" class="btn btn-primary">Demo</a>
+                        </div>
+                    </div>
+                    <div class="card" style="width: 18rem;"><a name="salto_con_eventos"></a>
+                        <div class="card-body">
+                            <h5 class="card-title">Saltos con eventos</h5>
+                            <p class="card-text">El componente "hace_saltar" envía un evento "salta" a la entidad seleccionada a través del atributo "target".
+                                Para que el salto se haga correctamente, la entidad que salta debe tener el componente "saltador"
+                            </p>
+                            <a href="demos/demo6/index.html" class="btn btn-primary">Demo</a>
+                        </div>
+                    </div>
+                    <div class="card-deck mb-3">
+                        <div class="card" style="width: 18rem;"><a name="salto_temporizado"></a>
+                            <div class="card-body">
+                                <h5 class="card-title">Salto temporizado</h5>
+                                <p class="card-text">El funcionamiento es idéntico al "Salto con eventos", pero añado el componente "hace_saltar_temporizado"
+                                    que envía el evento "salta" cada un número configurable de milisegundos
+                                </p>
+                                <a href="demos/demo7/index.html" class="btn btn-primary">Demo</a>
+                            </div>
                         </div>
                     </div>
                 </div>
