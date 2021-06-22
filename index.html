@@ -25,6 +25,7 @@
                             <a class="nav-link ml-5 my-1" href="#salto_simple">Salto simple</a>
                             <a class="nav-link ml-5 my-1" href="#salta_otra_entidad">Salta otra entidad</a>
                             <a class="nav-link ml-5 my-1" href="#salto_con_fisicas">Salto con físicas</a>
+                            <a class="nav-link ml-5 my-1" href="#cambia_color_colision">Cambia color al colisionar</a>
                             <a class="nav-link ml-5 my-1" href="#salto_con_eventos">Salto con eventos</a>
                             <a class="nav-link ml-5 my-1" href="#salto_temporizado">Salto temporizado</a>
                         </nav>
@@ -85,8 +86,6 @@
                             <a href="https://github.com/jdjuli/jdjuli.github.io/tree/main/demos/demo4" target="_blank" class="btn btn-secondary"><i class="bi bi-github"></i></a>
                         </div>
                     </div>
-                </div>
-                <div class="card-deck mb-3">
                     <div class="card" style="width: 18rem;"><a name="salto_con_fisicas"></a>
                         <div class="card-body">
                             <h5 class="card-title">Salto con físicas</h5>
@@ -96,14 +95,25 @@
                             <a href="https://github.com/jdjuli/jdjuli.github.io/tree/main/demos/demo5" target="_blank" class="btn btn-secondary"><i class="bi bi-github"></i></a>
                         </div>
                     </div>
+                </div>
+                <div class="card-deck mb-3">
+                    <div class="card" style="width: 18rem;"><a name="cambia_color_colision"></a>
+                        <div class="card-body">
+                            <h5 class="card-title">Cambia color al colisionar <span class="text-danger">*</span></h5>
+                            <p class="card-text">Las entidades con el componente "colorea_colision" cambian su color a rojo durante 250ms cuando colisionan contra otra entidad dinámica
+                            </p>
+                            <a href="demos/demo6/index.html" class="btn btn-primary">Demo</a>
+                            <a href="https://github.com/jdjuli/jdjuli.github.io/tree/main/demos/demo6" target="_blank" class="btn btn-secondary"><i class="bi bi-github"></i></a>
+                        </div>
+                    </div>
                     <div class="card" style="width: 18rem;"><a name="salto_con_eventos"></a>
                         <div class="card-body">
                             <h5 class="card-title">Saltos con eventos <span class="text-danger">*</span></h5>
                             <p class="card-text">El componente "hace_saltar" envía un evento "salta" a la entidad seleccionada a través del atributo "target".
                                 Para que el salto se haga correctamente, la entidad que salta debe tener el componente "saltador"
                             </p>
-                            <a href="demos/demo6/index.html" class="btn btn-primary">Demo</a>
-                            <a href="https://github.com/jdjuli/jdjuli.github.io/tree/main/demos/demo6" target="_blank" class="btn btn-secondary"><i class="bi bi-github"></i></a>
+                            <a href="demos/demo7/index.html" class="btn btn-primary">Demo</a>
+                            <a href="https://github.com/jdjuli/jdjuli.github.io/tree/main/demos/demo7" target="_blank" class="btn btn-secondary"><i class="bi bi-github"></i></a>
                         </div>
                     </div>
                     <div class="card-deck mb-3">
@@ -113,8 +123,8 @@
                                 <p class="card-text">El funcionamiento es idéntico al "Salto con eventos", pero añado el componente "hace_saltar_temporizado"
                                     que envía el evento "salta" cada un número configurable de milisegundos
                                 </p>
-                                <a href="demos/demo7/index.html" class="btn btn-primary">Demo</a>
-                                <a href="https://github.com/jdjuli/jdjuli.github.io/tree/main/demos/demo7" target="_blank" class="btn btn-secondary"><i class="bi bi-github"></i></a>
+                                <a href="demos/demo8/index.html" class="btn btn-primary">Demo</a>
+                                <a href="https://github.com/jdjuli/jdjuli.github.io/tree/main/demos/demo8" target="_blank" class="btn btn-secondary"><i class="bi bi-github"></i></a>
                             </div>
                         </div>
                     </div>
@@ -128,8 +138,8 @@
                             <p class="card-text">Las acciones se ejecutan sobre la esfera en el orden en el que las entidades con el componente "accion" aparecen dentro
                                 de la entidad con el componente "programa"
                             </p>
-                            <a href="demos/demo8/index.html" class="btn btn-primary">Demo</a>
-                            <a href="https://github.com/jdjuli/jdjuli.github.io/tree/main/demos/demo8" target="_blank" class="btn btn-secondary"><i class="bi bi-github"></i></a>
+                            <a href="demos/demo9/index.html" class="btn btn-primary">Demo</a>
+                            <a href="https://github.com/jdjuli/jdjuli.github.io/tree/main/demos/demo9" target="_blank" class="btn btn-secondary"><i class="bi bi-github"></i></a>
                         </div>
                     </div>
                     <div class="card" style="width: 18rem;"><a name="programa_bloques_flotantes"></a>
@@ -138,8 +148,8 @@
                             <p class="card-text">Se puede cambiar el orden de los bloques y con ello el de ejecución de las acciones, los bloques rojos representan
                                 la acción "subir" y los azules, "bajar". El programa se ejecutará de arriba hacia abajo cuando se haga clic en la esfera
                             </p>
-                            <a href="demos/demo9/index.html" class="btn btn-primary">Demo</a>
-                            <a href="https://github.com/jdjuli/jdjuli.github.io/tree/main/demos/demo9" target="_blank" class="btn btn-secondary"><i class="bi bi-github"></i></a>
+                            <a href="demos/demo10/index.html" class="btn btn-primary">Demo</a>
+                            <a href="https://github.com/jdjuli/jdjuli.github.io/tree/main/demos/demo10" target="_blank" class="btn btn-secondary"><i class="bi bi-github"></i></a>
                         </div>
                     </div>
                     <div class="card" style="width: 18rem;"><a name="programa_bloques_fisicas"></a>
@@ -148,8 +158,8 @@
                             <p class="card-text">Idéntico a <a href="#programa_bloques_flotantes">Programa bloques flotantes</a>, pero en esta ocasión, las entidades
                                 sienten la gravedad
                             </p>
-                            <a href="demos/demo10/index.html" class="btn btn-primary">Demo</a>
-                            <a href="https://github.com/jdjuli/jdjuli.github.io/tree/main/demos/demo10" target="_blank" class="btn btn-secondary"><i class="bi bi-github"></i></a>
+                            <a href="demos/demo11/index.html" class="btn btn-primary">Demo</a>
+                            <a href="https://github.com/jdjuli/jdjuli.github.io/tree/main/demos/demo11" target="_blank" class="btn btn-secondary"><i class="bi bi-github"></i></a>
                         </div>
                     </div>
                 </div>

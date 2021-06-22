@@ -9,15 +9,11 @@ AFRAME.registerComponent('accion',{
         }
         //Creo el click listener
         this.runListener = function(){
+            console.log("Ejecutando acción: "+_this.data);
             _this.target.emit(_this.data);
-        };
-        //Creo el listener de colisiones
-        this.collisionListener = function(e){
-            console.log(e);
         };
         //Establezco el click listener
         this.el.addEventListener("run",this.runListener);
-        this.el.addEventListener("collide",this.collisionListener);
     },
     remove: function(){
         this.el.removeEventListener(this.runListener);

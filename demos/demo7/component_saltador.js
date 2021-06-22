@@ -1,7 +1,7 @@
 AFRAME.registerComponent('saltador',{
     schema:{
-        altura:{type:'int', default:'1'},
-        duracion:{type:'int', default:'1000'}
+        altura:{type:'int', default:1},
+        duracion:{type:'int', default:1000}
     },
     init: function(){
         const _this = this;   

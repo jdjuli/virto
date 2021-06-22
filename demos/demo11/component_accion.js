@@ -9,7 +9,6 @@ AFRAME.registerComponent('accion',{
         }
         //Creo el click listener
         this.runListener = function(){
-            console.log("Ejecutando acción: "+_this.data);
             _this.target.emit(_this.data);
         };
         //Establezco el click listener
