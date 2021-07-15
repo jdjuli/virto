@@ -7,14 +7,31 @@
         <link rel="stylesheet" href="/css/index.css"></link>
     </head>
     <body>
-        <div class="wrapper">
-            <nav id="sidebar" class="nav nav-pills flex-column position-fixed">
+        <header class="navbar navbar-expand navbar-dark flex-column flex-sm-row">
+            <div class="col pull-left">
+                <a class="navbar-brand" href="/">
+                    <span>vr-programming</span>
+                </a>
+            </div>
+            <div class="col pull-right justify-content-center">
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a class="nav-link active" href="/">Escenas</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="https://vr-programming.blogspot.com/">Blog</a>
+                    </li>
+                </ul>
+            </div>
+        </header>
+        <div class="d-flex flex-xl-row flex-wrap">
+            <nav id="sidebar" class="nav nav-pills flex-column position-fixed p-2">
                 <div class="sidebar-header">
                     <h3>Contenidos</h3>
                 </div>
                 <a class="nav-link" href="#introduccion">Introducción</a>
                 <a class="nav-link" href="#Componentes">Componentes</a>
-                <nav class="nav nav-pills flex-column">
+                <nav class="nav nav-pills flex-column overflow-auto">
                     <a class="nav-link ml-3 my-1" href="#estaticos">Estáticos</a>
                         <nav class="nav nav-pills flex-column">
                             <a class="nav-link ml-5 my-1" href="#esfera_marron">esferaMarron</a>
@@ -34,14 +51,11 @@
                             <a class="nav-link ml-5 my-1" href="#programa_bloques_fijos">Programa bloques fijos</a>
                             <a class="nav-link ml-5 my-1" href="#programa_bloques_flotantes">Programa bloques flotantes</a>
                             <a class="nav-link ml-5 my-1" href="#programa_bloques_fisicas">Programa bloques con físicas</a>
-                        </nav>
-                    <a class="nav-link ml-3 my-1" href="#pruebas">Escenas de prueba</a>
-                        <nav class="nav nav-pills flex-column">
-                            <a class="nav-link ml-5 my-1" href="#bloques_ingravidos">Bloques ingrávidos</a>
+                            <a class="nav-link ml-5 my-1" href="#programa_bloques_inserta_arriba">Bloques que se insertan arriba</a>
                         </nav>
                 </nav>
             </nav>
-            <div id="content" class="container">
+            <div id="content" class="container ml-auto p-2">
                 <h1>Introducción</h1><a name="introduccion"></a>
                 <p>Este repositorio (<a href="https://github.com/jdjuli/jdjuli.github.io" target="_blank">link</a>) contiene escenas creadas con A-Frame</p>
                 <h2>Programación de componentes</h2><a name="componentes"></a>
@@ -103,7 +117,7 @@
                 <div class="card-deck mb-3">
                     <div class="card" style="width: 18rem;"><a name="cambia_color_colision"></a>
                         <div class="card-body">
-                            <h5 class="card-title">Cambia color al colisionar <span class="text-danger">*</span></h5>
+                            <h5 class="card-title">Cambia color al colisionar</h5>
                             <p class="card-text">Las entidades con el componente "colorea_colision" cambian su color a rojo durante 250ms cuando colisionan contra otra entidad dinámica
                             </p>
                             <a href="demos/demo6/index.html" class="btn btn-primary">Demo</a>
@@ -112,7 +126,7 @@
                     </div>
                     <div class="card" style="width: 18rem;"><a name="salto_con_eventos"></a>
                         <div class="card-body">
-                            <h5 class="card-title">Saltos con eventos <span class="text-danger">*</span></h5>
+                            <h5 class="card-title">Saltos con eventos</h5>
                             <p class="card-text">El componente "hace_saltar" envía un evento "salta" a la entidad seleccionada a través del atributo "target".
                                 Para que el salto se haga correctamente, la entidad que salta debe tener el componente "saltador"
                             </p>
@@ -123,7 +137,7 @@
                     <div class="card-deck mb-3">
                         <div class="card" style="width: 18rem;"><a name="salto_temporizado"></a>
                             <div class="card-body">
-                                <h5 class="card-title">Salto temporizado <span class="text-danger">*</span></h5>
+                                <h5 class="card-title">Salto temporizado</h5>
                                 <p class="card-text">El funcionamiento es idéntico al "Salto con eventos", pero añado el componente "hace_saltar_temporizado"
                                     que envía el evento "salta" cada un número configurable de milisegundos
                                 </p>
@@ -138,7 +152,7 @@
                 <div class="card-deck mb-3">
                     <div class="card" style="width: 18rem;"><a name="programa_bloques_fijos"></a>
                         <div class="card-body">
-                            <h5 class="card-title">Programa bloques fijos <span class="text-danger">*</span></h5>
+                            <h5 class="card-title">Programa bloques fijos</h5>
                             <p class="card-text">Las acciones se ejecutan sobre la esfera en el orden en el que las entidades con el componente "accion" aparecen dentro
                                 de la entidad con el componente "programa"
                             </p>
@@ -148,7 +162,7 @@
                     </div>
                     <div class="card" style="width: 18rem;"><a name="programa_bloques_flotantes"></a>
                         <div class="card-body">
-                            <h5 class="card-title">Programa bloques flotantes <span class="text-danger">*</span></h5>
+                            <h5 class="card-title">Programa bloques flotantes</h5>
                             <p class="card-text">Se puede cambiar el orden de los bloques y con ello el de ejecución de las acciones, los bloques rojos representan
                                 la acción "subir" y los azules, "bajar". El programa se ejecutará de arriba hacia abajo cuando se haga clic en la esfera
                             </p>
@@ -158,7 +172,7 @@
                     </div>
                     <div class="card" style="width: 18rem;"><a name="programa_bloques_fisicas"></a>
                         <div class="card-body">
-                            <h5 class="card-title">Programa bloques con físicas <span class="text-danger">*</span></h5>
+                            <h5 class="card-title">Programa bloques con físicas</h5>
                             <p class="card-text">Idéntico a <a href="#programa_bloques_flotantes">Programa bloques flotantes</a>, pero en esta ocasión, las entidades
                                 sienten la gravedad
                             </p>
@@ -167,18 +181,16 @@
                         </div>
                     </div>
                 </div>
-                <h3>Pruebas</h3><a name="pruebas"></a>
-                <p>Conjunto de escenas destinadas a resolver errores y probar funcionalidades</p>
                 <div class="card-deck mb-3">
-                    <div class="card" style="width: 18rem;"><a name="bloques_ingravidos"></a>
+                    <div class="card" style="width: 18rem;"><a name="programa_bloques_inserta_arriba"></a>
                         <div class="card-body">
-                            <h5 class="card-title">Bloques ingrávidos<span class="text-danger">*</span></h5>
-                            <p class="card-text">Escena creada para investigar por qué la gravedad no afecta a los componentes dinámicos definidos con componentes
-                                <a href="https://github.com/n5ro/aframe-physics-system/blob/master/AmmoDriver.md#components" target="_blank">ammo.js</a>, pero sí a los definidos
-                                con componentes de <a href="https://github.com/n5ro/aframe-physics-system#components" target="_blank">aframe-physics-system</a>
+                            <h5 class="card-title">Programa bloques que se insertan arriba</h5>
+                            <p class="card-text">Para crear el programa, hay que coger los bloques y hacerlos colisionar con la base azul, de forma que se añadan al final
+                                del programa (parte alta de la torre). Para quitar una instrucción, basta con arrastrarla fuera de la torre de bloques.<br>
+                                El programa se ejecuta cuando se hace click en el bloque verde con el texto "ejecutar".
                             </p>
-                            <a href="tests/test1/index.html" class="btn btn-primary">Demo</a>
-                            <a href="https://github.com/jdjuli/jdjuli.github.io/tree/main/tests/test1" target="_blank" class="btn btn-secondary"><i class="bi bi-github"></i></a>
+                            <a href="demos/demo11/index.html" class="btn btn-primary">Demo</a>
+                            <a href="https://github.com/jdjuli/jdjuli.github.io/tree/main/demos/demo11" target="_blank" class="btn btn-secondary"><i class="bi bi-github"></i></a>
                         </div>
                     </div>
                 </div>

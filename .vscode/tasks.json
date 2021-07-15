@@ -3,8 +3,15 @@
     "tasks": [{
         "label": "run_server",
         "command": "python",
-        "args": ["-m", "http.server"],
-        "type": "shell",
+        "args": ["HTTPS_server.py"],
+        "type": "process",
+        "isBackground": true,
+        "dependsOn":["generate_pem"]
+    },{
+        "label": "generate_pem",
+        "command": "openssl",
+        "args": ["req","-x509","-newkey","rsa:4096","-keyout","key.pem","-out","cert.pem","-days","365","-nodes","-subj","/CN=my_home"],
+        "type": "process",
         "isBackground": true
     }]
 }

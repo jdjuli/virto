@@ -7,9 +7,9 @@
         {
             "type": "pwa-chrome",
             "request": "launch",
-            "preLaunchTask": "run_server",
+            //"preLaunchTask": "run_server",
             "name": "Launch Chrome against localhost",
-            "url": "http://localhost:8000/index.html",
+            "url": "http://localhost:4443/index.html",
             "webRoot": "${workspaceFolder}"
         }
     ]
