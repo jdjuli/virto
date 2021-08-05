@@ -10,33 +10,32 @@ AFRAME.registerComponent('programa',{
     },
     quitarInstruccion: function(evt){
         var instruccion = evt.detail.instruccion;
-        instruccion.setAttribute("ammo-body","type","dynamic");
+        instruccion.setAttribute("accion","enPrograma",false);
         this.reparent(instruccion, instruccion.sceneEl);
         this.ordenarInstrucciones();
     },
     anadirInstruccion: function(evt){
         var instruccion = evt.detail.instruccion;
-        this.reparent(instruccion,this.E_instrucciones);
-        instruccion.emit("mover",{posicion: this.calcularPosicion(instruccion)},false);
+        instruccion.emit("mover",{posicion: this.calcularPosicion(instruccion), enPrograma:true},false);
+        instruccion = this.reparent(instruccion,this.E_instrucciones);
     },
     ordenarInstrucciones: function(){
         var pos = new THREE.Vector3(0,0,0);
         pos.y += this.E_plataforma.getAttribute("geometry").height/2;
-        for(var i = this.E_instrucciones.children.length-1 ; i>=0 ; i--){
+        for(var i = 0 ; i<this.E_instrucciones.children.length ; i++){
             var instruccion = this.E_instrucciones.children[i];
             var semialtura = instruccion.getAttribute("geometry").height/2
             pos.y += semialtura;
-            instruccion.emit("mover",{posicion: pos},false);
+            instruccion.emit("mover",{posicion: pos, enPrograma:true},false);
             pos.y += semialtura;
         }
     },
     reparent: function(entidad, nuevoPadre){
-        var antiguoPadre = entidad.parentEl;
-        if (antiguoPadre == nuevoPadre) return;
-        entidad.removeFromParent();
-        antiguoPadre.removeChild(entidad);
-        nuevoPadre.appendChild(entidad);
-        //entidad.addToParent();
+        entidad.flushToDOM();
+        var copia = entidad.cloneNode();
+        nuevoPadre.appendChild(copia);
+        entidad.parentEl.removeChild(entidad);
+        return copia;
     },
     calcularPosicion: function(node){
         var pos = new THREE.Vector3(0,0,0);

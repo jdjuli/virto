@@ -14,8 +14,7 @@ AFRAME.registerComponent('multidevice',{
         controller.setAttribute("super-hands","colliderEvent: raycaster-intersection;"+
                                          "colliderEventProperty: els;"+
                                          "colliderEndEvent:raycaster-intersection-cleared;"+
-                                         "colliderEndEventProperty: clearedEls;"+
-                                         "usePhysics: never;");
+                                         "colliderEndEventProperty: clearedEls;");
         controller.setAttribute("oculus-touch-controls","hand: "+hand);
         return controller;
     },
@@ -29,7 +28,6 @@ AFRAME.registerComponent('multidevice',{
         entity.setAttribute("super-hands","colliderEvent: raycaster-intersection;"+
                                          "colliderEventProperty: els;"+
                                          "colliderEndEvent:raycaster-intersection-cleared;"+
-                                         "colliderEndEventProperty: clearedEls;"+
-                                         "usePhysics: never;");
+                                         "colliderEndEventProperty: clearedEls;");
     }
 });
