@@ -92,36 +92,36 @@ The scene represents a bunch of spheres bouncing and colliding, each time the sp
 <li>
 <p>Listening for entity collisions</p>
 <p>The scene represents a bunch of spheres bouncing and colliding, each time the spheres collide their color changes to red for a small time frame. To archieve this behaviour I created a component called &ldquo;colorea_colision&rdquo; that listens for &ldquo;collide&rdquo; events and changes the color of the attached entity for a short time.</p>
-<p><em>=&gt;</em> <a href="/demos/demo6">Demo</a> &amp; <a href="https://github.com/jdjuli/aframe-vr-programming/blob/main/demos/demo6/index.html">Code</a> <em>&lt;=</em></p>
+<p><em>=&gt;</em> <a href="/demos/demo6">Demo</a> &amp; <a href="https://github.com/jdjuli/aframe-vr-programming/blob/main/docs/demos/demo6/index.html">Code</a> <em>&lt;=</em></p>
 </li>
 <li>
 <p>Improving inter-component communication</p>
 <p>As I mentioned on the scene &ldquo;Acting over other entities&rdquo; of the first iteration, the way I programmed that scene wasn&rsquo;t the best, and on this iteration I improved it splitting the responsabilities between two components called &ldquo;hace_saltar&rdquo; and &ldquo;saltador&rdquo;.</p>
 <p>This time, through the parameter &ldquo;target&rdquo; of the component &ldquo;hace_saltar&rdquo; we specify the entity that will jump when the entity with the component &ldquo;hace_saltar&rdquo; receives a click, note that the entity that jumps need to have the component &ldquo;saltador&rdquo; to work properly. Once &ldquo;hace saltar&rdquo; receives a click event, it sends a event &ldquo;salta&rdquo; (jump) to the entity located by &ldquo;target&rdquo; and now, the component &ldquo;saltador&rdquo; replies to that event teleporting the associated entity up and down.</p>
-<p><em>=&gt;</em> <a href="/demos/demo7">Demo</a> &amp; <a href="https://github.com/jdjuli/aframe-vr-programming/blob/main/demos/demo7/index.html">Code</a> <em>&lt;=</em></p>
+<p><em>=&gt;</em> <a href="/demos/demo7">Demo</a> &amp; <a href="https://github.com/jdjuli/aframe-vr-programming/blob/main/docs/demos/demo7/index.html">Code</a> <em>&lt;=</em></p>
 </li>
 <li>
 <p>Firing recurrent events</p>
 <p>To introduce recurrent actions on scenes, I&rsquo;ll take the inter-component communication scene and add a new component to it, which will make use of the Javascript functions <code>setInterval()</code> and <code>clearInterval()</code> to send the event &ldquo;salta&rdquo; (jump) to the entity referenced on the value of the parameter &ldquo;target&rdquo; every fixed time (can be set in milliseconds through the parameter &ldquo;cada_ms&rdquo;).</p>
-<p><em>=&gt;</em> <a href="/demos/demo8">Demo</a> &amp; <a href="https://github.com/jdjuli/aframe-vr-programming/blob/main/demos/demo8/index.html">Code</a> <em>&lt;=</em></p>
+<p><em>=&gt;</em> <a href="/demos/demo8">Demo</a> &amp; <a href="https://github.com/jdjuli/aframe-vr-programming/blob/main/docs/demos/demo8/index.html">Code</a> <em>&lt;=</em></p>
 </li>
 <li>
 <p>Static program</p>
 <p>This is the first scene that allows the users to run a sequence of actions, that couldn&rsquo;t be changed to mantain the scene as simple as possible.</p>
 <p>There are three main components, &ldquo;drone&rdquo;, which is attached to the entity that should move when the actions are executed; &ldquo;accion&rdquo;, which represents a certain action and instruct the &ldquo;drone&rdquo; component to execute it; and &ldquo;program&rdquo;, which contains the set of actions that will be executed (entities with the &ldquo;accion&rdquo; component) and ensures that they are executed in order when the program execution is issued (by sending it a &ldquo;run&rdquo; event)</p>
-<p><em>=&gt;</em> <a href="/demos/demo9">Demo</a> &amp; <a href="https://github.com/jdjuli/aframe-vr-programming/blob/main/demos/demo9/index.html">Code</a> <em>&lt;=</em></p>
+<p><em>=&gt;</em> <a href="/demos/demo9">Demo</a> &amp; <a href="https://github.com/jdjuli/aframe-vr-programming/blob/main/docs/demos/demo9/index.html">Code</a> <em>&lt;=</em></p>
 </li>
 <li>
 <p>Dynamic program without physics</p>
 <p>This scene allows the user to compose a program using the four cubes colored cyan and red, the cyan ones represents the action &ldquo;up&rdquo; and the red ones, &ldquo;down&rdquo;.
 The execution order is determined by the height of each cube, being the first the upper one, and to execute the program, a clic on the drone (green sphere) is needed.</p>
-<p><em>=&gt;</em> <a href="/demos/demo10">Demo</a> &amp; <a href="https://github.com/jdjuli/aframe-vr-programming/blob/main/demos/demo10/index.html">Code</a> <em>&lt;=</em></p>
+<p><em>=&gt;</em> <a href="/demos/demo10">Demo</a> &amp; <a href="https://github.com/jdjuli/aframe-vr-programming/blob/main/docs/demos/demo10/index.html">Code</a> <em>&lt;=</em></p>
 </li>
 <li>
 <p>Dynamic program with physics</p>
 <p>The scene is an evolution of the previous one, which didn&rsquo;t make use of a phisics engine to make the interaction with the building blocks of the program more realistic. The instruccion blocks have been resized but the core functionality of the scene remains the same.</p>
 <p>This scene is controlled with the gaze, meaning that to interact with the virtual world, you will need to stare at the elements you want to interact with before clicking or grabbing them. In the future, this method will be avoided as most VR headsets have controllers that allow a more natural way to interact with the virtual scene.</p>
-<p><em>=&gt;</em> <a href="/demos/demo11">Demo</a> &amp; <a href="https://github.com/jdjuli/aframe-vr-programming/blob/main/demos/demo11/index.html">Code</a> <em>&lt;=</em></p>
+<p><em>=&gt;</em> <a href="/demos/demo11">Demo</a> &amp; <a href="https://github.com/jdjuli/aframe-vr-programming/blob/main/docs/demos/demo11/index.html">Code</a> <em>&lt;=</em></p>
 </li>
 </ul>
 <h2 id="problems-encountered">Problems encountered</h2>

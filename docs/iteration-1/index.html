@@ -94,28 +94,28 @@ This scene shows one brown sphere, it&rsquo;s entity element on the DOM has the 
 <li>
 <p>Non parametric component</p>
 <p>This scene shows one brown sphere, it&rsquo;s entity element on the DOM has the attribute &ldquo;esfera_marron&rdquo; set, which maps to the component with the same name. When this component initializes, it adds the attributes geometry and material to the entity to which it has been attached and makes it look brown and spheric.</p>
-<p><em>=&gt;</em> <a href="/demos/demo1">Demo</a> &amp; <a href="https://github.com/jdjuli/aframe-vr-programming/blob/main/demos/demo1/index.html">Code</a> <em>&lt;=</em></p>
+<p><em>=&gt;</em> <a href="/demos/demo1">Demo</a> &amp; <a href="https://github.com/jdjuli/aframe-vr-programming/blob/main/docs/demos/demo1/index.html">Code</a> <em>&lt;=</em></p>
 </li>
 <li>
 <p>Parametric component</p>
 <p>Visually, this scene is very similar to the previous one, it shows two spheres, red and green. If we dive into the HTML code, we can see that now, the attribute has been renamed to &ldquo;esfera_parametrica&rdquo; and on it&rsquo;s associated value, we specify two properties &ldquo;radio&rdquo; (radius of the sphere) and &ldquo;color&rdquo; (color of the material that will be applied).</p>
-<p><em>=&gt;</em> <a href="/demos/demo2">Demo</a> &amp; <a href="https://github.com/jdjuli/aframe-vr-programming/blob/main/demos/demo2/index.html">Code</a> <em>&lt;=</em></p>
+<p><em>=&gt;</em> <a href="/demos/demo2">Demo</a> &amp; <a href="https://github.com/jdjuli/aframe-vr-programming/blob/main/docs/demos/demo2/index.html">Code</a> <em>&lt;=</em></p>
 </li>
 <li>
 <p>Responding to click events</p>
 <p>The first interacting scene consist on two boxes that will &ldquo;jump&rdquo; (just teleport themselves up and down) when the user clicks on them. To implement this behaviour I created the component &ldquo;salta&rdquo;, which during it&rsquo;s initialization sets the event listener responsible of the jump effect when the user clicks on the entity.</p>
-<p><em>=&gt;</em> <a href="/demos/demo3">Demo</a> &amp; <a href="https://github.com/jdjuli/aframe-vr-programming/blob/main/demos/demo3/index.html">Code</a> <em>&lt;=</em></p>
+<p><em>=&gt;</em> <a href="/demos/demo3">Demo</a> &amp; <a href="https://github.com/jdjuli/aframe-vr-programming/blob/main/docs/demos/demo3/index.html">Code</a> <em>&lt;=</em></p>
 </li>
 <li>
 <p>Acting over other entities</p>
 <p>This scene shows a cube and a sphere, that when clicked, make &ldquo;jump&rdquo; the opposite entity. This has been done by creating a component (&ldquo;salta_otro&rdquo;) that receives through its parameter &ldquo;target&rdquo; the id of the target over which it has to act when a click event is received.</p>
 <p>The implementation of this scene is not the best because the behaviour should be decoupled on two components, one responsible of making a entity jump (let&rsquo;s say &ldquo;jump&rdquo;) and another that listen for a click event on the entity (&ldquo;makes_jump&rdquo; for example) and when received, tells the jump component to make it&rsquo;s associated entity jump.</p>
-<p><em>=&gt;</em> <a href="/demos/demo4">Demo</a> &amp; <a href="https://github.com/jdjuli/aframe-vr-programming/blob/main/demos/demo4/index.html">Code</a> <em>&lt;=</em></p>
+<p><em>=&gt;</em> <a href="/demos/demo4">Demo</a> &amp; <a href="https://github.com/jdjuli/aframe-vr-programming/blob/main/docs/demos/demo4/index.html">Code</a> <em>&lt;=</em></p>
 </li>
 <li>
 <p>Adding some physics</p>
 <p>On this scene I started playing with a the JS physics engine <a href="https://github.com/kripken/ammo.js/">ammo.js</a>. The scene is visually the same that the previous one, but the entities now really jump and not just teleport themselves and can move arround the scene.</p>
-<p><em>=&gt;</em> <a href="/demos/demo5">Demo</a> &amp; <a href="https://github.com/jdjuli/aframe-vr-programming/blob/main/demos/demo5/index.html">Code</a> <em>&lt;=</em></p>
+<p><em>=&gt;</em> <a href="/demos/demo5">Demo</a> &amp; <a href="https://github.com/jdjuli/aframe-vr-programming/blob/main/docs/demos/demo5/index.html">Code</a> <em>&lt;=</em></p>
 </li>
 </ul>
 <h2 id="problems-encountered">Problems encountered</h2>

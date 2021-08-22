@@ -19,19 +19,19 @@ This component depends on the [super-hands](https://github.com/wmurphyrd/aframe-
 </a-entity>
 ```
 
-*=>* [Demo](/demos/demo12) & [Code](https://github.com/jdjuli/aframe-vr-programming/blob/main/demos/demo12/index.html) *<=*
+*=>* [Demo](/demos/demo12) & [Code](https://github.com/jdjuli/aframe-vr-programming/blob/main/docs/demos/demo12/index.html) *<=*
 
 - Cloneable entities
 Throught the component `clonable` we specify that an entity must be clonated when it past a certain distance from it's original position, this distance is by default 3 meters, but can be overwritten with the parameter `distance`.
 The scene is very similar to the previous one, but this time we have the objects on the right side of the table and each time we grab one and move it further than 0.3 meters from it's original position, a new entity with the same properties is created on that position.
 
-*=>* [Demo](/demos/demo13) & [Code](https://github.com/jdjuli/aframe-vr-programming/blob/main/demos/demo13/index.html) *<=*
+*=>* [Demo](/demos/demo13) & [Code](https://github.com/jdjuli/aframe-vr-programming/blob/main/docs/demos/demo13/index.html) *<=*
 
 - Component 'program'
 By it's dimensions, this scene is meant to be used on the PC, further iterations will be more confortable to use with an VR headset. It makes use of a component called `programa` to modelize the sequence of instructions and provide a way to execute them.
 The blue blocks represent the action 'down' and the red ones, 'up' and they are added to the program by letting them fall on to the blue platform. To execute the program, we have to click the green box with the text 'ejecutar'.
 
-*=>* [Demo](/demos/demo14) & [Code](https://github.com/jdjuli/aframe-vr-programming/blob/main/demos/demo14/index.html) *<=*
+*=>* [Demo](/demos/demo14) & [Code](https://github.com/jdjuli/aframe-vr-programming/blob/main/docs/demos/demo14/index.html) *<=*
 
 ## Problems encountered
 When I was testing the `multidevice` component I faced up an issue related to the Y coordinate of the camera position, that on PC matches the one of the entity that contains the `camera` component, but when using the Oculus Quest, A-Frame takes the height of the headset and adds it to the position of the entity, which results on a very unnatural perspective and many difficulties to interact with the rest of the entities of the scene. The solution was to ignore the height of the camera when initializing the `multidevice` component on an VR headset, so the height of the camera is only determined by the height of the headset.

@@ -100,19 +100,19 @@ This component depends on the <a href="https://github.com/wmurphyrd/aframe-super
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-html" data-lang="html">&lt;<span style="color:#f92672">a-entity</span>   <span style="color:#a6e22e">multidevice</span> <span style="color:#a6e22e">position</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;0 0 0.8&#34;</span>&gt;     
     &lt;<span style="color:#f92672">a-entity</span> <span style="color:#a6e22e">camera</span>&gt;&lt;/<span style="color:#f92672">a-entity</span>&gt; 
 &lt;/<span style="color:#f92672">a-entity</span>&gt;
-</code></pre></div><p><em>=&gt;</em> <a href="/demos/demo12">Demo</a> &amp; <a href="https://github.com/jdjuli/aframe-vr-programming/blob/main/demos/demo12/index.html">Code</a> <em>&lt;=</em></p>
+</code></pre></div><p><em>=&gt;</em> <a href="/demos/demo12">Demo</a> &amp; <a href="https://github.com/jdjuli/aframe-vr-programming/blob/main/docs/demos/demo12/index.html">Code</a> <em>&lt;=</em></p>
 <ul>
 <li>Cloneable entities
 Throught the component <code>clonable</code> we specify that an entity must be clonated when it past a certain distance from it&rsquo;s original position, this distance is by default 3 meters, but can be overwritten with the parameter <code>distance</code>.
 The scene is very similar to the previous one, but this time we have the objects on the right side of the table and each time we grab one and move it further than 0.3 meters from it&rsquo;s original position, a new entity with the same properties is created on that position.</li>
 </ul>
-<p><em>=&gt;</em> <a href="/demos/demo13">Demo</a> &amp; <a href="https://github.com/jdjuli/aframe-vr-programming/blob/main/demos/demo13/index.html">Code</a> <em>&lt;=</em></p>
+<p><em>=&gt;</em> <a href="/demos/demo13">Demo</a> &amp; <a href="https://github.com/jdjuli/aframe-vr-programming/blob/main/docs/demos/demo13/index.html">Code</a> <em>&lt;=</em></p>
 <ul>
 <li>Component &lsquo;program&rsquo;
 By it&rsquo;s dimensions, this scene is meant to be used on the PC, further iterations will be more confortable to use with an VR headset. It makes use of a component called <code>programa</code> to modelize the sequence of instructions and provide a way to execute them.
 The blue blocks represent the action &lsquo;down&rsquo; and the red ones, &lsquo;up&rsquo; and they are added to the program by letting them fall on to the blue platform. To execute the program, we have to click the green box with the text &lsquo;ejecutar&rsquo;.</li>
 </ul>
-<p><em>=&gt;</em> <a href="/demos/demo14">Demo</a> &amp; <a href="https://github.com/jdjuli/aframe-vr-programming/blob/main/demos/demo14/index.html">Code</a> <em>&lt;=</em></p>
+<p><em>=&gt;</em> <a href="/demos/demo14">Demo</a> &amp; <a href="https://github.com/jdjuli/aframe-vr-programming/blob/main/docs/demos/demo14/index.html">Code</a> <em>&lt;=</em></p>
 <h2 id="problems-encountered">Problems encountered</h2>
 <p>When I was testing the <code>multidevice</code> component I faced up an issue related to the Y coordinate of the camera position, that on PC matches the one of the entity that contains the <code>camera</code> component, but when using the Oculus Quest, A-Frame takes the height of the headset and adds it to the position of the entity, which results on a very unnatural perspective and many difficulties to interact with the rest of the entities of the scene. The solution was to ignore the height of the camera when initializing the <code>multidevice</code> component on an VR headset, so the height of the camera is only determined by the height of the headset.</p>
 <p>Reparenting them wasn&rsquo;t also trivial, because simply reparenting them on the DOM causes many problems related with the reinitialization of the components, like crashing the physics engine, to mention one. After some days thinking ways to reparent entities (I wasn&rsquo;t considering cloning them on the new parent and deleting the old copy because I thought that it would impact heavily on the performance), the solution came from a <a href="https://www.gitmemory.com/issue/aframevr/aframe/2425/753673035">gitmemory written by my mentor</a> and on which he recommends the strategy of clone &amp; delete that I was avoiding, but after implementing it, the results were awensome and it proved me wrong about the performance drop.</p>
