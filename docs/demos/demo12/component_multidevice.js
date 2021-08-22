@@ -14,9 +14,9 @@ AFRAME.registerComponent('multidevice',{
         controller.setAttribute("sphere-collider","objects: .raycastable");
         controller.setAttribute("static-body","shape: sphere; sphereRadius: 0.02");
         controller.setAttribute("super-hands","colliderEvent: raycaster-intersection;"+
-                            "colliderEventProperty: els;"+
-                            "colliderEndEvent:raycaster-intersection-cleared;"+
-                            "colliderEndEventProperty: clearedEls");
+                                              "colliderEventProperty: els;"+
+                                              "colliderEndEvent:raycaster-intersection-cleared;"+
+                                              "colliderEndEventProperty: clearedEls");
         controller.setAttribute("oculus-touch-controls","hand: "+hand);
         return controller;
     },
