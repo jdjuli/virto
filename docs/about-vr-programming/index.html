@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    
+    <title>About this blog - VR Programming</title>
+    
+    <meta name="description" content="Hello! My name is Julián Sánchez and this blog is part of my bachelor thesis on Informatic Engineering.
+About the proyect This proyect aims to create a virtual environment in which, the users could build programs that allow them to move a virtual drone. The main focus is to exploit all the advantages of the virtual reality in contrast with the 2D environments, such as the well-known IDEs.
+Where did the idea came from?">
+    <meta name="author" content="">
+    
+    <link href="https://jdjuli.github.io/vr-programming/an-old-hope.min.css" rel="stylesheet">
+    <link href="https://jdjuli.github.io/vr-programming/style.css" rel="stylesheet">
+    <link href="https://jdjuli.github.io/vr-programming/custom.css" rel="stylesheet">
+    
+    <link rel="apple-touch-icon" href="https://jdjuli.github.io/vr-programming/apple-touch-icon.png">
+    <link rel="icon" href="https://jdjuli.github.io/vr-programming/favicon.ico">
+    <meta name="generator" content="Hugo 0.86.1" />
+    
+    
+    
+    <script>
+      function setTheme() {
+        if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+          document.body.classList.add('dark');
+          return;
+        }
+
+        const time = new Date();
+        const prev = localStorage.getItem('date');
+        const date = String(time.getMonth() + 1) + '.' + String(time.getDate());
+
+        const now = time.getTime();
+        let sunrise;
+        let sunset;
+
+        function setBodyClass() {
+          if (now > sunrise && now < sunset) return;
+          document.body.classList.add('dark');
+        }
+
+        if (date !== prev) {
+          fetch('https://api.ipgeolocation.io/astronomy?apiKey=5ed37d85103e4defa5df4c5298ed5215')
+            .then((res) => res.json())
+            .then((data) => {
+              sunrise = data.sunrise.split(':').map(Number);
+              sunset = data.sunset.split(':').map(Number);
+            })
+            .catch(() => {
+              sunrise = [7, 0];
+              sunset = [19, 0];
+            })
+            .finally(() => {
+              sunrise = time.setHours(sunrise[0], sunrise[1], 0);
+              sunset = time.setHours(sunset[0], sunset[1], 0);
+              setBodyClass();
+              localStorage.setItem('sunrise', sunrise);
+              localStorage.setItem('sunset', sunset);
+            });
+          localStorage.setItem('date', date);
+        } else {
+          sunrise = Number(localStorage.getItem('sunrise'));
+          sunset = Number(localStorage.getItem('sunset'));
+          setBodyClass();
+        }
+      }
+    </script>
+  </head>
+  <body class="single">
+    <script>
+      setTheme();
+    </script>
+    <header class="header">
+      <nav class="nav">
+        <p class="logo"><a href="https://jdjuli.github.io/vr-programming/">VR Programming</a></p>
+      </nav>
+    </header>
+    <main class="main">
+
+
+<article class="post-single">
+  <header class="post-header">
+    <h1 class="post-title">About this blog</h1>
+    <div class="post-meta">June 8, 2021</div>
+  </header>
+  <div class="post-content"><p>Hello! My name is Julián Sánchez and this blog is part of my bachelor thesis on Informatic Engineering.</p>
+<h2 id="about-the-proyect">About the proyect</h2>
+<p>This proyect aims to create a virtual environment in which, the users could build programs that allow them to move a virtual drone. The main focus is to exploit all the advantages of the virtual reality in contrast with the 2D environments, such as the well-known IDEs.</p>
+<h2 id="where-did-the-idea-came-from">Where did the idea came from?</h2>
+<p>I have to thank my thesis mentor <a href="https://gsyc.urjc.es/jgb/">Jesús M. González-Barahona</a> a seminar on creating VR experiences with web technologies, on which I became curious about VR. Once finishing the seminar, he proposed this bachelor thesis, which could be summarized as follows:</p>
+<blockquote>
+<p>The way we use to program has been very influenced by the technology of every moment, hence, the first computers were programmed through perforated cards and later on, we started programming using digital text files and IDEs, but, how we will program when the VR will become as common as nowadays are the screens and keyboards?</p>
+</blockquote>
+<h2 id="technical-details">Technical details</h2>
+<p>The proyect is intended to be used from a web navigator, hence, the main product of this proyect will be a webpage and a set of dependencies. The languages I&rsquo;ll employ will be HTML and Javascript.</p>
+<p>Also, I&rsquo;ll use the following Javascript libraries:</p>
+<ul>
+<li><a href="https://aframe.io/">A-Frame</a></li>
+<li><a href="https://github.com/n5ro/aframe-physics-system">aframe-physics-system</a></li>
+<li><a href="https://github.com/kripken/ammo.js/">ammo.js</a></li>
+<li><a href="https://github.com/wmurphyrd/aframe-super-hands-component">aframe-super-hands-component</a></li>
+</ul>
+</div>
+  
+</article></main>
+<footer class="footer">
+  <span>&copy; 2021 <a href="https://jdjuli.github.io/vr-programming/">VR Programming</a></span>
+  <span>&middot;</span>
+  <span>Powered by <a href="https://gohugo.io/" rel="noopener" target="_blank">Hugo️️</a>️</span>
+  <span>&middot;</span>
+  <span>Theme️ <a href="https://github.com/nanxiaobei/hugo-paper" rel="noopener" target="_blank">Paper</a></span>
+</footer>
+<script src="https://jdjuli.github.io/vr-programming/highlight.min.js"></script>
+<script>
+  hljs.initHighlightingOnLoad();
+</script>
+</body>
+</html>
+

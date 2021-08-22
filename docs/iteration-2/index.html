@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    
+    <title>Iteration 2 - VR Programming</title>
+    
+    <meta name="description" content="On this iteration the objectives are to improve the comunication between components and start making simple programming-oriented components.
+Scenes developed   Listening for entity collisions
+The scene represents a bunch of spheres bouncing and colliding, each time the spheres collide their color changes to red for a small time frame. To archieve this behaviour I created a component called &ldquo;colorea_colision&rdquo; that listens for &ldquo;collide&rdquo; events and changes the color of the attached entity for a short time.">
+    <meta name="author" content="">
+    
+    <link href="https://jdjuli.github.io/vr-programming/an-old-hope.min.css" rel="stylesheet">
+    <link href="https://jdjuli.github.io/vr-programming/style.css" rel="stylesheet">
+    <link href="https://jdjuli.github.io/vr-programming/custom.css" rel="stylesheet">
+    
+    <link rel="apple-touch-icon" href="https://jdjuli.github.io/vr-programming/apple-touch-icon.png">
+    <link rel="icon" href="https://jdjuli.github.io/vr-programming/favicon.ico">
+    <meta name="generator" content="Hugo 0.86.1" />
+    
+    
+    
+    <script>
+      function setTheme() {
+        if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+          document.body.classList.add('dark');
+          return;
+        }
+
+        const time = new Date();
+        const prev = localStorage.getItem('date');
+        const date = String(time.getMonth() + 1) + '.' + String(time.getDate());
+
+        const now = time.getTime();
+        let sunrise;
+        let sunset;
+
+        function setBodyClass() {
+          if (now > sunrise && now < sunset) return;
+          document.body.classList.add('dark');
+        }
+
+        if (date !== prev) {
+          fetch('https://api.ipgeolocation.io/astronomy?apiKey=5ed37d85103e4defa5df4c5298ed5215')
+            .then((res) => res.json())
+            .then((data) => {
+              sunrise = data.sunrise.split(':').map(Number);
+              sunset = data.sunset.split(':').map(Number);
+            })
+            .catch(() => {
+              sunrise = [7, 0];
+              sunset = [19, 0];
+            })
+            .finally(() => {
+              sunrise = time.setHours(sunrise[0], sunrise[1], 0);
+              sunset = time.setHours(sunset[0], sunset[1], 0);
+              setBodyClass();
+              localStorage.setItem('sunrise', sunrise);
+              localStorage.setItem('sunset', sunset);
+            });
+          localStorage.setItem('date', date);
+        } else {
+          sunrise = Number(localStorage.getItem('sunrise'));
+          sunset = Number(localStorage.getItem('sunset'));
+          setBodyClass();
+        }
+      }
+    </script>
+  </head>
+  <body class="single">
+    <script>
+      setTheme();
+    </script>
+    <header class="header">
+      <nav class="nav">
+        <p class="logo"><a href="https://jdjuli.github.io/vr-programming/">VR Programming</a></p>
+      </nav>
+    </header>
+    <main class="main">
+
+
+<article class="post-single">
+  <header class="post-header">
+    <h1 class="post-title">Iteration 2</h1>
+    <div class="post-meta">June 22, 2021</div>
+  </header>
+  <div class="post-content"><p>On this iteration the objectives are to improve the comunication between components and start making simple programming-oriented components.</p>
+<h2 id="scenes-developed">Scenes developed</h2>
+<ul>
+<li>
+<p>Listening for entity collisions</p>
+<p>The scene represents a bunch of spheres bouncing and colliding, each time the spheres collide their color changes to red for a small time frame. To archieve this behaviour I created a component called &ldquo;colorea_colision&rdquo; that listens for &ldquo;collide&rdquo; events and changes the color of the attached entity for a short time.</p>
+<p><em>=&gt;</em> <a href="/demos/demo6">Demo</a> &amp; <a href="https://github.com/jdjuli/aframe-vr-programming/blob/main/demos/demo6/index.html">Code</a> <em>&lt;=</em></p>
+</li>
+<li>
+<p>Improving inter-component communication</p>
+<p>As I mentioned on the scene &ldquo;Acting over other entities&rdquo; of the first iteration, the way I programmed that scene wasn&rsquo;t the best, and on this iteration I improved it splitting the responsabilities between two components called &ldquo;hace_saltar&rdquo; and &ldquo;saltador&rdquo;.</p>
+<p>This time, through the parameter &ldquo;target&rdquo; of the component &ldquo;hace_saltar&rdquo; we specify the entity that will jump when the entity with the component &ldquo;hace_saltar&rdquo; receives a click, note that the entity that jumps need to have the component &ldquo;saltador&rdquo; to work properly. Once &ldquo;hace saltar&rdquo; receives a click event, it sends a event &ldquo;salta&rdquo; (jump) to the entity located by &ldquo;target&rdquo; and now, the component &ldquo;saltador&rdquo; replies to that event teleporting the associated entity up and down.</p>
+<p><em>=&gt;</em> <a href="/demos/demo7">Demo</a> &amp; <a href="https://github.com/jdjuli/aframe-vr-programming/blob/main/demos/demo7/index.html">Code</a> <em>&lt;=</em></p>
+</li>
+<li>
+<p>Firing recurrent events</p>
+<p>To introduce recurrent actions on scenes, I&rsquo;ll take the inter-component communication scene and add a new component to it, which will make use of the Javascript functions <code>setInterval()</code> and <code>clearInterval()</code> to send the event &ldquo;salta&rdquo; (jump) to the entity referenced on the value of the parameter &ldquo;target&rdquo; every fixed time (can be set in milliseconds through the parameter &ldquo;cada_ms&rdquo;).</p>
+<p><em>=&gt;</em> <a href="/demos/demo8">Demo</a> &amp; <a href="https://github.com/jdjuli/aframe-vr-programming/blob/main/demos/demo8/index.html">Code</a> <em>&lt;=</em></p>
+</li>
+<li>
+<p>Static program</p>
+<p>This is the first scene that allows the users to run a sequence of actions, that couldn&rsquo;t be changed to mantain the scene as simple as possible.</p>
+<p>There are three main components, &ldquo;drone&rdquo;, which is attached to the entity that should move when the actions are executed; &ldquo;accion&rdquo;, which represents a certain action and instruct the &ldquo;drone&rdquo; component to execute it; and &ldquo;program&rdquo;, which contains the set of actions that will be executed (entities with the &ldquo;accion&rdquo; component) and ensures that they are executed in order when the program execution is issued (by sending it a &ldquo;run&rdquo; event)</p>
+<p><em>=&gt;</em> <a href="/demos/demo9">Demo</a> &amp; <a href="https://github.com/jdjuli/aframe-vr-programming/blob/main/demos/demo9/index.html">Code</a> <em>&lt;=</em></p>
+</li>
+<li>
+<p>Dynamic program without physics</p>
+<p>This scene allows the user to compose a program using the four cubes colored cyan and red, the cyan ones represents the action &ldquo;up&rdquo; and the red ones, &ldquo;down&rdquo;.
+The execution order is determined by the height of each cube, being the first the upper one, and to execute the program, a clic on the drone (green sphere) is needed.</p>
+<p><em>=&gt;</em> <a href="/demos/demo10">Demo</a> &amp; <a href="https://github.com/jdjuli/aframe-vr-programming/blob/main/demos/demo10/index.html">Code</a> <em>&lt;=</em></p>
+</li>
+<li>
+<p>Dynamic program with physics</p>
+<p>The scene is an evolution of the previous one, which didn&rsquo;t make use of a phisics engine to make the interaction with the building blocks of the program more realistic. The instruccion blocks have been resized but the core functionality of the scene remains the same.</p>
+<p>This scene is controlled with the gaze, meaning that to interact with the virtual world, you will need to stare at the elements you want to interact with before clicking or grabbing them. In the future, this method will be avoided as most VR headsets have controllers that allow a more natural way to interact with the virtual scene.</p>
+<p><em>=&gt;</em> <a href="/demos/demo11">Demo</a> &amp; <a href="https://github.com/jdjuli/aframe-vr-programming/blob/main/demos/demo11/index.html">Code</a> <em>&lt;=</em></p>
+</li>
+</ul>
+<h2 id="problems-encountered">Problems encountered</h2>
+<p>I managed to modelize correctly the interactions between components through events, but I should consider also the option of calling the event handlers directly and avoid the overhead generated by the events. By now this doesn&rsquo;t seems to be a problem, but is something I&rsquo;ll consider on the mid-long term.</p>
+<p>Also, I was expecting that I would be able to use the libraries without needing to know a lot of details of their implementation, but it couldn&rsquo;t, I had to debug and inspect the internal code of the aframe-physic-system and ammo.js while programming the &lsquo;dynamic program with physics&rsquo; because I couldn&rsquo;t grab a <code>dynamic</code> entity. After inspecting the code, I ended up programming a component called <code>desplazable</code> that changes the type of body from <code>dynamic</code> to <code>kinematic</code> when the user grabs the associated entity and way back to <code>dynamic</code> when the grabbing ends.</p>
+<p>Finally, I started using the gaze control, which seem acceptable on the PC, but after discussing about it with my mentor, he recommended me to avoid it as it&rsquo;s very unnatural way to interact with the VR when using a VR headset.</p>
+</div>
+  
+</article></main>
+<footer class="footer">
+  <span>&copy; 2021 <a href="https://jdjuli.github.io/vr-programming/">VR Programming</a></span>
+  <span>&middot;</span>
+  <span>Powered by <a href="https://gohugo.io/" rel="noopener" target="_blank">Hugo️️</a>️</span>
+  <span>&middot;</span>
+  <span>Theme️ <a href="https://github.com/nanxiaobei/hugo-paper" rel="noopener" target="_blank">Paper</a></span>
+</footer>
+<script src="https://jdjuli.github.io/vr-programming/highlight.min.js"></script>
+<script>
+  hljs.initHighlightingOnLoad();
+</script>
+</body>
+</html>
+

@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    
+    <title>Iteration 3 - VR Programming</title>
+    
+    <meta name="description" content="On this iteration, the main objectives are:
+ Ensure that the scenes can be used on PC and Oculus Quest. Create an element specifically intended for executing the program (a &ldquo;run&rdquo; button) Modify the program component so it creates a platform on which, by dropping the blocks, the user can create the program.  Scenes created  Demonstration of component &ldquo;multidevice&rdquo; On this scene, the component multidevice takes care of detecting if the device is a VR headset or not and on each case, initializes the corresponding controllers.">
+    <meta name="author" content="">
+    
+    <link href="https://jdjuli.github.io/vr-programming/an-old-hope.min.css" rel="stylesheet">
+    <link href="https://jdjuli.github.io/vr-programming/style.css" rel="stylesheet">
+    <link href="https://jdjuli.github.io/vr-programming/custom.css" rel="stylesheet">
+    
+    <link rel="apple-touch-icon" href="https://jdjuli.github.io/vr-programming/apple-touch-icon.png">
+    <link rel="icon" href="https://jdjuli.github.io/vr-programming/favicon.ico">
+    <meta name="generator" content="Hugo 0.86.1" />
+    
+    
+    
+    <script>
+      function setTheme() {
+        if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+          document.body.classList.add('dark');
+          return;
+        }
+
+        const time = new Date();
+        const prev = localStorage.getItem('date');
+        const date = String(time.getMonth() + 1) + '.' + String(time.getDate());
+
+        const now = time.getTime();
+        let sunrise;
+        let sunset;
+
+        function setBodyClass() {
+          if (now > sunrise && now < sunset) return;
+          document.body.classList.add('dark');
+        }
+
+        if (date !== prev) {
+          fetch('https://api.ipgeolocation.io/astronomy?apiKey=5ed37d85103e4defa5df4c5298ed5215')
+            .then((res) => res.json())
+            .then((data) => {
+              sunrise = data.sunrise.split(':').map(Number);
+              sunset = data.sunset.split(':').map(Number);
+            })
+            .catch(() => {
+              sunrise = [7, 0];
+              sunset = [19, 0];
+            })
+            .finally(() => {
+              sunrise = time.setHours(sunrise[0], sunrise[1], 0);
+              sunset = time.setHours(sunset[0], sunset[1], 0);
+              setBodyClass();
+              localStorage.setItem('sunrise', sunrise);
+              localStorage.setItem('sunset', sunset);
+            });
+          localStorage.setItem('date', date);
+        } else {
+          sunrise = Number(localStorage.getItem('sunrise'));
+          sunset = Number(localStorage.getItem('sunset'));
+          setBodyClass();
+        }
+      }
+    </script>
+  </head>
+  <body class="single">
+    <script>
+      setTheme();
+    </script>
+    <header class="header">
+      <nav class="nav">
+        <p class="logo"><a href="https://jdjuli.github.io/vr-programming/">VR Programming</a></p>
+      </nav>
+    </header>
+    <main class="main">
+
+
+<article class="post-single">
+  <header class="post-header">
+    <h1 class="post-title">Iteration 3</h1>
+    <div class="post-meta">August 19, 2021</div>
+  </header>
+  <div class="post-content"><p>On this iteration, the main objectives are:</p>
+<ul>
+<li>Ensure that the scenes can be used on PC and Oculus Quest.</li>
+<li>Create an element specifically intended for executing the program (a &ldquo;run&rdquo; button)</li>
+<li>Modify the program component so it creates a platform on which, by dropping the blocks, the user can create the program.</li>
+</ul>
+<h2 id="scenes-created">Scenes created</h2>
+<ul>
+<li>Demonstration of component &ldquo;multidevice&rdquo;
+On this scene, the component <code>multidevice</code> takes care of detecting if the device is a VR headset or not and on each case, initializes the corresponding controllers. The figures in front of the camera can be grabbed making use of the cursor if we access the page on a PC and with the VR controllers if we are using the Oculus Quest headset.
+This component depends on the <a href="https://github.com/wmurphyrd/aframe-super-hands-component">super-hands</a> component to work and we can use it as follows:</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-html" data-lang="html">&lt;<span style="color:#f92672">a-entity</span>   <span style="color:#a6e22e">multidevice</span> <span style="color:#a6e22e">position</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;0 0 0.8&#34;</span>&gt;     
+    &lt;<span style="color:#f92672">a-entity</span> <span style="color:#a6e22e">camera</span>&gt;&lt;/<span style="color:#f92672">a-entity</span>&gt; 
+&lt;/<span style="color:#f92672">a-entity</span>&gt;
+</code></pre></div><p><em>=&gt;</em> <a href="/demos/demo12">Demo</a> &amp; <a href="https://github.com/jdjuli/aframe-vr-programming/blob/main/demos/demo12/index.html">Code</a> <em>&lt;=</em></p>
+<ul>
+<li>Cloneable entities
+Throught the component <code>clonable</code> we specify that an entity must be clonated when it past a certain distance from it&rsquo;s original position, this distance is by default 3 meters, but can be overwritten with the parameter <code>distance</code>.
+The scene is very similar to the previous one, but this time we have the objects on the right side of the table and each time we grab one and move it further than 0.3 meters from it&rsquo;s original position, a new entity with the same properties is created on that position.</li>
+</ul>
+<p><em>=&gt;</em> <a href="/demos/demo13">Demo</a> &amp; <a href="https://github.com/jdjuli/aframe-vr-programming/blob/main/demos/demo13/index.html">Code</a> <em>&lt;=</em></p>
+<ul>
+<li>Component &lsquo;program&rsquo;
+By it&rsquo;s dimensions, this scene is meant to be used on the PC, further iterations will be more confortable to use with an VR headset. It makes use of a component called <code>programa</code> to modelize the sequence of instructions and provide a way to execute them.
+The blue blocks represent the action &lsquo;down&rsquo; and the red ones, &lsquo;up&rsquo; and they are added to the program by letting them fall on to the blue platform. To execute the program, we have to click the green box with the text &lsquo;ejecutar&rsquo;.</li>
+</ul>
+<p><em>=&gt;</em> <a href="/demos/demo14">Demo</a> &amp; <a href="https://github.com/jdjuli/aframe-vr-programming/blob/main/demos/demo14/index.html">Code</a> <em>&lt;=</em></p>
+<h2 id="problems-encountered">Problems encountered</h2>
+<p>When I was testing the <code>multidevice</code> component I faced up an issue related to the Y coordinate of the camera position, that on PC matches the one of the entity that contains the <code>camera</code> component, but when using the Oculus Quest, A-Frame takes the height of the headset and adds it to the position of the entity, which results on a very unnatural perspective and many difficulties to interact with the rest of the entities of the scene. The solution was to ignore the height of the camera when initializing the <code>multidevice</code> component on an VR headset, so the height of the camera is only determined by the height of the headset.</p>
+<p>Reparenting them wasn&rsquo;t also trivial, because simply reparenting them on the DOM causes many problems related with the reinitialization of the components, like crashing the physics engine, to mention one. After some days thinking ways to reparent entities (I wasn&rsquo;t considering cloning them on the new parent and deleting the old copy because I thought that it would impact heavily on the performance), the solution came from a <a href="https://www.gitmemory.com/issue/aframevr/aframe/2425/753673035">gitmemory written by my mentor</a> and on which he recommends the strategy of clone &amp; delete that I was avoiding, but after implementing it, the results were awensome and it proved me wrong about the performance drop.</p>
+<p>While developing the <code>program</code> component I had again problems with the physics engine, this time the problem was that once an instruction block is on the program and the user wants to remove it (by simply grabbing it out the stack of blocks), it becomes <code>kinematic</code> instead of <code>dynamic</code>, ignoring the <code>type: dynamic</code> parameter of the <code>ammo-body</code> component attached to that entity. This is still visible on the <a href="/demos/demo14">Demo 14</a> as I havent found a solution yet, but probably I&rsquo;ll take another aproach and instead of allowing the user to recycle the instruction blocks, I&rsquo;ll remove them so the next time the user wants to use that instruction, they will have to pick it from it`s source.</p>
+</div>
+  
+</article></main>
+<footer class="footer">
+  <span>&copy; 2021 <a href="https://jdjuli.github.io/vr-programming/">VR Programming</a></span>
+  <span>&middot;</span>
+  <span>Powered by <a href="https://gohugo.io/" rel="noopener" target="_blank">Hugo️️</a>️</span>
+  <span>&middot;</span>
+  <span>Theme️ <a href="https://github.com/nanxiaobei/hugo-paper" rel="noopener" target="_blank">Paper</a></span>
+</footer>
+<script src="https://jdjuli.github.io/vr-programming/highlight.min.js"></script>
+<script>
+  hljs.initHighlightingOnLoad();
+</script>
+</body>
+</html>
+

@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <script src="https://aframe.io/releases/0.8.0/aframe.min.js""></script>
+        <script src="https://unpkg.com/aframe-event-set-component@^4.0.0/dist/aframe-event-set-component.min.js"></script>
+        <script src="//cdn.rawgit.com/donmccurdy/aframe-extras/v3.12.4/dist/aframe-extras.min.js"></script>
+        <script src="https://unpkg.com/aframe-physics-extras/dist/aframe-physics-extras.min.js"></script>
+        <script src="https://unpkg.com/super-hands@2.1.0/dist/super-hands.min.js"></script>
+
+        <script src="./component_rebotador.js"></script>
+    </head>
+    <body>
+        <a-scene physics="restitution:0.95; debug: true; debugDrawMode: 1;">
+            <!-- Contenedor donde rebotarán las esferas -->
+            <a-entity position="0 -5 0">
+                <a-entity   geometry="primitive:box; height:10; width:10; depth:0.3" 
+                            material="color:black; shader:flat"
+                            position="0 0 0"
+                            rotation="-90 0 0"
+                            static-body></a-entity>
+                <a-entity   geometry="primitive:box; height:5; width:0.3; depth:15" 
+                            material="color:gray; shader:flat"
+                            position="6.5 1.5 0"
+                            rotation="0 0 -45"
+                            static-body></a-entity>
+                <a-entity   geometry="primitive:box; height:5; width:0.3; depth:15" 
+                            material="color:gray; shader:flat"
+                            position="-6.5 1.5 0"
+                            rotation="0 0 45"
+                            static-body></a-entity>
+                <a-entity   geometry="primitive:box; height:5; width:15; depth:0.3" 
+                            material="color:gray; shader:flat"
+                            position="0 1.5 6.5"
+                            rotation="45 0 0"
+                            static-body></a-entity>
+                <a-entity   geometry="primitive:box; height:5; width:15; depth:0.3" 
+                            material="color:gray; shader:flat"
+                            position="0 1.5 -6.5"
+                            rotation="-45 0 0"
+                            static-body></a-entity>
+            </a-entity>
+            <!-- Esferas cuyo color cambiará a rojo cuando choquen entre ellas -->
+            <a-entity   geometry="primitive:sphere; radius:0.5"
+                        material="shader:flat; color:#B19BB6"
+                        position="5 0 -0.1"
+                        colorea_colision
+                        dynamic-body></a-entity>
+            <a-entity   geometry="primitive:sphere; radius:0.5"
+                        material="shader:flat; color:#C6D5B1"
+                        position="-5 0 0.1"
+                        colorea_colision
+                        dynamic-body></a-entity>
+            <a-entity   geometry="primitive:sphere; radius:0.5"
+                        material="shader:flat; color:#F1E1BF"
+                        position="-0.1 0 5"
+                        colorea_colision
+                        dynamic-body></a-entity>
+            <a-entity   geometry="primitive:sphere; radius:0.5"
+                        material="shader:flat; color:#F8ABB3"
+                        position="0.1 0 -5"
+                        colorea_colision
+                        dynamic-body></a-entity>
+            <a-entity   geometry="primitive:sphere; radius:0.5"
+                        material="shader:flat; color:#9EA9CD"
+                        position="0 5 0"
+                        colorea_colision
+                        dynamic-body></a-entity>
+
+            <a-entity   camera wasd-controls look-controls position="0 1.7 10"
+                        cursor="rayOrigin:mouse"></a-entity>
+        </a-scene>
+    </body>
+</html>

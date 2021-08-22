@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>Superhands</title>
+    
+    <!-- import the webpage's stylesheet -->
+    <link rel="stylesheet" href="/style.css">
+    
+    <!-- import the webpage's javascript file -->
+    <script src="https://aframe.io/releases/1.2.0/aframe.js"></script>    
+    <script src="https://cdn.jsdelivr.net/gh/donmccurdy/aframe-extras@v6.1.1/dist/aframe-extras.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/n5ro/aframe-physics-system@v4.0.1/dist/aframe-physics-system.js"></script>
+    <script src="https://unpkg.com/super-hands@^3.0.1/dist/super-hands.min.js"></script>
+    <!--<script src="https://mixedreality.mozilla.org/ammo.js/builds/ammo.wasm.js"></script>-->
+    
+
+
+  </head>  
+  <body>
+    
+    <a-scene
+      style="height: calc(100vh - 5rem)"
+      embedded
+      physics="debug: true; gravity: 0 0 0;"
+    >
+      <a-entity>
+        <a-camera></a-camera>
+        
+        <a-entity
+          sphere-collider="objects: a-box"
+          super-hands
+          static-body="shape: sphere; sphereRadius: 0.02"
+          hand-controls="hand: left"
+        ></a-entity>
+        <a-entity
+          sphere-collider="objects: a-box"
+          super-hands
+          static-body="shape: sphere; sphereRadius: 0.02"
+          hand-controls="hand: right"
+        ></a-entity>
+      </a-entity>
+
+      <a-box
+        color="blue"
+        position="0 1.4 -1"
+        depth="0.1"
+        height="0.8"
+        width="1"
+        grabbable
+        stretchable
+        draggable
+        dynamic-body
+      >
+      </a-box>
+    </a-scene>
+
+    <!-- include the Glitch button to show what the webpage is about and
+          to make it easier for folks to view source and remix -->
+    <div class="glitchButton" style="position:fixed;top:20px;right:20px;"></div>
+    <script src="https://button.glitch.me/button.js" defer></script>
+  </body>
+</html>

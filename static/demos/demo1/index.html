@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <script src="https://aframe.io/releases/1.2.0/aframe.js"></script>
+        <script src="./component_esfera_marron.js"></script>
+    </head>
+    <body>
+        <a-scene>
+            <a-entity   geometry="primitive:plane; height:10; width:10" 
+                        material="color:gray; shader:flat"
+                        position="0 0 0"
+                        rotation="-90 0 0"></a-entity>
+            <a-entity   esfera_marron
+                        position="0 1 0"
+                        id="esfera"></a-entity>
+            <a-entity   camera wasd-controls look-controls
+                        position="0 1.7 10"></a-entity>
+        </a-scene>
+    </body>
+</html>

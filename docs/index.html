@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    
+    <title>VR Programming</title>
+    
+    <meta name="description" content="">
+    <meta name="author" content="">
+    
+    <link href="https://jdjuli.github.io/vr-programming/an-old-hope.min.css" rel="stylesheet">
+    <link href="https://jdjuli.github.io/vr-programming/style.css" rel="stylesheet">
+    <link href="https://jdjuli.github.io/vr-programming/custom.css" rel="stylesheet">
+    
+    <link rel="apple-touch-icon" href="https://jdjuli.github.io/vr-programming/apple-touch-icon.png">
+    <link rel="icon" href="https://jdjuli.github.io/vr-programming/favicon.ico">
+    <meta name="generator" content="Hugo 0.86.1" />
+    
+    <link rel="alternate" type="application/rss+xml" href="https://jdjuli.github.io/vr-programming/index.xml" title="VR Programming" />
+    <link rel="alternate" type="application/json" href="https://jdjuli.github.io/vr-programming/index.json" title="VR Programming" />
+    
+    
+    <script>
+      function setTheme() {
+        if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+          document.body.classList.add('dark');
+          return;
+        }
+
+        const time = new Date();
+        const prev = localStorage.getItem('date');
+        const date = String(time.getMonth() + 1) + '.' + String(time.getDate());
+
+        const now = time.getTime();
+        let sunrise;
+        let sunset;
+
+        function setBodyClass() {
+          if (now > sunrise && now < sunset) return;
+          document.body.classList.add('dark');
+        }
+
+        if (date !== prev) {
+          fetch('https://api.ipgeolocation.io/astronomy?apiKey=5ed37d85103e4defa5df4c5298ed5215')
+            .then((res) => res.json())
+            .then((data) => {
+              sunrise = data.sunrise.split(':').map(Number);
+              sunset = data.sunset.split(':').map(Number);
+            })
+            .catch(() => {
+              sunrise = [7, 0];
+              sunset = [19, 0];
+            })
+            .finally(() => {
+              sunrise = time.setHours(sunrise[0], sunrise[1], 0);
+              sunset = time.setHours(sunset[0], sunset[1], 0);
+              setBodyClass();
+              localStorage.setItem('sunrise', sunrise);
+              localStorage.setItem('sunset', sunset);
+            });
+          localStorage.setItem('date', date);
+        } else {
+          sunrise = Number(localStorage.getItem('sunrise'));
+          sunset = Number(localStorage.getItem('sunset'));
+          setBodyClass();
+        }
+      }
+    </script>
+  </head>
+  <body class="list home">
+    <script>
+      setTheme();
+    </script>
+    <header class="header">
+      <nav class="nav">
+        <h1 class="logo"><a href="https://jdjuli.github.io/vr-programming/">VR Programming</a></h1>
+      </nav>
+    </header>
+    <main class="main">
+
+<header class="page-header"><h1>VR Programming</h1></header>
+
+<article class="first-entry">
+  <header class="entry-header">
+    <h2>Iteration 3</h2>
+  </header>
+  <section class="entry-content">
+   <p>On this iteration, the main objectives are:
+ Ensure that the scenes can be used on PC and Oculus Quest. Create an element specifically intended for executing the program (a “run” button) Modify the program component so it creates a platform on which, by dropping the blocks, the user can create the program.  Scenes created  Demonstration of component “multidevice” On this scene, the component multidevice takes care of detecting if the device is a VR headset or not and on each case, initializes the corresponding controllers....</p>
+  </section>
+  <footer class="entry-footer">
+    <time>August 19, 2021</time>
+  </footer>
+  <a class="entry-link" href="https://jdjuli.github.io/vr-programming/iteration-3/"></a>
+</article>
+<article class="post-entry">
+  <header class="entry-header">
+    <h2>Iteration 2</h2>
+  </header>
+  <section class="entry-content">
+   <p>On this iteration the objectives are to improve the comunication between components and start making simple programming-oriented components.
+Scenes developed   Listening for entity collisions
+The scene represents a bunch of spheres bouncing and colliding, each time the spheres collide their color changes to red for a small time frame. To archieve this behaviour I created a component called “colorea_colision” that listens for “collide” events and changes the color of the attached entity for a short time....</p>
+  </section>
+  <footer class="entry-footer">
+    <time>June 22, 2021</time>
+  </footer>
+  <a class="entry-link" href="https://jdjuli.github.io/vr-programming/iteration-2/"></a>
+</article>
+<article class="post-entry">
+  <header class="entry-header">
+    <h2>Iteration 1</h2>
+  </header>
+  <section class="entry-content">
+   <p>I don’t have a lot of experience programming on Javascript before and also, as A-Frame is a component-based framework, the objectives of this first iteration are becoming familiar with Javascript and A-Frame.
+This first scenes are very basic and not so interactive, because I used them as “prototypes” for the next ones, I decided to keep them to ilustrate my progress.
+Scenes developed   Non parametric component
+This scene shows one brown sphere, it’s entity element on the DOM has the attribute “esfera_marron” set, which maps to the component with the same name....</p>
+  </section>
+  <footer class="entry-footer">
+    <time>June 10, 2021</time>
+  </footer>
+  <a class="entry-link" href="https://jdjuli.github.io/vr-programming/iteration-1/"></a>
+</article>
+<article class="post-entry">
+  <header class="entry-header">
+    <h2>About this blog</h2>
+  </header>
+  <section class="entry-content">
+   <p>Hello! My name is Julián Sánchez and this blog is part of my bachelor thesis on Informatic Engineering.
+About the proyect This proyect aims to create a virtual environment in which, the users could build programs that allow them to move a virtual drone. The main focus is to exploit all the advantages of the virtual reality in contrast with the 2D environments, such as the well-known IDEs.
+Where did the idea came from?...</p>
+  </section>
+  <footer class="entry-footer">
+    <time>June 8, 2021</time>
+  </footer>
+  <a class="entry-link" href="https://jdjuli.github.io/vr-programming/about-vr-programming/"></a>
+</article></main>
+<footer class="footer">
+  <span>&copy; 2021 <a href="https://jdjuli.github.io/vr-programming/">VR Programming</a></span>
+  <span>&middot;</span>
+  <span>Powered by <a href="https://gohugo.io/" rel="noopener" target="_blank">Hugo️️</a>️</span>
+  <span>&middot;</span>
+  <span>Theme️ <a href="https://github.com/nanxiaobei/hugo-paper" rel="noopener" target="_blank">Paper</a></span>
+</footer>
+<script src="https://jdjuli.github.io/vr-programming/highlight.min.js"></script>
+<script>
+  hljs.initHighlightingOnLoad();
+</script>
+</body>
+</html>
+

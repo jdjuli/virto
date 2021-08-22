@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <script src="https://aframe.io/releases/0.8.0/aframe.min.js""></script>
+        <script src="https://unpkg.com/aframe-event-set-component@^4.0.0/dist/aframe-event-set-component.min.js"></script>
+        <script src="//cdn.rawgit.com/donmccurdy/aframe-extras/v3.12.4/dist/aframe-extras.min.js"></script>
+        <script src="https://unpkg.com/aframe-physics-extras/dist/aframe-physics-extras.min.js"></script>
+        <script src="https://unpkg.com/super-hands@2.1.0/dist/super-hands.min.js"></script>
+
+        <script src="./component_programa.js"></script>
+        <script src="./component_ejecuta.js"></script>
+        <script src="./component_accion.js"></script>
+        <script src="./component_drone.js"></script>
+    </head>
+    <body>
+        <a-scene physics="driver: ammo; debug: true; debugDrawMode: 1;">
+            <a-assets>
+                <a-mixin    id="instruccion" 
+                            geometry="width: 1; height: 0.3; depth: 1"
+                            dynamic-body="shape:box"
+                            grabbable></a-mixin>
+            </a-assets>
+            <a-entity   geometry="primitive:plane; height:10; width:10" 
+                        material="color:gray; shader:flat"
+                        position="0 0 0"
+                        rotation="-90 0 0"
+                        static-body></a-entity>
+            <a-entity   id="drone"
+                        geometry="primitive:sphere; radius:0.5"
+                        material="color:green; shader:flat"
+                        position="-3 5 -3"
+                        static-body
+                        ejecuta
+                        drone></a-entity>
+            <a-entity   programa>
+                <a-entity   mixin="instruccion" class="bloque"
+                            material="color:red; shader:flat"
+                            position="0 3.5 0"
+                            accion="sube"></a-entity>
+                <a-entity   mixin="instruccion" class="bloque"
+                            material="color:red; shader:flat"
+                            position="0 2.5 0"
+                            accion="sube"></a-entity>
+                <a-entity   mixin="instruccion" class="bloque"
+                            material="color:cyan; shader:flat"
+                            position="0 1.5 0"
+                            accion="baja"></a-entity>
+                <a-entity   mixin="instruccion" class="bloque"
+                            material="color:cyan; shader:flat"
+                            position="0 0.5 0"
+                            accion="baja"></a-entity>
+            </a-entity>
+            <!--<a-entity progressive-controls="objects: .bloque" position="0 1.7 10">
+            </a-entity>-->
+                <a-entity camera wasd-controls position="0 1.7 10"
+                progressive-controls="objects: .bloque, #drone"
+                cursor="rayOrigin:mouse"
+                super-hands="colliderEvent: raycaster-intersection;
+                             colliderEventProperty: els;
+                             colliderEndEvent:raycaster-intersection-cleared;
+                             colliderEndEventProperty: clearedEls;">
+                </a-entity>
+            
+        </a-scene>
+    </body>
+</html>

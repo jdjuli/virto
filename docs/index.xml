@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>VR Programming</title>
+    <link>https://jdjuli.github.io/vr-programming/</link>
+    <description>Recent content on VR Programming</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Mon, 02 Aug 2021 19:36:30 +0200</lastBuildDate><atom:link href="https://jdjuli.github.io/vr-programming/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Iteration 3</title>
+      <link>https://jdjuli.github.io/vr-programming/iteration-3/</link>
+      <pubDate>Thu, 19 Aug 2021 16:56:21 +0200</pubDate>
+      
+      <guid>https://jdjuli.github.io/vr-programming/iteration-3/</guid>
+      <description>On this iteration, the main objectives are:
+ Ensure that the scenes can be used on PC and Oculus Quest. Create an element specifically intended for executing the program (a &amp;ldquo;run&amp;rdquo; button) Modify the program component so it creates a platform on which, by dropping the blocks, the user can create the program.  Scenes created  Demonstration of component &amp;ldquo;multidevice&amp;rdquo; On this scene, the component multidevice takes care of detecting if the device is a VR headset or not and on each case, initializes the corresponding controllers.</description>
+    </item>
+    
+    <item>
+      <title>Introduction</title>
+      <link>https://jdjuli.github.io/vr-programming/blog/introduction/</link>
+      <pubDate>Mon, 02 Aug 2021 19:36:30 +0200</pubDate>
+      
+      <guid>https://jdjuli.github.io/vr-programming/blog/introduction/</guid>
+      <description>Hello!!</description>
+    </item>
+    
+    <item>
+      <title>Iteration 2</title>
+      <link>https://jdjuli.github.io/vr-programming/iteration-2/</link>
+      <pubDate>Tue, 22 Jun 2021 19:36:30 +0200</pubDate>
+      
+      <guid>https://jdjuli.github.io/vr-programming/iteration-2/</guid>
+      <description>On this iteration the objectives are to improve the comunication between components and start making simple programming-oriented components.
+Scenes developed   Listening for entity collisions
+The scene represents a bunch of spheres bouncing and colliding, each time the spheres collide their color changes to red for a small time frame. To archieve this behaviour I created a component called &amp;ldquo;colorea_colision&amp;rdquo; that listens for &amp;ldquo;collide&amp;rdquo; events and changes the color of the attached entity for a short time.</description>
+    </item>
+    
+    <item>
+      <title>Iteration 1</title>
+      <link>https://jdjuli.github.io/vr-programming/iteration-1/</link>
+      <pubDate>Thu, 10 Jun 2021 19:36:30 +0200</pubDate>
+      
+      <guid>https://jdjuli.github.io/vr-programming/iteration-1/</guid>
+      <description>I don&amp;rsquo;t have a lot of experience programming on Javascript before and also, as A-Frame is a component-based framework, the objectives of this first iteration are becoming familiar with Javascript and A-Frame.
+This first scenes are very basic and not so interactive, because I used them as &amp;ldquo;prototypes&amp;rdquo; for the next ones, I decided to keep them to ilustrate my progress.
+Scenes developed   Non parametric component
+This scene shows one brown sphere, it&amp;rsquo;s entity element on the DOM has the attribute &amp;ldquo;esfera_marron&amp;rdquo; set, which maps to the component with the same name.</description>
+    </item>
+    
+    <item>
+      <title>About this blog</title>
+      <link>https://jdjuli.github.io/vr-programming/about-vr-programming/</link>
+      <pubDate>Tue, 08 Jun 2021 13:15:11 +0200</pubDate>
+      
+      <guid>https://jdjuli.github.io/vr-programming/about-vr-programming/</guid>
+      <description>Hello! My name is Julián Sánchez and this blog is part of my bachelor thesis on Informatic Engineering.
+About the proyect This proyect aims to create a virtual environment in which, the users could build programs that allow them to move a virtual drone. The main focus is to exploit all the advantages of the virtual reality in contrast with the 2D environments, such as the well-known IDEs.
+Where did the idea came from?</description>
+    </item>
+    
+  </channel>
+</rss>
