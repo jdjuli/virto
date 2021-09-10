@@ -19,17 +19,35 @@ This component depends on the [super-hands](https://github.com/wmurphyrd/aframe-
 </a-entity>
 ```
 
-*=>* [Demo](/vr-programming/demos/demo12) & [Code](https://github.com/jdjuli/aframe-vr-programming/blob/main/docs/demos/demo12/index.html) *<=*
+![](/img/demo12_PC.gif)
+*On PC, you can grab the entities and move them by clicking on them.*
+
+![](/img/demo12_VR.gif)
+*On Oculus Quest, you'll need to point to the entities and push any of the buttons of the controller to grab them.*
+
+*=>* Checkout the [Demo](/vr-programming/demos/demo12) & [Code](https://github.com/jdjuli/aframe-vr-programming/blob/main/docs/demos/demo12/index.html) *<=*
 
 - Cloneable entities
 Throught the component `clonable` we specify that an entity must be clonated when it past a certain distance from it's original position, this distance is by default 3 meters, but can be overwritten with the parameter `distance`.
 The scene is very similar to the previous one, but this time we have the objects on the right side of the table and each time we grab one and move it further than 0.3 meters from it's original position, a new entity with the same properties is created on that position.
 
-*=>* [Demo](/vr-programming/demos/demo13) & [Code](https://github.com/jdjuli/aframe-vr-programming/blob/main/docs/demos/demo13/index.html) *<=*
+![](/img/demo13_PC.gif)
+*As soon as you click over an entity and move it far from it's initial position, it will be cloned.*
+
+![](/img/demo13_VR.gif)
+*The way of grabbing an entity changes, but the behaviour remains the same in VR.*
+
+*=>* Checkout the [Demo](/vr-programming/demos/demo13) & [Code](https://github.com/jdjuli/aframe-vr-programming/blob/main/docs/demos/demo13/index.html) *<=*
 
 - Component 'program'
 By it's dimensions, this scene is meant to be used on the PC, further iterations will be more confortable to use with an VR headset. It makes use of a component called `programa` to modelize the sequence of instructions and provide a way to execute them.
 The blue blocks represent the action 'down' and the red ones, 'up' and they are added to the program by letting them fall on to the blue platform. To execute the program, we have to click the green box with the text 'ejecutar'.
+
+![](/img/demo14_PC.gif)
+*To create a program you'll need to grab the blue and red boxes and make them touch the blue platform. To execute the program, simply click the green box and to remove an instruction, grab it and move it outside the blue platform.*
+
+![](/img/demo14_VR.gif)
+*This scene requires a big space to be test on VR, but if you don't have it, try to move the boxes up and let them fall to bring them closer to you*
 
 *=>* [Demo](/vr-programming/demos/demo14) & [Code](https://github.com/jdjuli/aframe-vr-programming/blob/main/docs/demos/demo14/index.html) *<=*
 

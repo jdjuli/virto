@@ -80,7 +80,7 @@ AFRAME.registerComponent('programa',{
         textoEjecutar.setAttribute("position","0 0 0.5");
         this.E_ejecutar.appendChild(textoEjecutar);
     
-        this.E_ejecutar.setAttribute("class","cube");
+        this.E_ejecutar.setAttribute("class","raycastable");
         this.E_ejecutar.setAttribute("geometry","primitive:box; height: 1; width: 1; depth: 1");
         this.E_ejecutar.setAttribute("material","color:green; shader: flat");
         this.E_ejecutar.setAttribute("position","2 0.5 0");

@@ -11,11 +11,10 @@
     <link rel="stylesheet" href="/style.css">
     
     <!-- import the webpage's javascript file -->
-    <script src="https://aframe.io/releases/1.2.0/aframe.js"></script>    
+    <script src="https://aframe.io/releases/1.1.0/aframe.js"></script>    
     <script src="https://cdn.jsdelivr.net/gh/donmccurdy/aframe-extras@v6.1.1/dist/aframe-extras.js"></script>
     <script src="https://cdn.jsdelivr.net/gh/n5ro/aframe-physics-system@v4.0.1/dist/aframe-physics-system.js"></script>
     <script src="https://unpkg.com/super-hands@^3.0.1/dist/super-hands.min.js"></script>
-    <!--<script src="https://mixedreality.mozilla.org/ammo.js/builds/ammo.wasm.js"></script>-->
     
 
 
@@ -25,37 +24,52 @@
     <a-scene
       style="height: calc(100vh - 5rem)"
       embedded
-      physics="debug: true; gravity: 0 0 0;"
+      physics="debug: true;gravity: -2.5"
     >
-      <a-entity>
+      <a-entity >
         <a-camera></a-camera>
         
         <a-entity
-          sphere-collider="objects: a-box"
+          sphere-collider="objects: .raycastable"
           super-hands
           static-body="shape: sphere; sphereRadius: 0.02"
           hand-controls="hand: left"
         ></a-entity>
         <a-entity
-          sphere-collider="objects: a-box"
+          sphere-collider="objects: .raycastable"
           super-hands
           static-body="shape: sphere; sphereRadius: 0.02"
           hand-controls="hand: right"
         ></a-entity>
       </a-entity>
 
-      <a-box
-        color="blue"
-        position="0 1.4 -1"
-        depth="0.1"
-        height="0.8"
-        width="1"
-        grabbable
-        stretchable
-        draggable
-        dynamic-body
-      >
-      </a-box>
+      <a-entity   geometry="primitive:box; height:0.05; width:2; depth:1" 
+      material="color:#444444; shader:flat"
+      position="0 0.7 -0.3"
+      static-body>
+        <a-entity   class="raycastable"
+                  geometry="primitive: box; height: 0.1; width: 0.1; depth: 0.1"
+                  material="color: #990000"
+                  dynamic-body
+                  position="0.4 0.05 0.3"
+                  clonable="distance: 0.5"
+                  grabbable desplazable></a-entity>
+        <a-entity   class="raycastable"
+                  geometry="primitive: cylinder; height: 0.1; radius: 0.05"
+                  material="color: #009900"
+                  dynamic-body
+                  position="0.4 0.05 0"
+                  clonable="distance: 0.5"
+                  grabbable desplazable></a-entity>
+        <a-entity   class="raycastable"
+                  geometry="primitive: cone; height: 0.1; radiusBottom: 0.05"
+                  material="color: #000099"
+                  dynamic-body
+                  position="0.4 0.05 -0.3"
+                  rotation="0 0 180"
+                  clonable="distance: 0.5"
+                  grabbable desplazable></a-entity>        
+        </a-entity>
     </a-scene>
 
     <!-- include the Glitch button to show what the webpage is about and

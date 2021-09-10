@@ -13,12 +13,11 @@ AFRAME.registerComponent('multidevice',{
         controller.setAttribute("raycaster","showLine: true; far: 20; lineOpacity: 0.5; objects: .raycastable");
         controller.setAttribute("sphere-collider","objects: .raycastable");
         controller.setAttribute("static-body","shape: sphere; sphereRadius: 0.02");
-        controller.setAttribute("hand-controls","hand: "+hand);
-        entity.setAttribute("super-hands","colliderEvent: raycaster-intersection;"+
+        controller.setAttribute("super-hands","colliderEvent: raycaster-intersection;"+
                             "colliderEventProperty: els;"+
                             "colliderEndEvent:raycaster-intersection-cleared;"+
                             "colliderEndEventProperty: clearedEls");
-        //controller.setAttribute("oculus-touch-controls","hand: "+hand);
+        controller.setAttribute("oculus-touch-controls","hand: "+hand);
         return controller;
     },
     applyAttributesPC: function(entity){
