@@ -11,12 +11,12 @@
  Ensure that the scenes can be used on PC and Oculus Quest. Create an element specifically intended for executing the program (a &ldquo;run&rdquo; button) Modify the program component so it creates a platform on which, by dropping the blocks, the user can create the program.  Scenes created  Demonstration of component &ldquo;multidevice&rdquo; On this scene, the component multidevice takes care of detecting if the device is a VR headset or not and on each case, initializes the corresponding controllers.">
     <meta name="author" content="">
     
-    <link href="http://localhost:1313/an-old-hope.min.css" rel="stylesheet">
-    <link href="http://localhost:1313/style.css" rel="stylesheet">
-    <link href="http://localhost:1313/custom.css" rel="stylesheet">
+    <link href="https://jdjuli.github.io/vr-programming/an-old-hope.min.css" rel="stylesheet">
+    <link href="https://jdjuli.github.io/vr-programming/style.css" rel="stylesheet">
+    <link href="https://jdjuli.github.io/vr-programming/custom.css" rel="stylesheet">
     
-    <link rel="apple-touch-icon" href="http://localhost:1313/apple-touch-icon.png">
-    <link rel="icon" href="http://localhost:1313/favicon.ico">
+    <link rel="apple-touch-icon" href="https://jdjuli.github.io/vr-programming/apple-touch-icon.png">
+    <link rel="icon" href="https://jdjuli.github.io/vr-programming/favicon.ico">
     <meta name="generator" content="Hugo 0.86.1" />
     
     
@@ -74,7 +74,7 @@
     </script>
     <header class="header">
       <nav class="nav">
-        <p class="logo"><a href="http://localhost:1313/">VR Programming</a></p>
+        <p class="logo"><a href="https://jdjuli.github.io/vr-programming/">VR Programming</a></p>
       </nav>
     </header>
     <main class="main">
@@ -100,9 +100,9 @@ This component depends on the <a href="https://github.com/wmurphyrd/aframe-super
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-html" data-lang="html">&lt;<span style="color:#f92672">a-entity</span>   <span style="color:#a6e22e">multidevice</span> <span style="color:#a6e22e">position</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;0 0 0.8&#34;</span>&gt;     
     &lt;<span style="color:#f92672">a-entity</span> <span style="color:#a6e22e">camera</span>&gt;&lt;/<span style="color:#f92672">a-entity</span>&gt; 
 &lt;/<span style="color:#f92672">a-entity</span>&gt;
-</code></pre></div><p><img src="/img/demo12_PC.gif" alt="">
+</code></pre></div><p><img src="/vr-programming/img/demo12_PC.gif" alt="">
 <em>On PC, you can grab the entities and move them by clicking on them.</em></p>
-<p><img src="/img/demo12_VR.gif" alt="">
+<p><img src="/vr-programming/img/demo12_VR.gif" alt="">
 <em>On Oculus Quest, you&rsquo;ll need to point to the entities and push any of the buttons of the controller to grab them.</em></p>
 <p><em>=&gt;</em> Checkout the <a href="/vr-programming/demos/demo12">Demo</a> &amp; <a href="https://github.com/jdjuli/aframe-vr-programming/blob/main/docs/demos/demo12/index.html">Code</a> <em>&lt;=</em></p>
 <ul>
@@ -110,9 +110,9 @@ This component depends on the <a href="https://github.com/wmurphyrd/aframe-super
 Throught the component <code>clonable</code> we specify that an entity must be clonated when it past a certain distance from it&rsquo;s original position, this distance is by default 3 meters, but can be overwritten with the parameter <code>distance</code>.
 The scene is very similar to the previous one, but this time we have the objects on the right side of the table and each time we grab one and move it further than 0.3 meters from it&rsquo;s original position, a new entity with the same properties is created on that position.</li>
 </ul>
-<p><img src="/img/demo13_PC.gif" alt="">
+<p><img src="/vr-programming/img/demo13_PC.gif" alt="">
 <em>As soon as you click over an entity and move it far from it&rsquo;s initial position, it will be cloned.</em></p>
-<p><img src="/img/demo13_VR.gif" alt="">
+<p><img src="/vr-programming/img/demo13_VR.gif" alt="">
 <em>The way of grabbing an entity changes, but the behaviour remains the same in VR.</em></p>
 <p><em>=&gt;</em> Checkout the <a href="/vr-programming/demos/demo13">Demo</a> &amp; <a href="https://github.com/jdjuli/aframe-vr-programming/blob/main/docs/demos/demo13/index.html">Code</a> <em>&lt;=</em></p>
 <ul>
@@ -120,9 +120,9 @@ The scene is very similar to the previous one, but this time we have the objects
 By it&rsquo;s dimensions, this scene is meant to be used on the PC, further iterations will be more confortable to use with an VR headset. It makes use of a component called <code>programa</code> to modelize the sequence of instructions and provide a way to execute them.
 The blue blocks represent the action &lsquo;down&rsquo; and the red ones, &lsquo;up&rsquo; and they are added to the program by letting them fall on to the blue platform. To execute the program, we have to click the green box with the text &lsquo;ejecutar&rsquo;.</li>
 </ul>
-<p><img src="/img/demo14_PC.gif" alt="">
+<p><img src="/vr-programming/img/demo14_PC.gif" alt="">
 <em>To create a program you&rsquo;ll need to grab the blue and red boxes and make them touch the blue platform. To execute the program, simply click the green box and to remove an instruction, grab it and move it outside the blue platform.</em></p>
-<p><img src="/img/demo14_VR.gif" alt="">
+<p><img src="/vr-programming/img/demo14_VR.gif" alt="">
 <em>This scene requires a big space to be test on VR, but if you don&rsquo;t have it, try to move the boxes up and let them fall to bring them closer to you</em></p>
 <p><em>=&gt;</em> <a href="/vr-programming/demos/demo14">Demo</a> &amp; <a href="https://github.com/jdjuli/aframe-vr-programming/blob/main/docs/demos/demo14/index.html">Code</a> <em>&lt;=</em></p>
 <h2 id="problems-encountered">Problems encountered</h2>
@@ -133,13 +133,13 @@ The blue blocks represent the action &lsquo;down&rsquo; and the red ones, &lsquo
   
 </article></main>
 <footer class="footer">
-  <span>&copy; 2021 <a href="http://localhost:1313/">VR Programming</a></span>
+  <span>&copy; 2021 <a href="https://jdjuli.github.io/vr-programming/">VR Programming</a></span>
   <span>&middot;</span>
   <span>Powered by <a href="https://gohugo.io/" rel="noopener" target="_blank">Hugo️️</a>️</span>
   <span>&middot;</span>
   <span>Theme️ <a href="https://github.com/nanxiaobei/hugo-paper" rel="noopener" target="_blank">Paper</a></span>
 </footer>
-<script src="http://localhost:1313/highlight.min.js"></script>
+<script src="https://jdjuli.github.io/vr-programming/highlight.min.js"></script>
 <script>
   hljs.initHighlightingOnLoad();
 </script>
