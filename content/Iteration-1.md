@@ -57,5 +57,5 @@ This first scenes are very basic and not so interactive, because I used them as 
 		
     *=>* [Demo](/vr-programming/demos/demo5) & [Code](https://github.com/jdjuli/aframe-vr-programming/blob/main/docs/demos/demo5/index.html) *<=*
 
-## Problems encountered
+## Problems found
 The first problems I faced up were about how to modelize correctly the components, because I'm more used to the object-oriented paradigm and the entity-component paradigm is something new for me. I decided to program them in an iterative manner, so the first versions will lack many details that I'll be adding as I need them, also refactoring everything to make it more usable.

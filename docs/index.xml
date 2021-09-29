@@ -5,8 +5,16 @@
     <link>https://jdjuli.github.io/vr-programming/</link>
     <description>Recent content on VR Programming</description>
     <generator>Hugo -- gohugo.io</generator>
-    <language>en-us</language>
-    <lastBuildDate>Mon, 02 Aug 2021 19:36:30 +0200</lastBuildDate><atom:link href="https://jdjuli.github.io/vr-programming/index.xml" rel="self" type="application/rss+xml" />
+    <language>en-us</language><atom:link href="https://jdjuli.github.io/vr-programming/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>super-hands-component issue</title>
+      <link>https://jdjuli.github.io/vr-programming/super-hands-component-issue/</link>
+      <pubDate>Wed, 22 Sep 2021 17:36:07 +0200</pubDate>
+      
+      <guid>https://jdjuli.github.io/vr-programming/super-hands-component-issue/</guid>
+      <description>The library aframe-physics-system which I&amp;rsquo;m using to add physics to my scenes supports 2 physics engines, cannon.js and ammo.js, but recently I started using the library super-hands-component and it&amp;rsquo;s component super-hands attached to the A-Frame component hand-controls in order to provide a more natural way to interact with the elements of the scene, but super-hands-component is only compatible with the cannon.js engine. The problem arises with the latest version of A-Frame, which breaks the support of cannon.</description>
+    </item>
+    
     <item>
       <title>Iteration 3</title>
       <link>https://jdjuli.github.io/vr-programming/iteration-3/</link>
@@ -15,15 +23,6 @@
       <guid>https://jdjuli.github.io/vr-programming/iteration-3/</guid>
       <description>On this iteration, the main objectives are:
  Ensure that the scenes can be used on PC and Oculus Quest. Create an element specifically intended for executing the program (a &amp;ldquo;run&amp;rdquo; button) Modify the program component so it creates a platform on which, by dropping the blocks, the user can create the program.  Scenes created  Demonstration of component &amp;ldquo;multidevice&amp;rdquo; On this scene, the component multidevice takes care of detecting if the device is a VR headset or not and on each case, initializes the corresponding controllers.</description>
-    </item>
-    
-    <item>
-      <title>Introduction</title>
-      <link>https://jdjuli.github.io/vr-programming/blog/introduction/</link>
-      <pubDate>Mon, 02 Aug 2021 19:36:30 +0200</pubDate>
-      
-      <guid>https://jdjuli.github.io/vr-programming/blog/introduction/</guid>
-      <description>Hello!!</description>
     </item>
     
     <item>

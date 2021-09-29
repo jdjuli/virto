@@ -51,7 +51,7 @@ The blue blocks represent the action 'down' and the red ones, 'up' and they are 
 
 *=>* [Demo](/vr-programming/demos/demo14) & [Code](https://github.com/jdjuli/aframe-vr-programming/blob/main/docs/demos/demo14/index.html) *<=*
 
-## Problems encountered
+## Problems found
 When I was testing the `multidevice` component I faced up an issue related to the Y coordinate of the camera position, that on PC matches the one of the entity that contains the `camera` component, but when using the Oculus Quest, A-Frame takes the height of the headset and adds it to the position of the entity, which results on a very unnatural perspective and many difficulties to interact with the rest of the entities of the scene. The solution was to ignore the height of the camera when initializing the `multidevice` component on an VR headset, so the height of the camera is only determined by the height of the headset.
 
 Reparenting them wasn't also trivial, because simply reparenting them on the DOM causes many problems related with the reinitialization of the components, like crashing the physics engine, to mention one. After some days thinking ways to reparent entities (I wasn't considering cloning them on the new parent and deleting the old copy because I thought that it would impact heavily on the performance), the solution came from a [gitmemory written by my mentor](https://www.gitmemory.com/issue/aframevr/aframe/2425/753673035) and on which he recommends the strategy of clone & delete that I was avoiding, but after implementing it, the results were awensome and it proved me wrong about the performance drop.
