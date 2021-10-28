@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <script src="https://aframe.io/releases/1.2.0/aframe.js"></script>  
+        <script src="https://cdn.jsdelivr.net/gh/donmccurdy/aframe-extras@v6.1.1/dist/aframe-extras.js"></script>
+        <script src="https://mixedreality.mozilla.org/ammo.js/builds/ammo.wasm.js"></script>  
+        <script src="https://cdn.jsdelivr.net/gh/n5ro/aframe-physics-system@v4.0.1/dist/aframe-physics-system.js"></script>
+
+        <script src="/vr-programming/js/super-hands.js"></script>
+        
+        <script src="./ide.js"></script>
+        <script src="./ide-control.js"></script>
+        <script src="./program.js"></script>
+        <script src="./instruction.js"></script>
+        <script src="./custom-hand.js"></script>
+        <script src="./picker.js"></script>
+        <script src="./component_multidevice.js"></script>
+    </head>
+    <body>
+        <a-scene physics="driver: ammo; debug: true;">
+            <!--<a-assets>
+                <a-asset-item id="gltf_desk" src="./desk.gltf"></a-asset-item>
+            </a-assets>-->
+
+            <a-entity ide position="0 0.75 -0.5">
+                <a-entity   ide-control position="0.7 0.3 -0.3"></a-entity>
+                <a-entity   program="active:true;instructions:init,ins_1,ins_2;" position="0 0.1 0"></a-entity>
+            </a-entity>
+
+            
+            
+            <a-entity>
+                <a-entity custom-hand="hand:right">
+                    <a-entity></a-entity>
+                </a-entity>
+                <a-entity custom-hand="hand:left">
+                    <a-entity picker>
+                        <a-entity instruction="type:up; preview:true"></a-entity>
+                        <a-entity instruction="type:down; preview:true"></a-entity>
+                        <a-entity instruction="type:right; preview:true"></a-entity>
+                        <a-entity instruction="type:left; preview:true"></a-entity>
+                    </a-entity>
+                </a-entity>
+            </a-entity>
+        </a-scene>
+    </body>
+</html>

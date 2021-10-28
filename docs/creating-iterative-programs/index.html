@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    
+    <title>Creating iterative programs - VR Programming</title>
+    
+    <meta name="description" content="I&rsquo;ve been working on making a fully usable demo that allows the users to create sequential programs. Also, I&rsquo;m exploring two different ways of creating instruction blocks, both of them implemented on the demo 16.
+How to use the demo 16: This demo implements two different ways of creating new instructions blocks, I&rsquo;ll explain how to use each one:
+  Use a static &lsquo;panel&rsquo; to select the desired instruction:">
+    <meta name="author" content="">
+    
+    <link href="https://jdjuli.github.io/vr-programming/an-old-hope.min.css" rel="stylesheet">
+    <link href="https://jdjuli.github.io/vr-programming/style.css" rel="stylesheet">
+    <link href="https://jdjuli.github.io/vr-programming/custom.css" rel="stylesheet">
+    
+    <link rel="apple-touch-icon" href="https://jdjuli.github.io/vr-programming/apple-touch-icon.png">
+    <link rel="icon" href="https://jdjuli.github.io/vr-programming/favicon.ico">
+    <meta name="generator" content="Hugo 0.88.1" />
+    
+    
+    
+    <script>
+      function setTheme() {
+        if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+          document.body.classList.add('dark');
+          return;
+        }
+
+        const time = new Date();
+        const prev = localStorage.getItem('date');
+        const date = String(time.getMonth() + 1) + '.' + String(time.getDate());
+
+        const now = time.getTime();
+        let sunrise;
+        let sunset;
+
+        function setBodyClass() {
+          if (now > sunrise && now < sunset) return;
+          document.body.classList.add('dark');
+        }
+
+        if (date !== prev) {
+          fetch('https://api.ipgeolocation.io/astronomy?apiKey=5ed37d85103e4defa5df4c5298ed5215')
+            .then((res) => res.json())
+            .then((data) => {
+              sunrise = data.sunrise.split(':').map(Number);
+              sunset = data.sunset.split(':').map(Number);
+            })
+            .catch(() => {
+              sunrise = [7, 0];
+              sunset = [19, 0];
+            })
+            .finally(() => {
+              sunrise = time.setHours(sunrise[0], sunrise[1], 0);
+              sunset = time.setHours(sunset[0], sunset[1], 0);
+              setBodyClass();
+              localStorage.setItem('sunrise', sunrise);
+              localStorage.setItem('sunset', sunset);
+            });
+          localStorage.setItem('date', date);
+        } else {
+          sunrise = Number(localStorage.getItem('sunrise'));
+          sunset = Number(localStorage.getItem('sunset'));
+          setBodyClass();
+        }
+      }
+    </script>
+  </head>
+  <body class="single">
+    <script>
+      setTheme();
+    </script>
+    <header class="header">
+      <nav class="nav">
+        <p class="logo"><a href="https://jdjuli.github.io/vr-programming/">VR Programming</a></p>
+      </nav>
+    </header>
+    <main class="main">
+
+
+<article class="post-single">
+  <header class="post-header">
+    <h1 class="post-title">Creating iterative programs</h1>
+    <div class="post-meta">October 28, 2021</div>
+  </header>
+  <div class="post-content"><p>I&rsquo;ve been working on making a fully usable demo that allows the users to create sequential programs. Also, I&rsquo;m exploring two different ways of creating instruction blocks, both of them implemented on the demo 16.</p>
+<h2 id="how-to-use-the-demo-16">How to use the demo 16:</h2>
+<p>This demo implements two different ways of creating new instructions blocks, I&rsquo;ll explain how to use each one:</p>
+<ul>
+<li>
+<p>Use a static &lsquo;panel&rsquo; to select the desired instruction:</p>
+<p>Clicking on the <code>&lt;</code> and <code>&gt;</code> buttons navigate through the different instructions available and clicking on the name of the instruction generates a instruction block on top of the menu.<br>
+<img src="/vr-programming/img/demo16_static-menu.jpg" alt="">
+<em>Change the instructions with the arrows and select one with the center button</em></p>
+</li>
+<li>
+<p>Select the instructions with a &lsquo;menu&rsquo; attached to the left hand:</p>
+<p>To show the menu, you have to press the joystick of the left controller and press it again to hide it. It&rsquo;s difference with the previous method is that two instructions are displayed at the same time instead on one and when selected, the instruction doesn&rsquo;t appears on top of the menu but on the right side of the program.
+<img src="/vr-programming/img/demo16_hand-menu.jpg" alt="">
+<em>Navigate through the instructions using the arrows and when you select one, it will appear on the right side of the program.</em></p>
+</li>
+</ul>
+<p>On both cases, to insert a new instruction to the program you have to grab it (it will shrink) and make it collide with another instruction of the program or the base of it, the new instruction will be inserted on top of the colliding instruction. To remove them, simply grab one of the instructions and pull it out it&rsquo;s place on the program, it will disappear (in the future you will be able to insert it again, but for now they will just be destroyed).</p>
+<p><img src="/vr-programming/img/demo16_VR.gif" alt="">
+<em>You can add and remove instructions everywhere on the program</em></p>
+<p><em>=&gt;</em> Checkout the <a href="/vr-programming/demos/demo16">Demo</a> &amp; <a href="https://github.com/jdjuli/aframe-vr-programming/blob/main/docs/demos/demo16/index.html">Code</a> <em>&lt;=</em></p>
+<h2 id="internal-changes">Internal changes</h2>
+<p>I&rsquo;ve reestructured the components I&rsquo;m using to make possible that multiple programs coexist on the same scene and also could be run over the same drone, this diagram reflects the dependencies between the entities and their multiplicities.
+<img src="/vr-programming/img/demo16_diagram.png" alt=""></p>
+<p>Also, I would like to implement at some point that the programs could be &lsquo;closed&rsquo;, so I started by keeping track of the instructions added to them updating the attribute each time an instruction is added or deleted.
+<img src="/vr-programming/img/demo16_dom-changing.gif" alt=""></p>
+<h2 id="problems-found">Problems found</h2>
+<p>I tried to implement the joints between the instruction blocks of the program using physics constrains, but I could only add/remove instructions from the top of the column and it became more and more unstable as I were adding more blocks, so I gave up on implementing the program this way and I decided not to use physics at all on the program and keep it static as can be seen on the demo #16.</p>
+<p>I kept the problematic demo just to illustrate the problem I faced, if you try it, <strong>no not insert blocks inbetween others or make a loop with them</strong>, doing so might result on an endless loop that freezes the tab. By now, I won&rsquo;t spend more time on trying to fix this problem, but if you want to play with it and try fixing the instruction insertion in the middle of the program, this <a href="https://stackoverflow.com/questions/66423513/how-to-move-a-dynamic-body-with-a-frame-physics-system-when-using-ammo-driver">StackOverflow question about moving dynamic bodies</a> might be helpful, as well as <a href="https://github.com/jdjuli/aframe-vr-programming/blob/main/docs/tests/TeleportDynamicBody/index.html">this test scene I created</a> to check it.</p>
+<p><img src="/vr-programming/img/demo15_VR.gif" alt="">
+<em>You can only add and remove instructions to/from the top of the program</em></p>
+<p><em>=&gt;</em> Checkout the <a href="/vr-programming/demos/demo15">Demo</a> &amp; <a href="https://github.com/jdjuli/aframe-vr-programming/blob/main/docs/demos/demo15/index.html">Code</a> <em>&lt;=</em></p>
+<p>In parallel to the demo 15, I was making a menu like the one that can be seen on the demo 16 but with the hands &lsquo;improved&rsquo; adding them a physic body on the index finger that detects collisions with the buttons when the pointing gesture is made. This is more precise than the current menu that uses the super-hands-component event <code>clicked</code>, but is more difficult to implement. Maybe in the future I&rsquo;ll return to this type of interaction with the menu for the sake of it&rsquo;s precission, in the meantime, here are the links to the <a href="/vr-programming/tests/FirstMenu">scene</a> and the <a href="https://github.com/jdjuli/aframe-vr-programming/blob/main/docs/tests/FirstMenu/index.html">code</a> as well as the</p>
+<h2 id="other-tests">Other tests</h2>
+<p>When I decided to change how the instructions would be added and deleted to/from the program, I created two test scenes with the bare minimum code to check the interactions I was going to use, I leave here the links and a brief description of them just in case you want to implement something similar and want to see an example.</p>
+<ul>
+<li>
+<h4 id="hand-events-demovr-programmingtestshandevents--codehttpsgithubcomjdjuliaframe-vr-programmingblobmaindocstestshandeventsindexhtml">Hand events (<a href="/vr-programming/tests/HandEvents">demo</a> &amp; <a href="https://github.com/jdjuli/aframe-vr-programming/blob/main/docs/tests/HandEvents/index.html">code</a>)</h4>
+<p>This scene illustrates the events of hovering and grabbing over three blocks. When no interaction is detected, the blocks are blue, but they turn green when they are being hovered and red when grabbed, you can play with it to get an idea of how the super-hands-component works.
+<img src="/vr-programming/img/testHandEvents_VR.gif" alt=""></p>
+</li>
+<li>
+<h4 id="drag-blocks-horizontally-demovr-programmingtestsdragblockshorizontally--codehttpsgithubcomjdjuliaframe-vr-programmingblobmaindocstestsdragblockshorizontallyindexhtml">Drag blocks horizontally (<a href="/vr-programming/tests/DragBlocksHorizontally">demo</a> &amp; <a href="https://github.com/jdjuli/aframe-vr-programming/blob/main/docs/tests/DragBlocksHorizontally/index.html">code</a>)</h4>
+<p>This scene consist of three blocks that can be grabbed and then moved horizontally without physics, they just float arround without changing their height. The color scheme is the same I&rsquo;ve used on the <code>Hand events</code> test
+<img src="/vr-programming/img/testDragBlocksHorizontally_VR.gif" alt=""></p>
+</li>
+</ul>
+</div>
+  
+</article></main>
+<footer class="footer">
+  <span>&copy; 2021 <a href="https://jdjuli.github.io/vr-programming/">VR Programming</a></span>
+  <span>&middot;</span>
+  <span>Powered by <a href="https://gohugo.io/" rel="noopener" target="_blank">Hugo️️</a>️</span>
+  <span>&middot;</span>
+  <span>Theme️ <a href="https://github.com/nanxiaobei/hugo-paper" rel="noopener" target="_blank">Paper</a></span>
+</footer>
+<script src="https://jdjuli.github.io/vr-programming/highlight.min.js"></script>
+<script>
+  hljs.initHighlightingOnLoad();
+</script>
+</body>
+</html>
+

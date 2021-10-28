@@ -297,6 +297,7 @@
       return hoverNeedsUpdate;
     },
     onHit: function (evt) {
+      if(!evt.detail) return;
       const hitEl = evt.detail[this.data.colliderEventProperty];
       let hoverNeedsUpdate = 0;
       if (!hitEl) {
@@ -346,6 +347,7 @@
     },
     /* called when controller moves out of collision range of entity */
     unHover: function (evt) {
+      if(!evt.detail) return;
       const clearedEls = evt.detail[this.data.colliderEndEventProperty];
       if (clearedEls) {
         if (Array.isArray(clearedEls)) {
@@ -383,6 +385,7 @@
       }
     },
     unWatch: function (evt) {
+      if(!evt.detail) return;
       const clearedEls = evt.detail[this.data.colliderEndEventProperty];
       if (clearedEls) {
         if (Array.isArray(clearedEls)) {

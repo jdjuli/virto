@@ -7,6 +7,17 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language><atom:link href="https://jdjuli.github.io/vr-programming/index.xml" rel="self" type="application/rss+xml" />
     <item>
+      <title>Creating iterative programs</title>
+      <link>https://jdjuli.github.io/vr-programming/creating-iterative-programs/</link>
+      <pubDate>Thu, 28 Oct 2021 12:36:07 +0200</pubDate>
+      
+      <guid>https://jdjuli.github.io/vr-programming/creating-iterative-programs/</guid>
+      <description>I&amp;rsquo;ve been working on making a fully usable demo that allows the users to create sequential programs. Also, I&amp;rsquo;m exploring two different ways of creating instruction blocks, both of them implemented on the demo 16.
+How to use the demo 16: This demo implements two different ways of creating new instructions blocks, I&amp;rsquo;ll explain how to use each one:
+  Use a static &amp;lsquo;panel&amp;rsquo; to select the desired instruction:</description>
+    </item>
+    
+    <item>
       <title>super-hands-component issue</title>
       <link>https://jdjuli.github.io/vr-programming/super-hands-component-issue/</link>
       <pubDate>Wed, 22 Sep 2021 17:36:07 +0200</pubDate>
