@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <script src="https://aframe.io/releases/1.2.0/aframe.js"></script>  
+        <script src="https://cdn.jsdelivr.net/gh/donmccurdy/aframe-extras@v6.1.1/dist/aframe-extras.js"></script>
+        <script src="https://mixedreality.mozilla.org/ammo.js/builds/ammo.wasm.js"></script>  
+        <script src="https://cdn.jsdelivr.net/gh/n5ro/aframe-physics-system@v4.0.1/dist/aframe-physics-system.js"></script>
+
+        <script src="/vr-programming/js/super-hands.js"></script>
+        
+        <script src="./ide.js"></script>
+        <script src="./ide-control.js"></script>
+        <script src="./drone.js"></script>
+        <script src="./program.js"></script>
+        <script src="./instruction.js"></script>
+        <script src="./custom-hand.js"></script>
+        <script src="./instruction-selector.js"></script>
+        <script src="./multidevice.js"></script>
+        <script src="./picker.js"></script>
+        <script src="./selector.js"></script>
+    </head>
+    <body>
+        <a-scene physics="driver: ammo; debug: true;">
+
+            <a-entity id="drone" drone position="0 2 -2"></a-entity>
+
+            <a-entity ide position="0 0.75 -0.5">
+                <a-entity   ide-control='drone:#drone' position="-0.5 0.1 0"></a-entity>
+                <a-entity   program="active:true;instructions:up,down;" position="0 0.1 0"></a-entity>
+                <a-entity instruction-selector="instructions:up,down,right,left,forward,backward" position="-0.5 0.3 0"></a-entity>
+            </a-entity>
+
+            <a-entity>
+                <a-entity custom-hand="hand:right"></a-entity>
+                <a-entity custom-hand="hand:left">
+                    <a-entity picker="instructions:up,down,right,left,forward,backward"></a-entity>
+                </a-entity>
+            </a-entity>
+
+        </a-scene>
+    </body>
+</html>
