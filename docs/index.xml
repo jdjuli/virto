@@ -7,6 +7,15 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language><atom:link href="https://jdjuli.github.io/vr-programming/index.xml" rel="self" type="application/rss+xml" />
     <item>
+      <title>Interaction improvements</title>
+      <link>https://jdjuli.github.io/vr-programming/interaction-improvements/</link>
+      <pubDate>Thu, 11 Nov 2021 21:30:21 +0100</pubDate>
+      
+      <guid>https://jdjuli.github.io/vr-programming/interaction-improvements/</guid>
+      <description>My thesis mentor gave me the idea of improving the interaction by implementing a previewing dynamic that allows the user to view how would the program look like if a certain instruction is added. I&amp;rsquo;ve took the previous demo 16 as the base to implement this preview and instead of overwriting the scene, I decided to create a new one to avoid anyone interested on following my progress having to navigate through the repository commits and start a webserver on their own to test it.</description>
+    </item>
+    
+    <item>
       <title>Creating iterative programs</title>
       <link>https://jdjuli.github.io/vr-programming/creating-iterative-programs/</link>
       <pubDate>Thu, 28 Oct 2021 12:36:07 +0200</pubDate>
