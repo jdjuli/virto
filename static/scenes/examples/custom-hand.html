@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <script src="https://aframe.io/releases/1.2.0/aframe.js"></script>  
+        <script src="https://cdn.jsdelivr.net/gh/donmccurdy/aframe-extras@v6.1.1/dist/aframe-extras.js"></script>
+        <script src="https://mixedreality.mozilla.org/ammo.js/builds/ammo.wasm.js"></script>  
+        <script src="https://cdn.jsdelivr.net/gh/n5ro/aframe-physics-system@v4.0.1/dist/aframe-physics-system.js"></script>
+
+        <script src="/vr-programming/js/super-hands.js"></script>
+        <script src="/vr-programming/js/custom-hand.js"></script>
+        <script src="/vr-programming/js/multidevice.js"></script>
+    </head>
+    <body>
+        <a-scene physics="driver:ammo">
+          <a-entity position="0 0.75 -0.5"
+                    geometry="primitive:box; height:0.05; depth:1; width:1.5"
+                    material="color:gray"
+                    ammo-body="type:static"
+                    ammo-shape="type:box">
+            <a-box    height="0.1" depth="0.1" width="0.1"
+                      material="color:blue"
+                      grabbable="constraintComponentName:ammo-constraint"
+                      ammo-body="type:dynamic"
+                      ammo-shape="type:box"
+                      position="-0.15 0.4 0"></a-box>
+            <a-box    height="0.1" depth="0.1" width="0.1"
+                      material="color:green"
+                      grabbable
+                      position="0 0.4 0"></a-box>
+            <a-sphere radius="0.05"
+                      material="color:red"
+                      grabbable
+                      position="0.15 0.4 0"></a-sphere>
+          </a-entity>
+          <a-entity camera>
+              <a-entity custom-hand="hand:left;colliderSelector:a-box"></a-entity>
+              <a-entity custom-hand="hand:right;colliderSelector:a-box"></a-entity>
+          </a-entity>
+        </a-scene>
+    </body>
+</html>

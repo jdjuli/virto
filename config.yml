@@ -1,8 +1,19 @@
 baseURL: "https://jdjuli.github.io/vr-programming/"
+#baseURL: /vr-programming/
 languageCode: "en-us"
 title: "VR Programming"
 theme: "paper"
 publishDir: "docs"
+
+menu:
+  main:
+  - identifier: components
+    name: Components
+    url: /components/
+  - identifier: latest
+    name: Latest scene
+    url: /scenes/tests/temp
+
 
 outputs:
     home:
@@ -11,3 +22,7 @@ outputs:
 
 params:
     author: Julian Sanchez Fernandez
+
+
+
+

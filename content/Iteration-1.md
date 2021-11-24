@@ -16,7 +16,7 @@ This first scenes are very basic and not so interactive, because I used them as 
     ![](/vr-programming/img/demo1_PC.jpg)
 		*You can move and rotate the camera with the arrow keys and the mouse respectively*
 		
-    *=>* Checkout the [Demo](/vr-programming/demos/demo1) & [Code](https://github.com/jdjuli/aframe-vr-programming/blob/main/docs/demos/demo1/index.html) *<=*
+    *=>* Checkout the [Demo](/vr-programming/scenes/demos/demo1) & [Code](https://github.com/jdjuli/aframe-vr-programming/blob/main/docs/scenes/demos/demo1/index.html) *<=*
     
 
 - Parametric component
@@ -26,7 +26,7 @@ This first scenes are very basic and not so interactive, because I used them as 
     ![](/vr-programming/img/demo2_PC.jpg)
 		*Different entities can have distinct colors as they have attached different instances of the same component*
 		
-    *=>* Checkout the [Demo](/vr-programming/demos/demo2) & [Code](https://github.com/jdjuli/aframe-vr-programming/blob/main/docs/demos/demo2/index.html) *<=*
+    *=>* Checkout the [Demo](/vr-programming/scenes/demos/demo2) & [Code](https://github.com/jdjuli/aframe-vr-programming/blob/main/docs/scenes/demos/demo2/index.html) *<=*
 
 - Responding to click events
 
@@ -35,7 +35,7 @@ This first scenes are very basic and not so interactive, because I used them as 
     ![](/vr-programming/img/demo3_PC.gif)
 		*When you click on an entity, it will jump once*
 		
-    *=>* Checkout the [Demo](/vr-programming/demos/demo3) & [Code](https://github.com/jdjuli/aframe-vr-programming/blob/main/docs/demos/demo3/index.html) *<=*
+    *=>* Checkout the [Demo](/vr-programming/scenes/demos/demo3) & [Code](https://github.com/jdjuli/aframe-vr-programming/blob/main/docs/scenes/demos/demo3/index.html) *<=*
 		
 - Acting over other entities
 
@@ -46,7 +46,7 @@ This first scenes are very basic and not so interactive, because I used them as 
     ![](/vr-programming/img/demo4_PC.gif)
 		*You have to click the opposite entity to make it jump*
 		
-    *=>* [Demo](/vr-programming/demos/demo4) & [Code](https://github.com/jdjuli/aframe-vr-programming/blob/main/docs/demos/demo4/index.html) *<=*
+    *=>* [Demo](/vr-programming/scenes/demos/demo4) & [Code](https://github.com/jdjuli/aframe-vr-programming/blob/main/docs/scenes/demos/demo4/index.html) *<=*
 		
 - Adding some physics
     
@@ -55,7 +55,7 @@ This first scenes are very basic and not so interactive, because I used them as 
     ![](/vr-programming/img/demo5_PC.gif)
 		*When you click on an entity, it will jump and move in a more realistic way than on the previous demos.*
 		
-    *=>* [Demo](/vr-programming/demos/demo5) & [Code](https://github.com/jdjuli/aframe-vr-programming/blob/main/docs/demos/demo5/index.html) *<=*
+    *=>* [Demo](/vr-programming/scenes/demos/demo5) & [Code](https://github.com/jdjuli/aframe-vr-programming/blob/main/docs/scenes/demos/demo5/index.html) *<=*
 
 ## Problems found
 The first problems I faced up were about how to modelize correctly the components, because I'm more used to the object-oriented paradigm and the entity-component paradigm is something new for me. I decided to program them in an iterative manner, so the first versions will lack many details that I'll be adding as I need them, also refactoring everything to make it more usable.

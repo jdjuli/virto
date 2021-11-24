@@ -5,7 +5,59 @@
     <link>https://jdjuli.github.io/vr-programming/</link>
     <description>Recent content on VR Programming</description>
     <generator>Hugo -- gohugo.io</generator>
-    <language>en-us</language><atom:link href="https://jdjuli.github.io/vr-programming/index.xml" rel="self" type="application/rss+xml" />
+    <language>en-us</language>
+    <lastBuildDate>Wed, 24 Nov 2021 09:33:24 +0100</lastBuildDate><atom:link href="https://jdjuli.github.io/vr-programming/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>custom-hand</title>
+      <link>https://jdjuli.github.io/vr-programming/components/custom-hand/</link>
+      <pubDate>Wed, 24 Nov 2021 09:33:24 +0100</pubDate>
+      
+      <guid>https://jdjuli.github.io/vr-programming/components/custom-hand/</guid>
+      <description>Purpose Join multiple components into one that provides a virtual hand with minimum configuration and adapts to the scene configuration (i.e. If the scene uses physics, the components attached to the hand would be different).
+Schema  attribute name: hand  type: string oneOf: left, right   attribute name: colliderSelector  description: Selector of entities the user can interact with type: string (valid CSS selector)    Usage Attach this component to the entity that you want to become a hand (you don&amp;rsquo;t have to provide any kind of geometry for this) and make sure that you set the hand attribute to load the right model.</description>
+    </item>
+    
+    <item>
+      <title>program</title>
+      <link>https://jdjuli.github.io/vr-programming/components/program/</link>
+      <pubDate>Wed, 24 Nov 2021 09:33:24 +0100</pubDate>
+      
+      <guid>https://jdjuli.github.io/vr-programming/components/program/</guid>
+      <description>Purpose Represent a program, containing all the instructions and a reference to the target of execution
+Schema  attribute name: active  description: whether the program should display it&amp;rsquo;s instructions or not type: boolean default: true    Usage This component should be placed inside an ide entity, and as the program grows on the positive X axis, keep that in mind when positioning it on the scene.
+To-Do This component is being developed right now, here are the thing I&amp;rsquo;ve planned for it but are not implemented yet:</description>
+    </item>
+    
+    <item>
+      <title>multidevice</title>
+      <link>https://jdjuli.github.io/vr-programming/components/multidevice/</link>
+      <pubDate>Mon, 22 Nov 2021 20:06:19 +0100</pubDate>
+      
+      <guid>https://jdjuli.github.io/vr-programming/components/multidevice/</guid>
+      <description>Purpose This component adapts the user controls to the inputs of the device that is using, making easier to develop scenes compatibles with both VR headsets and PC.
+Schema  attribute name: colliderSelector  description: Selector of entities the user can interact with type: string (valid CSS selector)   attribute name: acceleration  description: How fast can the user navigate the scene with the arrow keys type: number default: 20.</description>
+    </item>
+    
+    <item>
+      <title>instruction</title>
+      <link>https://jdjuli.github.io/vr-programming/components/instruction/</link>
+      <pubDate>Mon, 22 Nov 2021 10:42:11 +0100</pubDate>
+      
+      <guid>https://jdjuli.github.io/vr-programming/components/instruction/</guid>
+      <description>Purpose This component represents an action inside the program, which can be parametrized by attaching a parameter and a amount (not implemented yet)
+Schema  attribute name: function  type: string default: move oneOf: move, rotate   attribute name: parameter  type: string oneOf: up, down, left, right, forward, backward (more to be added)   attribute name: amount  type: number default: 1.0    Usage The entity that has this component attached must be placed inside another with the component ide attached to it, but is not needed to put the instruction inside a program (and not recommended right now as it&amp;rsquo;s under development).</description>
+    </item>
+    
+    <item>
+      <title>parameter</title>
+      <link>https://jdjuli.github.io/vr-programming/components/parameter/</link>
+      <pubDate>Sat, 20 Nov 2021 13:33:43 +0100</pubDate>
+      
+      <guid>https://jdjuli.github.io/vr-programming/components/parameter/</guid>
+      <description>Purpose This component is intended to store and represent qualitative parameters for the instructions, like the direction of displacements or axis of rotations among others.
+Schema  attribute name: n/a  description: qualitative property such as direction of movement or axis of rotation type: string default: up oneOf: up, down, left, right, forward, backward (more to be added)    Usage The entity this component is attached to must be children of another entity with the component ide as this one is aware of if it&amp;rsquo;s a child of an instruction and needs to have a reference to the ide entity to reparent to it when extracted from the instruction.</description>
+    </item>
+    
     <item>
       <title>Interaction improvements</title>
       <link>https://jdjuli.github.io/vr-programming/interaction-improvements/</link>

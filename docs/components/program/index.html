@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    
+    <title>program - VR Programming</title>
+    
+    <meta name="description" content="Purpose Represent a program, containing all the instructions and a reference to the target of execution
+Schema  attribute name: active  description: whether the program should display it&rsquo;s instructions or not type: boolean default: true    Usage This component should be placed inside an ide entity, and as the program grows on the positive X axis, keep that in mind when positioning it on the scene.
+To-Do This component is being developed right now, here are the thing I&rsquo;ve planned for it but are not implemented yet:">
+    <meta name="author" content="">
+    
+    <link href="https://jdjuli.github.io/vr-programming/an-old-hope.min.css" rel="stylesheet">
+    <link href="https://jdjuli.github.io/vr-programming/style.css" rel="stylesheet">
+    <link href="https://jdjuli.github.io/vr-programming/custom.css" rel="stylesheet">
+    
+    <link rel="apple-touch-icon" href="https://jdjuli.github.io/vr-programming/apple-touch-icon.png">
+    <link rel="icon" href="https://jdjuli.github.io/vr-programming/favicon.ico">
+    <meta name="generator" content="Hugo 0.88.1" />
+    
+    
+    
+    <script>
+      function setTheme() {
+        if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+          document.body.classList.add('dark');
+          return;
+        }
+
+        const time = new Date();
+        const prev = localStorage.getItem('date');
+        const date = String(time.getMonth() + 1) + '.' + String(time.getDate());
+
+        const now = time.getTime();
+        let sunrise;
+        let sunset;
+
+        function setBodyClass() {
+          if (now > sunrise && now < sunset) return;
+          document.body.classList.add('dark');
+        }
+
+        if (date !== prev) {
+          fetch('https://api.ipgeolocation.io/astronomy?apiKey=5ed37d85103e4defa5df4c5298ed5215')
+            .then((res) => res.json())
+            .then((data) => {
+              sunrise = data.sunrise.split(':').map(Number);
+              sunset = data.sunset.split(':').map(Number);
+            })
+            .catch(() => {
+              sunrise = [7, 0];
+              sunset = [19, 0];
+            })
+            .finally(() => {
+              sunrise = time.setHours(sunrise[0], sunrise[1], 0);
+              sunset = time.setHours(sunset[0], sunset[1], 0);
+              setBodyClass();
+              localStorage.setItem('sunrise', sunrise);
+              localStorage.setItem('sunset', sunset);
+            });
+          localStorage.setItem('date', date);
+        } else {
+          sunrise = Number(localStorage.getItem('sunrise'));
+          sunset = Number(localStorage.getItem('sunset'));
+          setBodyClass();
+        }
+      }
+    </script>
+  </head>
+  <body class="single">
+    <script>
+      setTheme();
+    </script>
+    <header class="header">
+      <nav class="nav">
+        <p class="logo"><a href="https://jdjuli.github.io/vr-programming/">VR Programming</a></p>
+        <ul class="menu">
+          <li>
+            <a href="/vr-programming/components/">Components</a>
+          </li>
+          <li>
+            <a href="/vr-programming/scenes/tests/temp">Latest scene</a>
+          </li>
+        </ul>
+      </nav>
+    </header>
+    <main class="main">
+
+
+<article class="post-single">
+  <header class="post-header">
+    <h1 class="post-title">program</h1>
+    <div class="post-meta">November 24, 2021</div>
+  </header>
+  <div class="post-content"><h1 id="purpose">Purpose</h1>
+<p>Represent a program, containing all the instructions and a reference to the target of execution</p>
+<h1 id="schema">Schema</h1>
+<ul>
+<li>attribute name: active
+<ul>
+<li>description: whether the program should display it&rsquo;s instructions or not</li>
+<li>type: boolean</li>
+<li>default: true</li>
+</ul>
+</li>
+</ul>
+<h1 id="usage">Usage</h1>
+<p>This component should be placed inside an <code>ide</code> entity, and as the program grows on the positive X axis, keep that in mind when positioning it on the scene.</p>
+<h2 id="to-do">To-Do</h2>
+<p>This component is being developed right now, here are the thing I&rsquo;ve planned for it but are not implemented yet:</p>
+<ul>
+<li>Preview of instructions:</li>
+<li>Execution of the program
+<ul>
+<li>Select the entity over which the program would execute</li>
+</ul>
+</li>
+<li>Close the program (minimize it)</li>
+<li>Move the program on runtime</li>
+</ul>
+<h1 id="implementation">Implementation</h1>
+<p>The <em>program</em> component registers a listener for the &lsquo;drag-drop&rsquo; event, and has attached the component &lsquo;droppable&rsquo;, so when an <code>instruction</code> entity is dragged over the program and dropped, it is added as the first program&rsquo;s instruction and the instructions that were already added are moved to fit the new one.</p>
+<p>This component handles also the deletion of instructions, which is made by destroying the entity and moving back all the instructions that followed it so no empty space is left.</p>
+<h1 id="examples">Examples</h1>
+<p>On this example you&rsquo;ll see the program and two instructions that can be grabbed to be added to the program. To remove an instruction from the program, make the &lsquo;pointing&rsquo; gesture with any of the hands and push the icon of the instruction (play with it <a href="/vr-programming/scenes/examples/program.html">here</a>)</p>
+<pre tabindex="0"><code>  &lt;a-scene physics=&quot;driver: ammo; debug: true;&quot;&gt;
+    &lt;a-entity ide position=&quot;0 0.75 -0.5&quot;&gt;
+        &lt;a-entity   position=&quot;-0.4 0.4 0&quot;
+                    program&gt;&lt;/a-entity&gt;
+        &lt;a-entity   position=&quot;0.0 0.4 0&quot;
+                    instruction=&quot;function:move&quot;&gt;&lt;/a-entity&gt;
+        &lt;a-entity   position=&quot;0.4 0.4 0&quot;
+                    instruction=&quot;function:rotate&quot;&gt;&lt;/a-entity&gt;
+    &lt;/a-entity&gt;
+    &lt;a-entity multidevice&gt;&lt;/a-entity&gt;
+  &lt;/a-scene&gt;
+</code></pre></div>
+  
+</article></main>
+<footer class="footer">
+  <span>&copy; 2021 <a href="https://jdjuli.github.io/vr-programming/">VR Programming</a></span>
+  <span>&middot;</span>
+  <span>Powered by <a href="https://gohugo.io/" rel="noopener" target="_blank">Hugo️️</a>️</span>
+  <span>&middot;</span>
+  <span>Theme️ <a href="https://github.com/nanxiaobei/hugo-paper" rel="noopener" target="_blank">Paper</a></span>
+</footer>
+<script src="https://jdjuli.github.io/vr-programming/highlight.min.js"></script>
+<script>
+  hljs.initHighlightingOnLoad();
+</script>
+</body>
+</html>
+

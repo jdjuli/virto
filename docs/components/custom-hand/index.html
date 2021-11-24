@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    
+    <title>custom-hand - VR Programming</title>
+    
+    <meta name="description" content="Purpose Join multiple components into one that provides a virtual hand with minimum configuration and adapts to the scene configuration (i.e. If the scene uses physics, the components attached to the hand would be different).
+Schema  attribute name: hand  type: string oneOf: left, right   attribute name: colliderSelector  description: Selector of entities the user can interact with type: string (valid CSS selector)    Usage Attach this component to the entity that you want to become a hand (you don&rsquo;t have to provide any kind of geometry for this) and make sure that you set the hand attribute to load the right model.">
+    <meta name="author" content="">
+    
+    <link href="https://jdjuli.github.io/vr-programming/an-old-hope.min.css" rel="stylesheet">
+    <link href="https://jdjuli.github.io/vr-programming/style.css" rel="stylesheet">
+    <link href="https://jdjuli.github.io/vr-programming/custom.css" rel="stylesheet">
+    
+    <link rel="apple-touch-icon" href="https://jdjuli.github.io/vr-programming/apple-touch-icon.png">
+    <link rel="icon" href="https://jdjuli.github.io/vr-programming/favicon.ico">
+    <meta name="generator" content="Hugo 0.88.1" />
+    
+    
+    
+    <script>
+      function setTheme() {
+        if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+          document.body.classList.add('dark');
+          return;
+        }
+
+        const time = new Date();
+        const prev = localStorage.getItem('date');
+        const date = String(time.getMonth() + 1) + '.' + String(time.getDate());
+
+        const now = time.getTime();
+        let sunrise;
+        let sunset;
+
+        function setBodyClass() {
+          if (now > sunrise && now < sunset) return;
+          document.body.classList.add('dark');
+        }
+
+        if (date !== prev) {
+          fetch('https://api.ipgeolocation.io/astronomy?apiKey=5ed37d85103e4defa5df4c5298ed5215')
+            .then((res) => res.json())
+            .then((data) => {
+              sunrise = data.sunrise.split(':').map(Number);
+              sunset = data.sunset.split(':').map(Number);
+            })
+            .catch(() => {
+              sunrise = [7, 0];
+              sunset = [19, 0];
+            })
+            .finally(() => {
+              sunrise = time.setHours(sunrise[0], sunrise[1], 0);
+              sunset = time.setHours(sunset[0], sunset[1], 0);
+              setBodyClass();
+              localStorage.setItem('sunrise', sunrise);
+              localStorage.setItem('sunset', sunset);
+            });
+          localStorage.setItem('date', date);
+        } else {
+          sunrise = Number(localStorage.getItem('sunrise'));
+          sunset = Number(localStorage.getItem('sunset'));
+          setBodyClass();
+        }
+      }
+    </script>
+  </head>
+  <body class="single">
+    <script>
+      setTheme();
+    </script>
+    <header class="header">
+      <nav class="nav">
+        <p class="logo"><a href="https://jdjuli.github.io/vr-programming/">VR Programming</a></p>
+        <ul class="menu">
+          <li>
+            <a href="/vr-programming/components/">Components</a>
+          </li>
+          <li>
+            <a href="/vr-programming/scenes/tests/temp">Latest scene</a>
+          </li>
+        </ul>
+      </nav>
+    </header>
+    <main class="main">
+
+
+<article class="post-single">
+  <header class="post-header">
+    <h1 class="post-title">custom-hand</h1>
+    <div class="post-meta">November 24, 2021</div>
+  </header>
+  <div class="post-content"><h1 id="purpose">Purpose</h1>
+<p>Join multiple components into one that provides a virtual hand with minimum configuration and adapts to the scene configuration (i.e. If the scene uses physics, the components attached to the hand would be different).</p>
+<h1 id="schema">Schema</h1>
+<ul>
+<li>attribute name: hand
+<ul>
+<li>type: string</li>
+<li>oneOf: <code>left</code>, <code>right</code></li>
+</ul>
+</li>
+<li>attribute name: colliderSelector
+<ul>
+<li>description: Selector of entities the user can interact with</li>
+<li>type: string (valid CSS selector)</li>
+</ul>
+</li>
+</ul>
+<h1 id="usage">Usage</h1>
+<p>Attach this component to the entity that you want to become a hand (you don&rsquo;t have to provide any kind of geometry for this) and make sure that you set the <code>hand</code> attribute to load the right model.</p>
+<p>When the scene uses Ammo.js physics driver and the user makes the &lsquo;pointing&rsquo; gesture, an invisible entity is created around the index finger, it has the class &lsquo;.finger&rsquo; and the ammo-body component attached in order to fire <code>collidestart</code> and <code>collideend</code> event on every other physics body it touches.</p>
+<p>Note that the attribute <code>colliderSelector</code> must be specified in order to be able to interact with other entities. This attribute impacts performance, so try to use a selector as specific as possible (like classes for example)</p>
+<p>Also, this component is prepared to handle an entity with the component <code>hand-menu</code> on it, this was thought to provide a screen-like menu attached to the left hand and which shows and hides when the user presses the joystick of that same hand controller. It&rsquo;s not mandatory to create this entity, as it&rsquo;s availability is checked on runtime and the corresponding event handlers are only set if it is present.</p>
+<h1 id="implementation">Implementation</h1>
+<p>The <em>custom-hand</em> component always attachs the components <code>sphere-collider</code>, <code>hand-controls</code> and <code>super-hands</code>. If the scene is using Ammo.js physics driver, it also attachs the components <code>ammo-body</code> and <code>ammo-hand</code> and registers handlers for the events &lsquo;pointingstart&rsquo; and &lsquo;pointingend&rsquo; (to create and destroy the index finger collider entity) and, in case the first child of the <em>custom-hand</em> entity has the component <code>hand-menu</code>, event handler for &lsquo;thumbstickdown&rsquo; is registered.</p>
+<p>Finally, a function that updates the <code>sphere-collider</code> component is set to be executed every half second, to make sure that the user can interact with the entities created on runtime and match the &lsquo;colliderSelector&rsquo;.</p>
+<p>This flowchart sums up the states of this component:
+<img src="/vr-programming/img/component_customhand_flowchart.png" alt=""></p>
+<h1 id="examples">Examples</h1>
+<p>This example shows two cubes and a sphere and only the cubes can be grabbed on VR due to the colliderSelector provided to the <code>custom-hand</code> component (play with it <a href="/vr-programming/scenes/examples/instruction.html">here</a>)</p>
+<pre tabindex="0"><code>  &lt;a-scene physics=&quot;driver:ammo&quot;&gt;
+    (...)
+    &lt;a-entity camera&gt;
+        &lt;a-entity custom-hand=&quot;hand:left;colliderSelector:a-box&quot;&gt;&lt;/a-entity&gt;
+        &lt;a-entity custom-hand=&quot;hand:right;colliderSelector:a-box&quot;&gt;&lt;/a-entity&gt;
+    &lt;/a-entity&gt;
+  &lt;/a-scene&gt;
+</code></pre></div>
+  
+</article></main>
+<footer class="footer">
+  <span>&copy; 2021 <a href="https://jdjuli.github.io/vr-programming/">VR Programming</a></span>
+  <span>&middot;</span>
+  <span>Powered by <a href="https://gohugo.io/" rel="noopener" target="_blank">Hugo️️</a>️</span>
+  <span>&middot;</span>
+  <span>Theme️ <a href="https://github.com/nanxiaobei/hugo-paper" rel="noopener" target="_blank">Paper</a></span>
+</footer>
+<script src="https://jdjuli.github.io/vr-programming/highlight.min.js"></script>
+<script>
+  hljs.initHighlightingOnLoad();
+</script>
+</body>
+</html>
+

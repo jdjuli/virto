@@ -25,7 +25,7 @@ This component depends on the [super-hands](https://github.com/wmurphyrd/aframe-
 ![](/vr-programming/img/demo12_VR.gif)
 *On Oculus Quest, you'll need to point to the entities and push any of the buttons of the controller to grab them.*
 
-*=>* Checkout the [Demo](/vr-programming/demos/demo12) & [Code](https://github.com/jdjuli/aframe-vr-programming/blob/main/docs/demos/demo12/index.html) *<=*
+*=>* Checkout the [Demo](/vr-programming/scenes/demos/demo12) & [Code](https://github.com/jdjuli/aframe-vr-programming/blob/main/docs/scenes/demos/demo12/index.html) *<=*
 
 - Cloneable entities
 Throught the component `clonable` we specify that an entity must be clonated when it past a certain distance from it's original position, this distance is by default 3 meters, but can be overwritten with the parameter `distance`.
@@ -37,7 +37,7 @@ The scene is very similar to the previous one, but this time we have the objects
 ![](/vr-programming/img/demo13_VR.gif)
 *The way of grabbing an entity changes, but the behaviour remains the same in VR.*
 
-*=>* Checkout the [Demo](/vr-programming/demos/demo13) & [Code](https://github.com/jdjuli/aframe-vr-programming/blob/main/docs/demos/demo13/index.html) *<=*
+*=>* Checkout the [Demo](/vr-programming/scenes/demos/demo13) & [Code](https://github.com/jdjuli/aframe-vr-programming/blob/main/docs/scenes/demos/demo13/index.html) *<=*
 
 - Component 'program'
 By it's dimensions, this scene is meant to be used on the PC, further iterations will be more confortable to use with an VR headset. It makes use of a component called `programa` to modelize the sequence of instructions and provide a way to execute them.
@@ -49,11 +49,11 @@ The blue blocks represent the action 'down' and the red ones, 'up' and they are 
 ![](/vr-programming/img/demo14_VR.gif)
 *This scene requires a big space to be test on VR, but if you don't have it, try to move the boxes up and let them fall to bring them closer to you*
 
-*=>* [Demo](/vr-programming/demos/demo14) & [Code](https://github.com/jdjuli/aframe-vr-programming/blob/main/docs/demos/demo14/index.html) *<=*
+*=>* [Demo](/vr-programming/scenes/demos/demo14) & [Code](https://github.com/jdjuli/aframe-vr-programming/blob/main/docs/scenes/demos/demo14/index.html) *<=*
 
 ## Problems found
 When I was testing the `multidevice` component I faced up an issue related to the Y coordinate of the camera position, that on PC matches the one of the entity that contains the `camera` component, but when using the Oculus Quest, A-Frame takes the height of the headset and adds it to the position of the entity, which results on a very unnatural perspective and many difficulties to interact with the rest of the entities of the scene. The solution was to ignore the height of the camera when initializing the `multidevice` component on an VR headset, so the height of the camera is only determined by the height of the headset.
 
 Reparenting them wasn't also trivial, because simply reparenting them on the DOM causes many problems related with the reinitialization of the components, like crashing the physics engine, to mention one. After some days thinking ways to reparent entities (I wasn't considering cloning them on the new parent and deleting the old copy because I thought that it would impact heavily on the performance), the solution came from a [gitmemory written by my mentor](https://www.gitmemory.com/issue/aframevr/aframe/2425/753673035) and on which he recommends the strategy of clone & delete that I was avoiding, but after implementing it, the results were awensome and it proved me wrong about the performance drop.
 
-While developing the `program` component I had again problems with the physics engine, this time the problem was that once an instruction block is on the program and the user wants to remove it (by simply grabbing it out the stack of blocks), it becomes `kinematic` instead of `dynamic`, ignoring the `type: dynamic` parameter of the `ammo-body` component attached to that entity. This is still visible on the [Demo 14](/demos/demo14) as I havent found a solution yet, but probably I'll take another aproach and instead of allowing the user to recycle the instruction blocks, I'll remove them so the next time the user wants to use that instruction, they will have to pick it from it`s source.
+While developing the `program` component I had again problems with the physics engine, this time the problem was that once an instruction block is on the program and the user wants to remove it (by simply grabbing it out the stack of blocks), it becomes `kinematic` instead of `dynamic`, ignoring the `type: dynamic` parameter of the `ammo-body` component attached to that entity. This is still visible on the [Demo 14](/scenes/demos/demo14) as I havent found a solution yet, but probably I'll take another aproach and instead of allowing the user to recycle the instruction blocks, I'll remove them so the next time the user wants to use that instruction, they will have to pick it from it`s source.

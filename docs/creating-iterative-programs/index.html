@@ -76,6 +76,14 @@ How to use the demo 16: This demo implements two different ways of creating new 
     <header class="header">
       <nav class="nav">
         <p class="logo"><a href="https://jdjuli.github.io/vr-programming/">VR Programming</a></p>
+        <ul class="menu">
+          <li>
+            <a href="/vr-programming/components/">Components</a>
+          </li>
+          <li>
+            <a href="/vr-programming/scenes/tests/temp">Latest scene</a>
+          </li>
+        </ul>
       </nav>
     </header>
     <main class="main">
@@ -106,7 +114,7 @@ How to use the demo 16: This demo implements two different ways of creating new 
 <p>On both cases, to insert a new instruction to the program you have to grab it (it will shrink) and make it collide with another instruction of the program or the base of it, the new instruction will be inserted on top of the colliding instruction. To remove them, simply grab one of the instructions and pull it out it&rsquo;s place on the program, it will disappear (in the future you will be able to insert it again, but for now they will just be destroyed).</p>
 <p><img src="/vr-programming/img/demo16_VR.gif" alt="">
 <em>You can add and remove instructions everywhere on the program</em></p>
-<p><em>=&gt;</em> Checkout the <a href="/vr-programming/demos/demo16">Demo</a> &amp; <a href="https://github.com/jdjuli/aframe-vr-programming/blob/main/docs/demos/demo16/index.html">Code</a> <em>&lt;=</em></p>
+<p><em>=&gt;</em> Checkout the <a href="/vr-programming/scenes/demos/demo16">Demo</a> &amp; <a href="https://github.com/jdjuli/aframe-vr-programming/blob/main/docs/scenes/demos/demo16/index.html">Code</a> <em>&lt;=</em></p>
 <h2 id="internal-changes">Internal changes</h2>
 <p>I&rsquo;ve reestructured the components I&rsquo;m using to make possible that multiple programs coexist on the same scene and also could be run over the same drone, this diagram reflects the dependencies between the entities and their multiplicities.
 <img src="/vr-programming/img/demo16_diagram.png" alt=""></p>
@@ -114,21 +122,21 @@ How to use the demo 16: This demo implements two different ways of creating new 
 <img src="/vr-programming/img/demo16_dom-changing.gif" alt=""></p>
 <h2 id="problems-found">Problems found</h2>
 <p>I tried to implement the joints between the instruction blocks of the program using physics constrains, but I could only add/remove instructions from the top of the column and it became more and more unstable as I were adding more blocks, so I gave up on implementing the program this way and I decided not to use physics at all on the program and keep it static as can be seen on the demo #16.</p>
-<p>I kept the problematic demo just to illustrate the problem I faced, if you try it, <strong>no not insert blocks inbetween others or make a loop with them</strong>, doing so might result on an endless loop that freezes the tab. By now, I won&rsquo;t spend more time on trying to fix this problem, but if you want to play with it and try fixing the instruction insertion in the middle of the program, this <a href="https://stackoverflow.com/questions/66423513/how-to-move-a-dynamic-body-with-a-frame-physics-system-when-using-ammo-driver">StackOverflow question about moving dynamic bodies</a> might be helpful, as well as <a href="https://github.com/jdjuli/aframe-vr-programming/blob/main/docs/tests/TeleportDynamicBody/index.html">this test scene I created</a> to check it.</p>
+<p>I kept the problematic demo just to illustrate the problem I faced, if you try it, <strong>no not insert blocks inbetween others or make a loop with them</strong>, doing so might result on an endless loop that freezes the tab. By now, I won&rsquo;t spend more time on trying to fix this problem, but if you want to play with it and try fixing the instruction insertion in the middle of the program, this <a href="https://stackoverflow.com/questions/66423513/how-to-move-a-dynamic-body-with-a-frame-physics-system-when-using-ammo-driver">StackOverflow question about moving dynamic bodies</a> might be helpful, as well as <a href="https://github.com/jdjuli/aframe-vr-programming/blob/main/docs/scenes/tests/TeleportDynamicBody/index.html">this test scene I created</a> to check it.</p>
 <p><img src="/vr-programming/img/demo15_VR.gif" alt="">
 <em>You can only add and remove instructions to/from the top of the program</em></p>
-<p><em>=&gt;</em> Checkout the <a href="/vr-programming/demos/demo15">Demo</a> &amp; <a href="https://github.com/jdjuli/aframe-vr-programming/blob/main/docs/demos/demo15/index.html">Code</a> <em>&lt;=</em></p>
-<p>In parallel to the demo 15, I was making a menu like the one that can be seen on the demo 16 but with the hands &lsquo;improved&rsquo; adding them a physic body on the index finger that detects collisions with the buttons when the pointing gesture is made. This is more precise than the current menu that uses the super-hands-component event <code>clicked</code>, but is more difficult to implement. Maybe in the future I&rsquo;ll return to this type of interaction with the menu for the sake of it&rsquo;s precission, in the meantime, here are the links to the <a href="/vr-programming/tests/FirstMenu">scene</a> and the <a href="https://github.com/jdjuli/aframe-vr-programming/blob/main/docs/tests/FirstMenu/index.html">code</a> as well as the</p>
+<p><em>=&gt;</em> Checkout the <a href="/vr-programming/scenes/demos/demo15">Demo</a> &amp; <a href="https://github.com/jdjuli/aframe-vr-programming/blob/main/docs/scenes/demos/demo15/index.html">Code</a> <em>&lt;=</em></p>
+<p>In parallel to the demo 15, I was making a menu like the one that can be seen on the demo 16 but with the hands &lsquo;improved&rsquo; adding them a physic body on the index finger that detects collisions with the buttons when the pointing gesture is made. This is more precise than the current menu that uses the super-hands-component event <code>clicked</code>, but is more difficult to implement. Maybe in the future I&rsquo;ll return to this type of interaction with the menu for the sake of it&rsquo;s precission, in the meantime, here are the links to the <a href="/vr-programming/scenes/tests/FirstMenu">scene</a> and the <a href="https://github.com/jdjuli/aframe-vr-programming/blob/main/docs/scenes/tests/FirstMenu/index.html">code</a> as well as the</p>
 <h2 id="other-tests">Other tests</h2>
 <p>When I decided to change how the instructions would be added and deleted to/from the program, I created two test scenes with the bare minimum code to check the interactions I was going to use, I leave here the links and a brief description of them just in case you want to implement something similar and want to see an example.</p>
 <ul>
 <li>
-<h4 id="hand-events-demovr-programmingtestshandevents--codehttpsgithubcomjdjuliaframe-vr-programmingblobmaindocstestshandeventsindexhtml">Hand events (<a href="/vr-programming/tests/HandEvents">demo</a> &amp; <a href="https://github.com/jdjuli/aframe-vr-programming/blob/main/docs/tests/HandEvents/index.html">code</a>)</h4>
+<h4 id="hand-events-demovr-programmingscenestestshandevents--codehttpsgithubcomjdjuliaframe-vr-programmingblobmaindocsscenestestshandeventsindexhtml">Hand events (<a href="/vr-programming/scenes/tests/HandEvents">demo</a> &amp; <a href="https://github.com/jdjuli/aframe-vr-programming/blob/main/docs/scenes/tests/HandEvents/index.html">code</a>)</h4>
 <p>This scene illustrates the events of hovering and grabbing over three blocks. When no interaction is detected, the blocks are blue, but they turn green when they are being hovered and red when grabbed, you can play with it to get an idea of how the super-hands-component works.
 <img src="/vr-programming/img/testHandEvents_VR.gif" alt=""></p>
 </li>
 <li>
-<h4 id="drag-blocks-horizontally-demovr-programmingtestsdragblockshorizontally--codehttpsgithubcomjdjuliaframe-vr-programmingblobmaindocstestsdragblockshorizontallyindexhtml">Drag blocks horizontally (<a href="/vr-programming/tests/DragBlocksHorizontally">demo</a> &amp; <a href="https://github.com/jdjuli/aframe-vr-programming/blob/main/docs/tests/DragBlocksHorizontally/index.html">code</a>)</h4>
+<h4 id="drag-blocks-horizontally-demovr-programmingscenestestsdragblockshorizontally--codehttpsgithubcomjdjuliaframe-vr-programmingblobmaindocsscenestestsdragblockshorizontallyindexhtml">Drag blocks horizontally (<a href="/vr-programming/scenes/tests/DragBlocksHorizontally">demo</a> &amp; <a href="https://github.com/jdjuli/aframe-vr-programming/blob/main/docs/scenes/tests/DragBlocksHorizontally/index.html">code</a>)</h4>
 <p>This scene consist of three blocks that can be grabbed and then moved horizontally without physics, they just float arround without changing their height. The color scheme is the same I&rsquo;ve used on the <code>Hand events</code> test
 <img src="/vr-programming/img/testDragBlocksHorizontally_VR.gif" alt=""></p>
 </li>

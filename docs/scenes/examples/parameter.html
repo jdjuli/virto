@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <script src="https://aframe.io/releases/1.2.0/aframe.js"></script>  
+        <script src="https://cdn.jsdelivr.net/gh/donmccurdy/aframe-extras@v6.1.1/dist/aframe-extras.js"></script>
+        <script src="https://mixedreality.mozilla.org/ammo.js/builds/ammo.wasm.js"></script>  
+        <script src="https://cdn.jsdelivr.net/gh/n5ro/aframe-physics-system@v4.0.1/dist/aframe-physics-system.js"></script>
+
+        <script src="/vr-programming/js/super-hands.js"></script>
+        <script src="/vr-programming/js/parameter.js"></script>
+        <script src="/vr-programming/js/ide.js"></script>
+    </head>
+    <body>
+        <a-scene physics="driver: ammo">
+            <a-entity ide="" position="0 0.75 -0.5">
+                <a-entity position="-0.4 0.4 0" argument="left" class="collidable"></a-entity>
+                <a-entity position="   0 0.4 0" argument="up" class="collidable"></a-entity>
+                <a-entity position=" 0.4 0.4 0" argument="right" class="collidable"></a-entity>
+            </a-entity>
+            <a-entity>
+              <a-entity camera=""></a-entity>
+              <a-entity sphere-collider="objects:.collidable" hand-controls="hand:left" super-hands ammo-body="type:kinematic" ammo-shape="type:sphere;fit:manual;sphereRadius:0.01">
+              <a-entity sphere-collider="objects:.collidable" hand-controls="hand:right" super-hands ammo-body="type:kinematic" ammo-shape="type:sphere;fit:manual;sphereRadius:0.01">
+            </a-entity>
+          </a-scene>
+    </body>
+</html>

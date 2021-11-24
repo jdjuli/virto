@@ -74,6 +74,14 @@
     <header class="header">
       <nav class="nav">
         <p class="logo"><a href="https://jdjuli.github.io/vr-programming/">VR Programming</a></p>
+        <ul class="menu">
+          <li>
+            <a href="/vr-programming/components/">Components</a>
+          </li>
+          <li>
+            <a href="/vr-programming/scenes/tests/temp">Latest scene</a>
+          </li>
+        </ul>
       </nav>
     </header>
     <main class="main">
@@ -89,13 +97,13 @@
 <p>I&rsquo;ve forked the <a href="https://github.com/wmurphyrd/aframe-super-hands-component">super-hands-component</a> repository to introduce this changes ( <a href="https://github.com/jdjuli/aframe-super-hands-component">link</a> ), but by the time I was going to open a pull request, I found an issue where the github user <a href="https://github.com/diarmidmackenzie">diarmidmackenzie</a> purposed a more complete <a href="https://github.com/wmurphyrd/aframe-super-hands-component/compare/master...diarmidmackenzie:master">solution</a>.</p>
 <p>Here I show 4 scenes I created to illustrate the problem. Note that in the first two we can only grab the entities on the one which uses <code>cannon.js</code>, but on the last two I replaced the <a href="https://github.com/wmurphyrd/aframe-super-hands-component">super-hands-component</a> script mine, on which I&rsquo;ve introduced the modifications required to be able to grab the entities with both <code>cannon.js</code> and <code>ammo.js</code> engines.</p>
 <ul>
-<li><a href="/vr-programming/tests/CannonBefore">Scene with cannon before the changes</a> ( <a href="https://github.com/jdjuli/aframe-vr-programming/blob/main/docs/tests/CannonBefore/index.html">Code</a> )
+<li><a href="/vr-programming/scenes/tests/CannonBefore">Scene with cannon before the changes</a> ( <a href="https://github.com/jdjuli/aframe-vr-programming/blob/main/docs/scenes/tests/CannonBefore/index.html">Code</a> )
 <img src="/vr-programming/img/testCannonBefore_VR.gif" alt=""></li>
-<li><a href="/vr-programming/tests/AmmoBefore">Scene with ammo before the changes</a> ( <a href="https://github.com/jdjuli/aframe-vr-programming/blob/main/docs/tests/AmmoBefore/index.html">Code</a> )
+<li><a href="/vr-programming/scenes/tests/AmmoBefore">Scene with ammo before the changes</a> ( <a href="https://github.com/jdjuli/aframe-vr-programming/blob/main/docs/scenes/tests/AmmoBefore/index.html">Code</a> )
 <img src="/vr-programming/img/testAmmoBefore_VR.gif" alt=""></li>
-<li><a href="/vr-programming/tests/CannonAfter">Scene with cannon after the changes</a> ( <a href="https://github.com/jdjuli/aframe-vr-programming/blob/main/docs/tests/CannonAfter/index.html">Code</a> )
+<li><a href="/vr-programming/scenes/tests/CannonAfter">Scene with cannon after the changes</a> ( <a href="https://github.com/jdjuli/aframe-vr-programming/blob/main/docs/scenes/tests/CannonAfter/index.html">Code</a> )
 <img src="/vr-programming/img/testCannonAfter_VR.gif" alt=""></li>
-<li><a href="/vr-programming/tests/AmmoAfter">Scene with ammo after the changes</a> ( <a href="https://github.com/jdjuli/aframe-vr-programming/blob/main/docs/tests/AmmoAfter/index.html">Code</a> )
+<li><a href="/vr-programming/scenes/tests/AmmoAfter">Scene with ammo after the changes</a> ( <a href="https://github.com/jdjuli/aframe-vr-programming/blob/main/docs/scenes/tests/AmmoAfter/index.html">Code</a> )
 <img src="/vr-programming/img/testAmmoAfter_VR.gif" alt=""></li>
 </ul>
 <h2 id="solution-adopted">Solution adopted</h2>

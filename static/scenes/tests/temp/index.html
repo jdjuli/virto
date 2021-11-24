@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <script src="https://aframe.io/releases/1.2.0/aframe.js"></script>  
+        <script src="https://cdn.jsdelivr.net/gh/donmccurdy/aframe-extras@v6.1.1/dist/aframe-extras.js"></script>
+        <script src="https://mixedreality.mozilla.org/ammo.js/builds/ammo.wasm.js"></script>  
+        <script src="https://cdn.jsdelivr.net/gh/n5ro/aframe-physics-system@v4.0.1/dist/aframe-physics-system.js"></script>
+        <script src="https://unpkg.com/aframe-look-at-component@0.8.0/dist/aframe-look-at-component.js"></script>
+
+        <script src="/vr-programming/js/super-hands.js"></script>
+        <script src="/vr-programming/js/parameter.js"></script>
+        <script src="/vr-programming/js/instruction.js"></script>
+        <script src="/vr-programming/js/ide.js"></script>
+        <script src="/vr-programming/js/program.js"></script>
+
+        <script src="/vr-programming/js/custom-hand.js"></script>
+        <script src="/vr-programming/js/multidevice.js"></script>
+    </head>
+    <body>
+        <a-scene physics="driver: ammo; debug: true;">
+            <a-sky color="black"></a-sky>
+            <a-entity ide position="0 0.75 -0.5">
+                        <a-entity   position="-0.4 0.4 0"
+                                    program></a-entity>
+                
+                        <a-entity   position="0.4 0.4 1" 
+                                    parameter="up"></a-entity>
+
+                        <a-entity   position="0.0 0.4 0"
+                                    instruction="function:move"></a-entity>
+                        
+                        <a-entity   position="0.4 0.4 0"
+                                    instruction="function:rotate"></a-entity>
+
+                        <a-entity   position="0.8 0.4 0"
+                                    instruction="function:move"></a-entity>
+            </a-entity>
+            
+            
+            <a-entity multidevice="colliderSelector:.collidable"></a-entity>
+        </a-scene>
+    </body>
+</html>

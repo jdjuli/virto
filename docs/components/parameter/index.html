@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    
+    <title>parameter - VR Programming</title>
+    
+    <meta name="description" content="Purpose This component is intended to store and represent qualitative parameters for the instructions, like the direction of displacements or axis of rotations among others.
+Schema  attribute name: n/a  description: qualitative property such as direction of movement or axis of rotation type: string default: up oneOf: up, down, left, right, forward, backward (more to be added)    Usage The entity this component is attached to must be children of another entity with the component ide as this one is aware of if it&rsquo;s a child of an instruction and needs to have a reference to the ide entity to reparent to it when extracted from the instruction.">
+    <meta name="author" content="">
+    
+    <link href="https://jdjuli.github.io/vr-programming/an-old-hope.min.css" rel="stylesheet">
+    <link href="https://jdjuli.github.io/vr-programming/style.css" rel="stylesheet">
+    <link href="https://jdjuli.github.io/vr-programming/custom.css" rel="stylesheet">
+    
+    <link rel="apple-touch-icon" href="https://jdjuli.github.io/vr-programming/apple-touch-icon.png">
+    <link rel="icon" href="https://jdjuli.github.io/vr-programming/favicon.ico">
+    <meta name="generator" content="Hugo 0.88.1" />
+    
+    
+    
+    <script>
+      function setTheme() {
+        if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+          document.body.classList.add('dark');
+          return;
+        }
+
+        const time = new Date();
+        const prev = localStorage.getItem('date');
+        const date = String(time.getMonth() + 1) + '.' + String(time.getDate());
+
+        const now = time.getTime();
+        let sunrise;
+        let sunset;
+
+        function setBodyClass() {
+          if (now > sunrise && now < sunset) return;
+          document.body.classList.add('dark');
+        }
+
+        if (date !== prev) {
+          fetch('https://api.ipgeolocation.io/astronomy?apiKey=5ed37d85103e4defa5df4c5298ed5215')
+            .then((res) => res.json())
+            .then((data) => {
+              sunrise = data.sunrise.split(':').map(Number);
+              sunset = data.sunset.split(':').map(Number);
+            })
+            .catch(() => {
+              sunrise = [7, 0];
+              sunset = [19, 0];
+            })
+            .finally(() => {
+              sunrise = time.setHours(sunrise[0], sunrise[1], 0);
+              sunset = time.setHours(sunset[0], sunset[1], 0);
+              setBodyClass();
+              localStorage.setItem('sunrise', sunrise);
+              localStorage.setItem('sunset', sunset);
+            });
+          localStorage.setItem('date', date);
+        } else {
+          sunrise = Number(localStorage.getItem('sunrise'));
+          sunset = Number(localStorage.getItem('sunset'));
+          setBodyClass();
+        }
+      }
+    </script>
+  </head>
+  <body class="single">
+    <script>
+      setTheme();
+    </script>
+    <header class="header">
+      <nav class="nav">
+        <p class="logo"><a href="https://jdjuli.github.io/vr-programming/">VR Programming</a></p>
+        <ul class="menu">
+          <li>
+            <a href="/vr-programming/components/">Components</a>
+          </li>
+          <li>
+            <a href="/vr-programming/scenes/tests/temp">Latest scene</a>
+          </li>
+        </ul>
+      </nav>
+    </header>
+    <main class="main">
+
+
+<article class="post-single">
+  <header class="post-header">
+    <h1 class="post-title">parameter</h1>
+    <div class="post-meta">November 20, 2021</div>
+  </header>
+  <div class="post-content"><h1 id="purpose">Purpose</h1>
+<p>This component is intended to store and represent qualitative parameters for the instructions, like the direction of displacements or axis of rotations among others.</p>
+<h1 id="schema">Schema</h1>
+<ul>
+<li>attribute name: n/a
+<ul>
+<li>description: qualitative property such as direction of movement or axis of rotation</li>
+<li>type: string</li>
+<li>default: <code>up</code></li>
+<li>oneOf: <code>up</code>, <code>down</code>, <code>left</code>, <code>right</code>, <code>forward</code>, <code>backward</code> (more to be added)</li>
+</ul>
+</li>
+</ul>
+<h1 id="usage">Usage</h1>
+<p>The entity this component is attached to must be children of another entity with the component <em>ide</em> as this one is aware of if it&rsquo;s a child of an <em>instruction</em> and needs to have a reference to the <em>ide</em> entity to reparent to it when extracted from the <em>instruction</em>.</p>
+<p>If you want to attach an <em>argument</em> to an <em>instruction</em> on your scene, don&rsquo;t nest the <em>argument</em> inside the <em>instruction</em> but set the proper attribute of the <em>instruction</em> component and it will create the <em>argument</em> during it&rsquo;s initialization.</p>
+<h1 id="implementation">Implementation</h1>
+<p>The <em>argument</em> component has primarly two states:</p>
+<ul>
+<li>Attached to an <em>instruction</em>:
+On this case, during the initialization, the entity will have the components <code>ammo-body</code> (static, emit collision events) and <code>ammo-shape</code> attached to it, as well as a &lsquo;collidestart&rsquo; event handler that reparents the entity to the <em>ide</em> in case that it collides with another entity with the class <em>finger</em>, which is intended to be used on the index fingers of the hands.</li>
+<li>Attached to the <em>ide</em>: 
+The entity will have the components <code>ammo-body</code> (dynamic, zero-gravity), <code>ammo-shape</code>, <code>grababble</code> and <code>draggable</code> attached to it, and if it&rsquo;s dropped near an instruction, it will be attached to it (this behaviour is implemented on the <code>instruction</code> component).</li>
+</ul>
+<p>This flowchart sums up the states of this component:
+<img src="/vr-programming/img/component_parameter_flowchart.png" alt=""></p>
+<h1 id="examples">Examples</h1>
+<p>Simplest scene for VR headset featuring three parameters (play with it <a href="/vr-programming/scenes/examples/parameter.html">here</a>)</p>
+<pre tabindex="0"><code>  &lt;a-scene physics=&quot;driver: ammo&quot;&gt;
+    &lt;a-entity ide=&quot;&quot; position=&quot;0 0.75 -0.5&quot;&gt;
+      &lt;a-entity position=&quot;-0.4 0.4 0&quot; argument=&quot;left&quot; class=&quot;collidable&quot;&gt;&lt;/a-entity&gt;
+       &lt;a-entity position=&quot;  0 0.4 0&quot; argument=&quot;up&quot; class=&quot;collidable&quot;&gt;&lt;/a-entity&gt;
+       &lt;a-entity position=&quot;0.4 0.4 0&quot; argument=&quot;right&quot; class=&quot;collidable&quot;&gt;&lt;/a-entity&gt;
+    &lt;/a-entity&gt;
+    &lt;a-entity&gt;
+      &lt;a-entity camera=&quot;&quot;&gt;&lt;/a-entity&gt;
+      &lt;a-entity sphere-collider=&quot;objects:.collidable&quot; hand-controls=&quot;hand:left&quot; super-hands ammo-body=&quot;type:kinematic&quot; ammo-shape=&quot;type:sphere;fit:manual;sphereRadius:0.01&quot;&gt;
+      &lt;a-entity sphere-collider=&quot;objects:.collidable&quot; hand-controls=&quot;hand:right&quot; super-hands ammo-body=&quot;type:kinematic&quot; ammo-shape=&quot;type:sphere;fit:manual;sphereRadius:0.01&quot;&gt;
+    &lt;/a-entity&gt;
+  &lt;/a-scene&gt;
+</code></pre></div>
+  
+</article></main>
+<footer class="footer">
+  <span>&copy; 2021 <a href="https://jdjuli.github.io/vr-programming/">VR Programming</a></span>
+  <span>&middot;</span>
+  <span>Powered by <a href="https://gohugo.io/" rel="noopener" target="_blank">Hugo️️</a>️</span>
+  <span>&middot;</span>
+  <span>Theme️ <a href="https://github.com/nanxiaobei/hugo-paper" rel="noopener" target="_blank">Paper</a></span>
+</footer>
+<script src="https://jdjuli.github.io/vr-programming/highlight.min.js"></script>
+<script>
+  hljs.initHighlightingOnLoad();
+</script>
+</body>
+</html>
+

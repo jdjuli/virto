@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <script src="https://aframe.io/releases/1.2.0/aframe.js"></script>  
+        <script src="https://cdn.jsdelivr.net/gh/donmccurdy/aframe-extras@v6.1.1/dist/aframe-extras.js"></script>
+        <script src="https://mixedreality.mozilla.org/ammo.js/builds/ammo.wasm.js"></script>  
+        <script src="https://cdn.jsdelivr.net/gh/n5ro/aframe-physics-system@v4.0.1/dist/aframe-physics-system.js"></script>
+
+        <script src="/js/super-hands.js"></script>
+
+        <script src="./custom-hand.js"></script>
+        <script src="./multidevice.js"></script>
+        <script src="./selector.js"></script>
+    </head>
+    <body>
+        <a-scene physics="driver: ammo; debug: true;">
+            <a-sky color="black"></a-sky>
+            <a-entity   geometry="primitive:box; height:0.1; width:2; depth:1"
+                        material="color:gray"
+                        position="0 0.75 -0.5"
+                        ammo-body="type:static"
+                        ammo-shape="type:box">
+                        
+                        <a-entity   selector="target:#box; min:0; max:10"
+                                    position="0 0.2 0"></a-entity>
+            </a-entity>
+            
+            
+            <a-entity multidevice></a-entity>
+        </a-scene>
+    </body>
+</html>

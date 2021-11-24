@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    
+    <title>multidevice - VR Programming</title>
+    
+    <meta name="description" content="Purpose This component adapts the user controls to the inputs of the device that is using, making easier to develop scenes compatibles with both VR headsets and PC.
+Schema  attribute name: colliderSelector  description: Selector of entities the user can interact with type: string (valid CSS selector)   attribute name: acceleration  description: How fast can the user navigate the scene with the arrow keys type: number default: 20.">
+    <meta name="author" content="">
+    
+    <link href="https://jdjuli.github.io/vr-programming/an-old-hope.min.css" rel="stylesheet">
+    <link href="https://jdjuli.github.io/vr-programming/style.css" rel="stylesheet">
+    <link href="https://jdjuli.github.io/vr-programming/custom.css" rel="stylesheet">
+    
+    <link rel="apple-touch-icon" href="https://jdjuli.github.io/vr-programming/apple-touch-icon.png">
+    <link rel="icon" href="https://jdjuli.github.io/vr-programming/favicon.ico">
+    <meta name="generator" content="Hugo 0.88.1" />
+    
+    
+    
+    <script>
+      function setTheme() {
+        if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+          document.body.classList.add('dark');
+          return;
+        }
+
+        const time = new Date();
+        const prev = localStorage.getItem('date');
+        const date = String(time.getMonth() + 1) + '.' + String(time.getDate());
+
+        const now = time.getTime();
+        let sunrise;
+        let sunset;
+
+        function setBodyClass() {
+          if (now > sunrise && now < sunset) return;
+          document.body.classList.add('dark');
+        }
+
+        if (date !== prev) {
+          fetch('https://api.ipgeolocation.io/astronomy?apiKey=5ed37d85103e4defa5df4c5298ed5215')
+            .then((res) => res.json())
+            .then((data) => {
+              sunrise = data.sunrise.split(':').map(Number);
+              sunset = data.sunset.split(':').map(Number);
+            })
+            .catch(() => {
+              sunrise = [7, 0];
+              sunset = [19, 0];
+            })
+            .finally(() => {
+              sunrise = time.setHours(sunrise[0], sunrise[1], 0);
+              sunset = time.setHours(sunset[0], sunset[1], 0);
+              setBodyClass();
+              localStorage.setItem('sunrise', sunrise);
+              localStorage.setItem('sunset', sunset);
+            });
+          localStorage.setItem('date', date);
+        } else {
+          sunrise = Number(localStorage.getItem('sunrise'));
+          sunset = Number(localStorage.getItem('sunset'));
+          setBodyClass();
+        }
+      }
+    </script>
+  </head>
+  <body class="single">
+    <script>
+      setTheme();
+    </script>
+    <header class="header">
+      <nav class="nav">
+        <p class="logo"><a href="https://jdjuli.github.io/vr-programming/">VR Programming</a></p>
+        <ul class="menu">
+          <li>
+            <a href="/vr-programming/components/">Components</a>
+          </li>
+          <li>
+            <a href="/vr-programming/scenes/tests/temp">Latest scene</a>
+          </li>
+        </ul>
+      </nav>
+    </header>
+    <main class="main">
+
+
+<article class="post-single">
+  <header class="post-header">
+    <h1 class="post-title">multidevice</h1>
+    <div class="post-meta">November 22, 2021</div>
+  </header>
+  <div class="post-content"><h1 id="purpose">Purpose</h1>
+<p>This component adapts the user controls to the inputs of the device that is using, making easier to develop scenes compatibles with both VR headsets and PC.</p>
+<h1 id="schema">Schema</h1>
+<ul>
+<li>attribute name: colliderSelector
+<ul>
+<li>description: Selector of entities the user can interact with</li>
+<li>type: string (valid CSS selector)</li>
+</ul>
+</li>
+<li>attribute name: acceleration
+<ul>
+<li>description: How fast can the user navigate the scene with the arrow keys</li>
+<li>type: number</li>
+<li>default: 20.0</li>
+</ul>
+</li>
+<li>attribute name: raycasterFar
+<ul>
+<li>description: How long will the raycaster search for colliding entities</li>
+<li>type: number</li>
+<li>default: 20.0</li>
+</ul>
+</li>
+<li>attribute name: pcHeight
+<ul>
+<li>description: Height of the camera when the scene is used on PC</li>
+<li>type: number</li>
+<li>default: 1.6</li>
+</ul>
+</li>
+</ul>
+<h1 id="usage">Usage</h1>
+<p>The <code>custom-hand</code> component is required to be imported on the HTML in order to make the component work properly on VR headsets as it&rsquo;s responsible of creating the virtual hands and defining their behaviour.</p>
+<p>To use the component, simply create an <code>&lt;a-entity&gt;</code> tag where the user should be on the scene and attach the <code>multidevice</code> attribute to it, specifying the selector of the entities that they will be able to interact with. You don&rsquo;t need to create anything else, as <code>multidevice</code> will detect the type of the device accesing the page and create the required entities and components.</p>
+<h1 id="implementation">Implementation</h1>
+<p>In order to detect if the user has a VR-compatible device, the function <code>AFRAME.utils.device.isMobileVR()</code> is called and if it returns:</p>
+<ul>
+<li>true:
+A VR-compatible device is being used, the component will instanciate two &lsquo;a-entity&rsquo; and set the <code>custom-hand</code> attribute on both to create the hands. The position of the camera will not be modified in height as this information is provided by the headset.</li>
+<li>false: 
+A PC (or equivalent) is being used and hence, the camera height is incremented in <code>pcHeight</code> meters and the components <code>raycaster</code>, <code>look-controls</code>, <code>capture-mouse</code>, <code>wasd-controls</code>, <code>cursor</code> and <code>super-hands</code> are attached to the entity to ensure the user can move through the scene with the arrow keys of the keyboard and interact with the entities using the mouse.</li>
+</ul>
+<p>On both cases, the <code>camera</code> attribute is attached and only the y-coordinate of the position is modified, making possible to place the <code>multidevice</code> entity wherever we want.</p>
+<p>This flowchart sums up the states of this component:
+<img src="/vr-programming/img/component_multidevice_flowchart.png" alt=""></p>
+<h1 id="examples">Examples</h1>
+<p>On this scene, apart from moving around, you will be able only to grab the blue and green boxes on VR and only the green one on PC as the selector specified on the <code>multidevice</code> component only matches that (play with it <a href="/vr-programming/scenes/examples/multidevice.html">here</a>)</p>
+<pre tabindex="0"><code>  &lt;a-scene physics=&quot;driver:ammo&quot;&gt;
+    &lt;a-entity position=&quot;0 0.75 -0.5&quot;
+              geometry=&quot;primitive:box; height:0.05; depth:1; width:1.5&quot;
+              material=&quot;color:gray&quot;
+              ammo-body=&quot;type:static&quot;
+              ammo-shape=&quot;type:box&quot;&gt;
+      &lt;a-box    height=&quot;0.1&quot; depth=&quot;0.1&quot; width=&quot;0.1&quot;
+                material=&quot;color:blue&quot;
+                grabbable=&quot;constraintComponentName:ammo-constraint&quot;
+                ammo-body=&quot;type:dynamic&quot;
+                ammo-shape=&quot;type:box&quot;
+                position=&quot;-0.15 0.4 0&quot;&gt;&lt;/a-box&gt;
+      &lt;a-box    height=&quot;0.1&quot; depth=&quot;0.1&quot; width=&quot;0.1&quot;
+                material=&quot;color:green&quot;
+                grabbable
+                position=&quot;0 0.4 0&quot;&gt;&lt;/a-box&gt;
+      &lt;a-sphere radius=&quot;0.05&quot;
+                material=&quot;color:red&quot;
+                grabbable
+                position=&quot;0.15 0.4 0&quot;&gt;&lt;/a-sphere&gt;
+    &lt;/a-entity&gt;
+    &lt;a-entity multidevice=&quot;colliderSelector:a-box&quot;&gt;&lt;/a-entity&gt;
+  &lt;/a-scene&gt;
+</code></pre></div>
+  
+</article></main>
+<footer class="footer">
+  <span>&copy; 2021 <a href="https://jdjuli.github.io/vr-programming/">VR Programming</a></span>
+  <span>&middot;</span>
+  <span>Powered by <a href="https://gohugo.io/" rel="noopener" target="_blank">Hugo️️</a>️</span>
+  <span>&middot;</span>
+  <span>Theme️ <a href="https://github.com/nanxiaobei/hugo-paper" rel="noopener" target="_blank">Paper</a></span>
+</footer>
+<script src="https://jdjuli.github.io/vr-programming/highlight.min.js"></script>
+<script>
+  hljs.initHighlightingOnLoad();
+</script>
+</body>
+</html>
+
