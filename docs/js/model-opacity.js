@@ -1,6 +1,8 @@
 /*
  * Source: https://stackoverflow.com/questions/43914818/alpha-animation-in-aframe-for-a-object-model
  * Author: Don McCurdy
+ * 
+ * I modified the original code from Don McCurdy adding the remove() function.
  */
 
 AFRAME.registerComponent('model-opacity', {
@@ -19,5 +21,9 @@ AFRAME.registerComponent('model-opacity', {
           node.material.needsUpdate = true;
         }
       });
+    },
+    remove: function(){
+      this.data = 1.0;
+      this.update();
     }
   });

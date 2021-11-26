@@ -1,9 +1,7 @@
 AFRAME.registerComponent('program',{
     schema: {
         active:{type:'boolean',default:false},
-        instructions:{  parse: JSON.parse,
-                        stringify: JSON.stringify,
-                        default:'[{"itype":"instruction","idata":{"type":"up"}},{"itype":"instruction","idata":{"type":"down"}}]'}
+        instructions:{type:'array',default:['init']}
     },
     init: function(){       
         if(this.data.active) this.open();   
@@ -13,42 +11,34 @@ AFRAME.registerComponent('program',{
     update: function(oldData) {
         this.data.instructions = [];
         for(let c of this.el.children){
-            let itype;
-            if(c.components['instruction']){
-                itype = 'instruction';
-            }else if(c.components['condition']){
-                itype = 'condition';
-            }
-            let idata = c.components[itype].data || c.components[itype].attrValue;
-            this.data.instructions.push({itype:itype,idata:idata});
+            this.data.instructions.push(c.components['instruction'].attrValue.type);
         }
         this.attrValue = this.data;
         this.flushToDOM();
 
         let worldToIDE = this.el.parentEl.object3D.matrixWorld.clone();
-        let worldToLocal = this.el.object3D.matrixWorld.clone();
-        this.localToIDE = worldToLocal.multiply(worldToIDE.invert());
+        let worldToProgam = this.el.object3D.matrixWorld.clone();
+        this.programToIDE = worldToProgam.multiply(worldToIDE.invert());
     },
     open: function(){
         const el = this.el;
         
-        el.setAttribute('geometry','primitive: box; width: 0.15; height: 0.15; depth: 0.15');
-        el.setAttribute('material','color:#757A6D');
+        el.setAttribute('geometry','primitive: box; width: 0.3; height: 0.02; depth: 0.3');
+        el.setAttribute('material',{src:'textures/MetalPlates007_1K_Color.png'});
         el.setAttribute('droppable','');
         
         el.addEventListener('dragover-start',this.startPreview.bind(this));
         el.addEventListener('dragover-end',this.endPreview.bind(this));
         el.addEventListener('drag-drop',this.dragDrop.bind(this));
         
-        let height = 0.126;
+        let height = 0.061;
         if(this.data.instructions.length > 0){
             for(i of this.data.instructions){
                 let new_instruction = document.createElement('a-entity');
                 el.appendChild(new_instruction);
-                new_instruction.setAttribute(i.itype,i.idata);
-                new_instruction.components[i.itype].initComponent();
+                new_instruction.setAttribute('instruction',{type:i});
                 new_instruction.setAttribute('position',{x:0, y:height,z:0});
-                height+=new_instruction.components[i.itype].height+0.001;
+                height+=0.101;
             }
         }
     },
@@ -59,80 +49,63 @@ AFRAME.registerComponent('program',{
         evt.stopPropagation();
     },
     endPreview: function(evt){
-        if(this.preview && this.preview.attached){
+        if(this.preview){
             this.removeInstruction(this.preview);
             this.preview = null;
         }
         if(evt) evt.stopPropagation();
     },
     dragDrop: function(evt){
-        let dropped = evt.detail.dropped;
-        let target = evt.detail.target;
-        if(dropped.components['instruction'] || dropped.components['condition']){
-            if(target == this.el){
-                this.addInstruction(dropped);
-            }else{
-                let container = target.components['condition'];
-                if(!container){
-                    container = target.components['instruction'].container;
-                }
-                container.addInstruction.bind(container)(dropped);
-            }
+        let target = evt.detail.dropped;
+        if(target.components['instruction']){
+            this.addInstruction(target);
         }
     },
     addInstruction: function(instruction, where, preview = false) {
         if(!instruction.parentNode) return;
-        let newEntity = document.createElement('a-entity');
-        let originalComponent = instruction.components['instruction'] || instruction.components['condition'];
-        let position = new THREE.Vector3(0, 0.126, 0);
-        let offset = new THREE.Vector3(0, originalComponent.height+0.001, 0);
-        let componentAttr = Object.assign({},originalComponent.data);
-        componentAttr.preview = preview;
-        newEntity.setAttribute(originalComponent.attrName,componentAttr);
-
+        let new_instruction = document.createElement('a-entity');
+        let position = new THREE.Vector3(0, 0.061, 0);
+        let offset = new THREE.Vector3(0, 0.101, 0);
+        let instructionAttr = Object.assign({},instruction.getAttribute('instruction'));
+        instructionAttr.preview = preview;
+        new_instruction.setAttribute('instruction',instructionAttr);
         if(!where){
-            this.el.insertBefore(newEntity,this.el.firstElementChild);
+            this.el.insertBefore(new_instruction,this.el.firstElementChild);
         }else{
             position.copy(where.getAttribute('position'));
-            componentWhere = where.components['instruction'] || where.components['condition'];
-            position.y += componentWhere.height;
-            this.el.insertBefore(newEntity,where.nextElementSibling);
+            position.add(offset);
+            this.el.insertBefore(new_instruction,where.nextElementSibling);
         }
-        newEntity.setAttribute('position',position);
-
-        let moving_instruction = newEntity.nextElementSibling;
+        new_instruction.setAttribute('position',position);
+        let moving_instruction = new_instruction.nextElementSibling;
         while(moving_instruction){
-            let component = moving_instruction.components['instruction'] || moving_instruction.components['condition'];
-            component.displace(offset);
+            moving_instruction.components['instruction'].displace(offset);
             moving_instruction = moving_instruction.nextElementSibling;
         }
         if(!preview){
             instruction.remove();
             this.update();
         }
-        return newEntity;
+        return new_instruction;
     },
     removeInstruction: function(instruction, reparent=false) {
         let worldToIDE = this.el.parentEl.object3D.matrixWorld.clone();
-        let worldToLocal = instruction.parentEl.object3D.matrixWorld.clone();
-        this.localToIDE = worldToLocal.multiply(worldToIDE.invert());
+        let worldToProgam = this.el.object3D.matrixWorld.clone();
+        this.programToIDE = worldToProgam.multiply(worldToIDE.invert());
 
         let moving_instruction = instruction.nextElementSibling;
-        let old_component = instruction.components['instruction'] || instruction.components['condition'];
-        let offset = new THREE.Vector3(0, -old_component.height-0.001, 0);
+        let offset = new THREE.Vector3(0, -0.101, 0);
         let new_instruction = undefined;
         instruction.remove();
         if(reparent){
             new_instruction = document.createElement('a-entity');
             position = instruction.getAttribute('position');
-            new_instruction.setAttribute('position',this.localToIDE.multiplyVector3(position));
-            let old_component = instruction.components['instruction'] || instruction.components['condition'];
-            new_instruction.setAttribute(old_component.attrName,old_component.data);
+            new_instruction.setAttribute('position',this.programToIDE.multiplyVector3(position));
+            new_instruction.setAttribute('instruction',instruction.getAttribute('instruction'));
             this.el.parentEl.appendChild(new_instruction);
         }
         while(moving_instruction){
-            let component = moving_instruction.components['instruction'] || moving_instruction.components['condition'];
-            component.displace(offset);
+            moving_instruction.components['instruction'].displace(offset);
             moving_instruction = moving_instruction.nextElementSibling;
         }
         this.update();
@@ -148,7 +121,7 @@ AFRAME.registerComponent('program',{
                 let instruction = e.components['instruction'];
                 instruction.run.bind(instruction)(drone);
             },timeout);
-            timeout += 250;
+            timeout += 500;
         }
         setTimeout(()=>{this.running = false;}, timeout);
     }
