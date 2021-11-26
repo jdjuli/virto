@@ -5,38 +5,41 @@
         <script src="https://cdn.jsdelivr.net/gh/donmccurdy/aframe-extras@v6.1.1/dist/aframe-extras.js"></script>
         <script src="https://mixedreality.mozilla.org/ammo.js/builds/ammo.wasm.js"></script>  
         <script src="https://cdn.jsdelivr.net/gh/n5ro/aframe-physics-system@v4.0.1/dist/aframe-physics-system.js"></script>
+        <script src="https://unpkg.com/aframe-environment-component@1.3.1/dist/aframe-environment-component.min.js"></script>
 
-        <script src="/js/super-hands.js"></script>
-        
+        <script src="/vr-programming/js/super-hands.js"></script>
+        <script src="/vr-programming/js/custom-hand.js"></script>
+        <script src="/vr-programming/js/multidevice.js"></script>
+        <script src="/vr-programming/js/model-opacity.js"></script>
+ 
         <script src="./ide.js"></script>
         <script src="./ide-control.js"></script>
         <script src="./drone.js"></script>
         <script src="./program.js"></script>
         <script src="./instruction.js"></script>
-        <script src="./condition.js"></script>
-        <script src="./custom-hand.js"></script>
-        <script src="./multidevice.js"></script>
+        <script src="./recyclebin.js"></script>
         <script src="./hand-menu.js"></script>
+        
     </head>
     <body>
-        <a-scene physics="driver: ammo; debug: true;">
+        <a-scene physics="driver: ammo">
+            <a-entity environment="preset: forest; skyType: atmosphere"></a-entity>
+            <script>
+                document.querySelector('[environment]').setAttribute('environment','lightPosition',{x:0,y:1,z:1});
+            </script>
+            
 
             <a-entity id="drone" drone position="0 2 -2"></a-entity>
 
             <a-entity ide position="0 0.75 -0.5">
-                <a-entity   ide-control='drone:#drone' position="-0.5 0.1 0"></a-entity>
-                <!--
-                <a-entity   program='active:true;instructions:[{"itype":"instruction","idata":{"type":"down"}}, {"itype":"instruction","idata":{"type":"up"}}];' position="0 0.1 0"></a-entity>
-                -->
-                <a-entity   program='active:true;instructions:[{"itype":"instruction","idata":{"type":"down"}},{"itype":"condition","idata":{"branchTrue":[{"itype":"instruction","idata":{"type":"right"}}],"branchFalse":[{"itype":"instruction","idata":{"type":"left"}}]}}];' position="0 0.1 0"></a-entity>
-                
-                <a-entity instruction-selector="instructions:up,down,right,left,forward,backward" position="-0.5 0.3 0"></a-entity>
-
+                <a-entity   ide-control='drone:#drone' position="-0.4 0.2 0"></a-entity>
+                <a-entity   program="active:true;instructions:up,down;" position="0 0.1 0"></a-entity>
+                <a-entity   recyclebin position="0.75 0.1 0"></a-entity>
             </a-entity>
 
             <a-entity>
-                <a-entity custom-hand="hand:right"></a-entity>
-                <a-entity custom-hand="hand:left">
+                <a-entity custom-hand="hand:right;colliderSelector:.collidable"></a-entity>
+                <a-entity custom-hand="hand:left;colliderSelector:.collidable">
                     <a-entity hand-menu="instructions:up,down,right,left,forward,backward"></a-entity>
                 </a-entity>
             </a-entity>

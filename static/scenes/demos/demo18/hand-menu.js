@@ -18,7 +18,8 @@ AFRAME.registerComponent('hand-menu',{
       for(let i=0 ; i<this.data.cols; i++){
         let tile = document.createElement('a-entity');
         tile.setAttribute('class','collidable');
-        tile.setAttribute('geometry',{primitive:'box',height:this.itemSize,width:this.itemSize,depth:0.02});
+        tile.setAttribute('obj-model',{obj:'instruction.obj'});
+        tile.setAttribute('scale',{x:1, y:1, z:0.2});
         tile.setAttribute('material',{color:'green'});
         tile.setAttribute('position',{x:this.itemBaseX+i*this.itemSpacing, y:this.data.height*0.35, z:0.005});
         this.el.appendChild(tile);
@@ -27,8 +28,9 @@ AFRAME.registerComponent('hand-menu',{
       }
 
       this.el.setAttribute('geometry',{primitive:'box', height:this.data.height+0.1, width:this.data.width, depth:0.02});
-      this.el.setAttribute('material',{color: 'gray'});
-      this.el.setAttribute('position','0.2 0.2 -0.05');
+      this.el.setAttribute('material',{src:'textures/Marble014_1K_Color.png'});
+      this.el.setAttribute('position','0.18 0.1 -0.05');
+      this.el.setAttribute('rotation','-20 0 0');
       this.el.setAttribute('visible','false');
 
       this.E_right = document.createElement("a-entity");
@@ -36,14 +38,14 @@ AFRAME.registerComponent('hand-menu',{
       this.E_right.setAttribute("geometry",{primitive:"box", height:this.data.height*0.4, width:this.data.width*0.4, depth:0.02});
       this.E_right.setAttribute("material", "color", "green");
       this.E_right.setAttribute("position", {x:this.data.width*0.25, y:-this.data.height*0.5, z:0.005});
-      this.E_right.setAttribute("text",{value:">", align:"center", width:this.data.width*2, zOffset:0.011});
+      this.E_right.setAttribute("text",{value: ">", color: 'black', align: "center", width: 0.8, zOffset: 0.011});
 
       this.E_left = document.createElement("a-entity");
       this.E_left.setAttribute("class","collidable");
       this.E_left.setAttribute("geometry",{primitive:"box", height:this.data.height*0.4, width:this.data.width*0.4, depth:0.02});
       this.E_left.setAttribute("material", "color", "green");
       this.E_left.setAttribute("position", {x:-this.data.width*0.25, y:-this.data.height*0.5, z:0.005});
-      this.E_left.setAttribute("text",{value: "<", align: "center", width:this.data.width*2, zOffset:0.011});
+      this.E_left.setAttribute("text",{value: "<", color: 'black', align: "center", width: 0.8, zOffset: 0.011});
       
       this.moveLeftHandler = this.decrementIndex.bind(this);
       this.moveRightHandler = this.incrementIndex.bind(this);
@@ -53,13 +55,15 @@ AFRAME.registerComponent('hand-menu',{
       
       this.updateCatalog();
     },
-    incrementIndex: function(){
+    incrementIndex: function(evt){
+      if(!evt.detail.targetEl.classList.contains('finger')) return;
       if(this.displayIndex<this.data.instructions.length-this.data.cols){
           this.displayIndex++;
           this.updateCatalog();
         }
     },
-    decrementIndex: function(){
+    decrementIndex: function(evt){
+      if(!evt.detail.targetEl.classList.contains('finger')) return;
       if(this.displayIndex>0){
           this.displayIndex--;
           this.updateCatalog();
@@ -68,7 +72,7 @@ AFRAME.registerComponent('hand-menu',{
     updateCatalog: function(){    
       for(let i = 0 ; i < this.data.cols; i++){
         if(this.displayIndex+i < this.data.instructions.length){
-          this.buttons[i].setAttribute("text",{value: this.data.instructions[this.displayIndex+i], align: "center", width:this.data.width*2, zOffset:0.011});
+          this.buttons[i].setAttribute("material",{src: 'textures/'+this.data.instructions[this.displayIndex+i]+'.png'});
         }
       }
     },
@@ -103,7 +107,8 @@ AFRAME.registerComponent('hand-menu',{
         this.E_right.setAttribute('ammo-shape',{type:'box'});
       }
     },
-    clicked: function(btnNum) {
+    clicked: function(btnNum,evt) {
+      if(!evt.detail.targetEl.classList.contains('finger')) return;
       //Remove previous instruction or skip event if isn't attached to it's parent yet
       if(this.instructionSelected != null){
         if(this.instructionSelected.attached){
