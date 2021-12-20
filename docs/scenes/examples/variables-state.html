@@ -1,0 +1,30 @@
+<html>
+    <head>
+        <script src="https://aframe.io/releases/1.2.0/aframe.js"></script>
+        <script src="https://unpkg.com/aframe-state-component@7.1.0/dist/aframe-state-component.js"></script>
+        <script src="/js/variables-system.js"></script>
+    </head>
+    <body>
+        <a-scene>
+            <!-- With the component 'bind', we can map a property to a variable -->
+            <a-text position="0 1.6 -1" color="black" side="double" bind="value:variables.textValue"></a-text>
+        </a-scene>
+        <script>
+            let scene = document.querySelector('a-scene');
+            //Create the variable
+            scene.emit('createVariable',{name:'textValue'});
+            //Define a handler to change it's value
+            document.addEventListener('keypress',(evt)=>{
+                let currentValue = scene.systems['state'].state.variables['textValue'];
+                switch(evt.key){
+                    case '+':
+                        scene.emit('setVariable',{name:'textValue',value:currentValue+1.0});
+                        break;
+                    case '-':
+                        scene.emit('setVariable',{name:'textValue',value:currentValue-1.0});
+                        break;
+                }
+            });
+        </script>
+    </body>
+</html>

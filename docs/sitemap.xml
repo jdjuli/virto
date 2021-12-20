@@ -2,16 +2,34 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
+    <loc>https://jdjuli.github.io/vr-programming/parameters-on-instructions/</loc>
+    <lastmod>2021-12-18T20:16:07+01:00</lastmod>
+  </url><url>
+    <loc>https://jdjuli.github.io/vr-programming/components/box-collider/</loc>
+    <lastmod>2021-12-18T18:05:17+01:00</lastmod>
+  </url><url>
     <loc>https://jdjuli.github.io/vr-programming/components/</loc>
-    <lastmod>2021-11-24T09:33:24+01:00</lastmod>
+    <lastmod>2021-12-18T18:05:17+01:00</lastmod>
+  </url><url>
+    <loc>https://jdjuli.github.io/vr-programming/</loc>
+    <lastmod>2021-12-18T18:05:17+01:00</lastmod>
+  </url><url>
+    <loc>https://jdjuli.github.io/vr-programming/components/emit-event-button/</loc>
+    <lastmod>2021-12-16T12:20:25+01:00</lastmod>
+  </url><url>
+    <loc>https://jdjuli.github.io/vr-programming/components/value/</loc>
+    <lastmod>2021-12-16T10:16:54+01:00</lastmod>
+  </url><url>
+    <loc>https://jdjuli.github.io/vr-programming/components/variables-state/</loc>
+    <lastmod>2021-12-15T10:17:22+01:00</lastmod>
+  </url><url>
+    <loc>https://jdjuli.github.io/vr-programming/components/assets-manager/</loc>
+    <lastmod>2021-12-14T16:56:47+01:00</lastmod>
   </url><url>
     <loc>https://jdjuli.github.io/vr-programming/components/custom-hand/</loc>
     <lastmod>2021-11-24T09:33:24+01:00</lastmod>
   </url><url>
     <loc>https://jdjuli.github.io/vr-programming/components/program/</loc>
-    <lastmod>2021-11-24T09:33:24+01:00</lastmod>
-  </url><url>
-    <loc>https://jdjuli.github.io/vr-programming/</loc>
     <lastmod>2021-11-24T09:33:24+01:00</lastmod>
   </url><url>
     <loc>https://jdjuli.github.io/vr-programming/components/multidevice/</loc>

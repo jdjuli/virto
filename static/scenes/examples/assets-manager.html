@@ -1,0 +1,22 @@
+<html>
+    <head>
+        <script src="https://aframe.io/releases/1.2.0/aframe.js"></script>
+        <script src="/js/assets-manager.js"></script>
+    </head>
+    <body>
+        <a-scene>
+        </a-scene>
+        <script>
+            let scene = document.querySelector('a-scene');
+            let assetsMgr = scene.systems['assets-manager'];
+            assetsMgr.add('model','/models/box.obj');
+            assetsMgr.add('texture','/textures/blue_wall.png');
+            let entity = document.createElement('a-entity');
+            entity.setAttribute('position',{x:0, y:1, z:-1});
+            entity.setAttribute('scale',{x:10,y:10,z:10});
+            entity.setAttribute('obj-model',{obj:'#model'});
+            entity.setAttribute('material',{src:'#texture'});
+            scene.appendChild(entity);
+          </script>
+    </body>
+</html>

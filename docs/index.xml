@@ -6,7 +6,71 @@
     <description>Recent content on VR Programming</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Wed, 24 Nov 2021 09:33:24 +0100</lastBuildDate><atom:link href="https://jdjuli.github.io/vr-programming/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sat, 18 Dec 2021 18:05:17 +0100</lastBuildDate><atom:link href="https://jdjuli.github.io/vr-programming/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Including parameters to instructions</title>
+      <link>https://jdjuli.github.io/vr-programming/parameters-on-instructions/</link>
+      <pubDate>Sat, 18 Dec 2021 20:16:07 +0100</pubDate>
+      
+      <guid>https://jdjuli.github.io/vr-programming/parameters-on-instructions/</guid>
+      <description>I decided to put aside the conditional execution until I had a solid variable and condition evaluation system, and I put an intermediate milestone between a non-parametric execution and that objective of a fully functional variable manipulation and logical operators evaluation system on the execution of programs that allow &amp;lsquo;static&amp;rsquo; variable and constant assignements (meaning they don&amp;rsquo;t vary with time but are intended to do so as the developments continues).</description>
+    </item>
+    
+    <item>
+      <title>box-collider</title>
+      <link>https://jdjuli.github.io/vr-programming/components/box-collider/</link>
+      <pubDate>Sat, 18 Dec 2021 18:05:17 +0100</pubDate>
+      
+      <guid>https://jdjuli.github.io/vr-programming/components/box-collider/</guid>
+      <description>Purpose Detect collisions precisely between a point and a box shaped entity
+Schema  attribute name: colliderSelector  description: CSS selector of entities to collide with. type: string   attribute name: skipTicks  description: How many tick updates should be ignored before computing intersections again type: Number default: 0 (check for collisions on each tick call)    Usage Import the component with:
+&amp;lt;script src=&amp;#34;https://raw.githubusercontent.com/jdjuli/vr-programming/main/static/js/box-collider.js&amp;#34;&amp;gt;&amp;lt;/script&amp;gt; Attach the component to the entity that will represent the &amp;lsquo;point&amp;rsquo; of the intersection (i.</description>
+    </item>
+    
+    <item>
+      <title>emit-event-button</title>
+      <link>https://jdjuli.github.io/vr-programming/components/emit-event-button/</link>
+      <pubDate>Thu, 16 Dec 2021 12:20:25 +0100</pubDate>
+      
+      <guid>https://jdjuli.github.io/vr-programming/components/emit-event-button/</guid>
+      <description>Purpose Provide a generic button that can notify other entities through events when it has been touched
+Schema  attribute name: event  description: The name of the event that will be send type: string   attribute name: emitTo  description: The entity to be notified. By default, the event will be sent to the scene type: selector   attribute name: text  description: Text to be displayed on the button type: string    Usage Import the component with:</description>
+    </item>
+    
+    <item>
+      <title>value</title>
+      <link>https://jdjuli.github.io/vr-programming/components/value/</link>
+      <pubDate>Thu, 16 Dec 2021 10:16:54 +0100</pubDate>
+      
+      <guid>https://jdjuli.github.io/vr-programming/components/value/</guid>
+      <description>Purpose This component manages an entity that represent a numeric value inside the program, it can be a variable registered on variables-state or a constant.
+Schema  attribute name: variable  description: variable name to get value from, if it doesn&amp;rsquo;t exist, it will be created with the value provided. Don&amp;rsquo;t set it to represent a constant type: string   attribute name: value  description: numeric value, if variable name is set but doesn&amp;rsquo;t exist, the variable will take this value, but if it exist, this value will be ignored type: number   attribute name: display  description: what to show on the entity, either the numeric value or the variable name (if no variable name is set, it&amp;rsquo;ll display &amp;lsquo;#&#39;) type: string default: VALUE oneOf: VALUE, NAME    Usage Import the component with:</description>
+    </item>
+    
+    <item>
+      <title>variables-state</title>
+      <link>https://jdjuli.github.io/vr-programming/components/variables-state/</link>
+      <pubDate>Wed, 15 Dec 2021 10:17:22 +0100</pubDate>
+      
+      <guid>https://jdjuli.github.io/vr-programming/components/variables-state/</guid>
+      <description>Purpose This file registers a state using the aframe-state-component to provide a mechanism to have global numeric variables on the scene.
+Usage Import the JavaScript files on the &amp;lt;head&amp;gt; of the html with the following tags:
+&amp;lt;script src=&amp;#34;https://unpkg.com/aframe-state-component@7.1.0/dist/aframe-state-component.js&amp;#34;&amp;gt;&amp;lt;/script&amp;gt; &amp;lt;script src=&amp;#34;https://raw.githubusercontent.com/jdjuli/vr-programming/main/static/js/variables-system.js&amp;#34;&amp;gt;&amp;lt;/script&amp;gt; To access the variables in your code, you&amp;rsquo;ll need a reference to the state system, which can be obtained inside your component by doing this:
+let scene = this.el.sceneEl //Or document.</description>
+    </item>
+    
+    <item>
+      <title>assets-manager</title>
+      <link>https://jdjuli.github.io/vr-programming/components/assets-manager/</link>
+      <pubDate>Tue, 14 Dec 2021 16:56:47 +0100</pubDate>
+      
+      <guid>https://jdjuli.github.io/vr-programming/components/assets-manager/</guid>
+      <description>Purpose System that allows the programmer to load assets easily at runtime and handles the loading failures
+Usage Import the JavaScript file on the &amp;lt;head&amp;gt; of the html with the following tag:
+&amp;lt;script src=&amp;#34;https://raw.githubusercontent.com/jdjuli/vr-programming/main/static/js/assets-manager.js&amp;#34;&amp;gt;&amp;lt;/script&amp;gt; To access the system in your code, you&amp;rsquo;ll need a reference to the scene element, which can be obtained inside your component by doing this:
+let assetsManager = this.el.sceneEl.systems[&amp;#39;assets-manager&amp;#39;]; Once you have a reference to the system, it exposes two functions:</description>
+    </item>
+    
     <item>
       <title>custom-hand</title>
       <link>https://jdjuli.github.io/vr-programming/components/custom-hand/</link>

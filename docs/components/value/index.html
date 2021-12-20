@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    
+    <title>value - VR Programming</title>
+    
+    <meta name="description" content="Purpose This component manages an entity that represent a numeric value inside the program, it can be a variable registered on variables-state or a constant.
+Schema  attribute name: variable  description: variable name to get value from, if it doesn&rsquo;t exist, it will be created with the value provided. Don&rsquo;t set it to represent a constant type: string   attribute name: value  description: numeric value, if variable name is set but doesn&rsquo;t exist, the variable will take this value, but if it exist, this value will be ignored type: number   attribute name: display  description: what to show on the entity, either the numeric value or the variable name (if no variable name is set, it&rsquo;ll display &lsquo;#&#39;) type: string default: VALUE oneOf: VALUE, NAME    Usage Import the component with:">
+    <meta name="author" content="">
+    
+    <link href="https://jdjuli.github.io/vr-programming/an-old-hope.min.css" rel="stylesheet">
+    <link href="https://jdjuli.github.io/vr-programming/style.css" rel="stylesheet">
+    <link href="https://jdjuli.github.io/vr-programming/custom.css" rel="stylesheet">
+    
+    <link rel="apple-touch-icon" href="https://jdjuli.github.io/vr-programming/apple-touch-icon.png">
+    <link rel="icon" href="https://jdjuli.github.io/vr-programming/favicon.ico">
+    <meta name="generator" content="Hugo 0.88.1" />
+    
+    
+    
+    <script>
+      function setTheme() {
+        if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+          document.body.classList.add('dark');
+          return;
+        }
+
+        const time = new Date();
+        const prev = localStorage.getItem('date');
+        const date = String(time.getMonth() + 1) + '.' + String(time.getDate());
+
+        const now = time.getTime();
+        let sunrise;
+        let sunset;
+
+        function setBodyClass() {
+          if (now > sunrise && now < sunset) return;
+          document.body.classList.add('dark');
+        }
+
+        if (date !== prev) {
+          fetch('https://api.ipgeolocation.io/astronomy?apiKey=5ed37d85103e4defa5df4c5298ed5215')
+            .then((res) => res.json())
+            .then((data) => {
+              sunrise = data.sunrise.split(':').map(Number);
+              sunset = data.sunset.split(':').map(Number);
+            })
+            .catch(() => {
+              sunrise = [7, 0];
+              sunset = [19, 0];
+            })
+            .finally(() => {
+              sunrise = time.setHours(sunrise[0], sunrise[1], 0);
+              sunset = time.setHours(sunset[0], sunset[1], 0);
+              setBodyClass();
+              localStorage.setItem('sunrise', sunrise);
+              localStorage.setItem('sunset', sunset);
+            });
+          localStorage.setItem('date', date);
+        } else {
+          sunrise = Number(localStorage.getItem('sunrise'));
+          sunset = Number(localStorage.getItem('sunset'));
+          setBodyClass();
+        }
+      }
+    </script>
+  </head>
+  <body class="single">
+    <script>
+      setTheme();
+    </script>
+    <header class="header">
+      <nav class="nav">
+        <p class="logo"><a href="https://jdjuli.github.io/vr-programming/">VR Programming</a></p>
+        <ul class="menu">
+          <li>
+            <a href="/vr-programming/components/">Components</a>
+          </li>
+          <li>
+            <a href="/vr-programming/scenes/demos/demo19">Latest scene</a>
+          </li>
+        </ul>
+      </nav>
+    </header>
+    <main class="main">
+
+
+<article class="post-single">
+  <header class="post-header">
+    <h1 class="post-title">value</h1>
+    <div class="post-meta">December 16, 2021</div>
+  </header>
+  <div class="post-content"><h1 id="purpose">Purpose</h1>
+<p>This component manages an entity that represent a numeric value inside the program, it can be a variable registered on <a href="/vr-programming/components/variables-state">variables-state</a> or a constant.</p>
+<h1 id="schema">Schema</h1>
+<ul>
+<li>attribute name: variable
+<ul>
+<li>description: variable name to get value from, if it doesn&rsquo;t exist, it will be created with the value provided. Don&rsquo;t set it to represent a constant</li>
+<li>type: string</li>
+</ul>
+</li>
+<li>attribute name: value
+<ul>
+<li>description: numeric value, if variable name is set but doesn&rsquo;t exist, the variable will take this value, but if it exist, this value will be ignored</li>
+<li>type: number</li>
+</ul>
+</li>
+<li>attribute name: display
+<ul>
+<li>description: what to show on the entity, either the numeric value or the variable name (if no variable name is set, it&rsquo;ll display &lsquo;#')</li>
+<li>type: string</li>
+<li>default: <code>VALUE</code></li>
+<li>oneOf: <code>VALUE</code>, <code>NAME</code></li>
+</ul>
+</li>
+</ul>
+<h1 id="usage">Usage</h1>
+<p>Import the component with:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-html" data-lang="html">&lt;<span style="color:#f92672">script</span> <span style="color:#a6e22e">src</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;https://raw.githubusercontent.com/jdjuli/vr-programming/main/static/js/value.js&#34;</span>&gt;&lt;/<span style="color:#f92672">script</span>&gt;
+<span style="color:#75715e">&lt;!-- To have the variable behaviour, you&#39;ll need to import also this scripts --&gt;</span>
+&lt;<span style="color:#f92672">script</span> <span style="color:#a6e22e">src</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;https://unpkg.com/aframe-state-component@7.1.0/dist/aframe-state-component.js&#34;</span>&gt;&lt;/<span style="color:#f92672">script</span>&gt;
+&lt;<span style="color:#f92672">script</span> <span style="color:#a6e22e">src</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;https://raw.githubusercontent.com/jdjuli/vr-programming/main/static/js/variables-system.js&#34;</span>&gt;&lt;/<span style="color:#f92672">script</span>&gt;
+</code></pre></div><p>Add the following asset inside your <code>&lt;a-scene&gt;</code></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-html" data-lang="html">&lt;<span style="color:#f92672">a-assets</span>&gt;
+  &lt;<span style="color:#f92672">a-asset-item</span> <span style="color:#a6e22e">id</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;cylinderZ&#34;</span> <span style="color:#a6e22e">src</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;https://raw.githubusercontent.com/jdjuli/vr-programming/main/static/models/cylinderZ.obj&#34;</span>&gt;&lt;/<span style="color:#f92672">a-asset-item</span>&gt;
+&lt;/<span style="color:#f92672">a-assets</span>&gt;
+</code></pre></div><p>This component should be placed on entities under another entity with the component <code>ide</code> attached, as it&rsquo;s reference is needed to detach it from <a href="/vr-programming/components/variables-state">instructions</a>. The usage of the attributes might be confusing, but here&rsquo;s a summary of what do you have to set depending on your use case:</p>
+<table>
+<thead>
+<tr>
+<th>use case</th>
+<th>variable</th>
+<th>value</th>
+<th>display</th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>new variable</td>
+<td>✓</td>
+<td>✓</td>
+<td>up to you</td>
+<td></td>
+</tr>
+<tr>
+<td>existing variable</td>
+<td>✓</td>
+<td>✗</td>
+<td>up to you</td>
+<td></td>
+</tr>
+<tr>
+<td>constant</td>
+<td>✗</td>
+<td>✓</td>
+<td>up to you</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h1 id="implementation">Implementation</h1>
+<p>During the initialization of the component, horizontal z-axis cylinder geometry is set to the entity and the interaction components are set (if the entity is inside a program, it will only react to collidestart events, but if it&rsquo;s outside, it won&rsquo;t react to them and will be <em>grabbable</em> and <em>draggable</em>). A text component is attached to the entity to display either the name of the variable or a numeric value.</p>
+<p>Later, if a variable name is set, the component checks if it exist, to create it if not and, in either case subscribe to variable updates to keep the value updated.</p>
+<p>On component update, an unsubscription to variable updates is made to avoid multiple subscription and, if variable name is now set, the component subscribe to updates again and forces the first to ensure the variable is read and well represented. If variable name is not set, the component update the text component of it&rsquo;s entity to show <code>#</code> if display is set to <code>NAME</code> or the value (with one decimal digit) if display is set to <code>VALUE</code>.</p>
+<p>The collision handler behaviour varies depending on if the component is configured as a variable or as a constant. On the first case, the entity is removed from the <a href="/vr-programming/components/instruction">instruction</a> and reparented to the <code>ide</code> component&rsquo;s entity moving it a bit forward (+Z axis), and on the second case, the entity is also removed but not reparented.</p>
+<h1 id="examples">Examples</h1>
+<p>Simplest scene for VR headset featuring three instructions an a free parameter meant to be placed on any of the two instructions that doesn&rsquo;t have it placed (play with it <a href="/vr-programming/scenes/examples/value.html">here</a>)</p>
+<pre tabindex="0"><code>  &lt;a-scene&gt;
+    &lt;a-assets&gt;
+      &lt;!--Assets for the value component--&gt;
+      &lt;a-asset-item id=&quot;cylinderZ&quot; src=&quot;https://raw.githubusercontent.com/jdjuli/vr-programming/main/static/models/cylinderZ.obj&quot;&gt;&lt;/a-asset-item&gt;
+      &lt;!--Assets to display the instruction--&gt;
+      &lt;a-asset-item id='instruction' src='https://raw.githubusercontent.com/jdjuli/vr-programming/main/static/models/instruction.obj'&gt;&lt;/a-asset-item&gt;
+      &lt;img id='instruction_move' src='https://raw.githubusercontent.com/jdjuli/vr-programming/main/static/textures/instruction_move.png'&gt;&lt;/img&gt;
+    &lt;/a-assets&gt;
+    &lt;!--Value with inititialization of PI=3.14--&gt;
+    &lt;a-entity value=&quot;variable:PI;value:3.14;display:VALUE&quot; position=&quot;-0.6 1.6 -1&quot;&gt;&lt;/a-entity&gt;
+    &lt;!--Display only the name of the variable (it`s value is internally stored)--&gt;
+    &lt;a-entity value=&quot;variable:PI;display:NAME&quot; position=&quot;-0.4 1.6 -1&quot;&gt;&lt;/a-entity&gt;
+    &lt;!--Display the value of a variable set previously--&gt;
+    &lt;a-entity value=&quot;variable:PI;display:VALUE&quot; position=&quot;-0.2 1.6 -1&quot;&gt;&lt;/a-entity&gt;
+    &lt;!--Display a constant--&gt;
+    &lt;a-entity value=&quot;value:2.71;display:VALUE&quot; position=&quot;0 1.6 -1&quot;&gt;&lt;/a-entity&gt;
+    &lt;!--Instruction with a variable attached--&gt;
+    &lt;a-entity instruction=&quot;function:move;amount:PI&quot; position=&quot;0.2 1.6 -1&quot;&gt;&lt;/a-entity&gt;
+    &lt;!--Instruction with a constant attached--&gt;
+    &lt;a-entity instruction=&quot;function:move;amount:98.7&quot; position=&quot;0.5 1.6 -1&quot;&gt;&lt;/a-entity&gt;
+  &lt;/a-scene&gt;
+</code></pre></div>
+  
+</article></main>
+<footer class="footer">
+  <span>&copy; 2021 <a href="https://jdjuli.github.io/vr-programming/">VR Programming</a></span>
+  <span>&middot;</span>
+  <span>Powered by <a href="https://gohugo.io/" rel="noopener" target="_blank">Hugo️️</a>️</span>
+  <span>&middot;</span>
+  <span>Theme️ <a href="https://github.com/nanxiaobei/hugo-paper" rel="noopener" target="_blank">Paper</a></span>
+</footer>
+<script src="https://jdjuli.github.io/vr-programming/highlight.min.js"></script>
+<script>
+  hljs.initHighlightingOnLoad();
+</script>
+</body>
+</html>
+

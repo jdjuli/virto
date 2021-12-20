@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    
+    <title>assets-manager - VR Programming</title>
+    
+    <meta name="description" content="Purpose System that allows the programmer to load assets easily at runtime and handles the loading failures
+Usage Import the JavaScript file on the &lt;head&gt; of the html with the following tag:
+&lt;script src=&#34;https://raw.githubusercontent.com/jdjuli/vr-programming/main/static/js/assets-manager.js&#34;&gt;&lt;/script&gt; To access the system in your code, you&rsquo;ll need a reference to the scene element, which can be obtained inside your component by doing this:
+let assetsManager = this.el.sceneEl.systems[&#39;assets-manager&#39;]; Once you have a reference to the system, it exposes two functions:">
+    <meta name="author" content="">
+    
+    <link href="https://jdjuli.github.io/vr-programming/an-old-hope.min.css" rel="stylesheet">
+    <link href="https://jdjuli.github.io/vr-programming/style.css" rel="stylesheet">
+    <link href="https://jdjuli.github.io/vr-programming/custom.css" rel="stylesheet">
+    
+    <link rel="apple-touch-icon" href="https://jdjuli.github.io/vr-programming/apple-touch-icon.png">
+    <link rel="icon" href="https://jdjuli.github.io/vr-programming/favicon.ico">
+    <meta name="generator" content="Hugo 0.88.1" />
+    
+    
+    
+    <script>
+      function setTheme() {
+        if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+          document.body.classList.add('dark');
+          return;
+        }
+
+        const time = new Date();
+        const prev = localStorage.getItem('date');
+        const date = String(time.getMonth() + 1) + '.' + String(time.getDate());
+
+        const now = time.getTime();
+        let sunrise;
+        let sunset;
+
+        function setBodyClass() {
+          if (now > sunrise && now < sunset) return;
+          document.body.classList.add('dark');
+        }
+
+        if (date !== prev) {
+          fetch('https://api.ipgeolocation.io/astronomy?apiKey=5ed37d85103e4defa5df4c5298ed5215')
+            .then((res) => res.json())
+            .then((data) => {
+              sunrise = data.sunrise.split(':').map(Number);
+              sunset = data.sunset.split(':').map(Number);
+            })
+            .catch(() => {
+              sunrise = [7, 0];
+              sunset = [19, 0];
+            })
+            .finally(() => {
+              sunrise = time.setHours(sunrise[0], sunrise[1], 0);
+              sunset = time.setHours(sunset[0], sunset[1], 0);
+              setBodyClass();
+              localStorage.setItem('sunrise', sunrise);
+              localStorage.setItem('sunset', sunset);
+            });
+          localStorage.setItem('date', date);
+        } else {
+          sunrise = Number(localStorage.getItem('sunrise'));
+          sunset = Number(localStorage.getItem('sunset'));
+          setBodyClass();
+        }
+      }
+    </script>
+  </head>
+  <body class="single">
+    <script>
+      setTheme();
+    </script>
+    <header class="header">
+      <nav class="nav">
+        <p class="logo"><a href="https://jdjuli.github.io/vr-programming/">VR Programming</a></p>
+        <ul class="menu">
+          <li>
+            <a href="/vr-programming/components/">Components</a>
+          </li>
+          <li>
+            <a href="/vr-programming/scenes/demos/demo19">Latest scene</a>
+          </li>
+        </ul>
+      </nav>
+    </header>
+    <main class="main">
+
+
+<article class="post-single">
+  <header class="post-header">
+    <h1 class="post-title">assets-manager</h1>
+    <div class="post-meta">December 14, 2021</div>
+  </header>
+  <div class="post-content"><h1 id="purpose">Purpose</h1>
+<p>System that allows the programmer to load assets easily at runtime and handles the loading failures</p>
+<h1 id="usage">Usage</h1>
+<p>Import the JavaScript file on the <code>&lt;head&gt;</code> of the html with the following tag:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-html" data-lang="html">&lt;<span style="color:#f92672">script</span> <span style="color:#a6e22e">src</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;https://raw.githubusercontent.com/jdjuli/vr-programming/main/static/js/assets-manager.js&#34;</span>&gt;&lt;/<span style="color:#f92672">script</span>&gt;
+</code></pre></div><p>To access the system in your code, you&rsquo;ll need a reference to the scene element, which can be obtained inside your component by doing this:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-javascript" data-lang="javascript"><span style="color:#66d9ef">let</span> <span style="color:#a6e22e">assetsManager</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">el</span>.<span style="color:#a6e22e">sceneEl</span>.<span style="color:#a6e22e">systems</span>[<span style="color:#e6db74">&#39;assets-manager&#39;</span>];
+</code></pre></div><p>Once you have a reference to the system, it exposes two functions:</p>
+<ul>
+<li>add(<code>id</code>,<code>path</code>)
+This function creates a new asset tag inside <code>&lt;a-assets&gt;</code> which would be <code>&lt;audio&gt;</code>, <code>&lt;img&gt;</code>, <code>&lt;video&gt;</code> or <code>&lt;a-asset-item&gt;</code> depending on the extension of the file referred in <strong>path</strong>. Note that the <code>id</code> must be unique (to point the asset, you&rsquo;ll need to add an # before this <code>id</code>) and an error will be thrown if it&rsquo;s not.
+If the resource pointed by <code>path</code> can&rsquo;t be accessed or fails to load, it&rsquo;s corresponding asset tag will be removed and that <code>id</code> will become available again (It&rsquo;s programmed this way to keep a-assets populated only with the assets that loaded correctly and are ready to use)</li>
+<li>remove(<code>id</code>)
+This function removes the asset tag with the id <code>id</code> and marks it as available, it&rsquo;s faster than using querySelector() because it relies on the <a href="https://aframe.io/docs/1.2.0/core/asset-management-system.html">A-Frame&rsquo;s Asset Management System</a></li>
+</ul>
+<h3 id="idea-how-to-create-unique-ids">Idea: how to create unique ID&rsquo;s</h3>
+<p>To create unique ID&rsquo;s you can use the following code snippets among others:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-javascript" data-lang="javascript"><span style="color:#75715e">//Ideal if you need to generate ID&#39;s fast. 
+</span><span style="color:#75715e">//Math.round() is used to get rid of the decimal separator
+</span><span style="color:#75715e"></span>Math.<span style="color:#a6e22e">round</span>(Math.<span style="color:#a6e22e">random</span>()<span style="color:#f92672">*</span>Number.<span style="color:#a6e22e">MAX_SAFE_INTEGER</span>)).<span style="color:#a6e22e">toString</span>(<span style="color:#ae81ff">36</span>)
+</code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-javascript" data-lang="javascript"><span style="color:#75715e">//Ideal to create ID&#39;s on user demand.
+</span><span style="color:#75715e">//uniqueness not guaranteed if called very frequently (don&#39;t use it on loops)
+</span><span style="color:#75715e"></span>Date.<span style="color:#a6e22e">now</span>().<span style="color:#a6e22e">toString</span>(<span style="color:#ae81ff">36</span>)
+</code></pre></div><h1 id="implementation">Implementation</h1>
+<p>As soon as the system is initialized, it creates internally a Set() to store the used IDs and a reference to the <code>&lt;a-assets&gt;</code> element inside the scene. If the a-assets element can&rsquo;t be found, it&rsquo;s created and in case it already exists (because it is on the HTML and not generated with JavaScript), the system loops through it&rsquo;s children storing their IDs to avoid duplicates when adding more assets at runtime.</p>
+<p>Finally, an error handler is set to the fileLoader to catch the asset loading errors and remove the corresponding element inside <code>&lt;a-assets&gt;</code></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-javascript" data-lang="javascript"><span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">assetsTag</span>.<span style="color:#a6e22e">fileLoader</span>.<span style="color:#a6e22e">manager</span>.<span style="color:#a6e22e">onError</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">errorHandler</span>;
+
+<span style="color:#66d9ef">function</span> <span style="color:#a6e22e">errorHandler</span>(<span style="color:#a6e22e">evt</span>) {
+  <span style="color:#66d9ef">let</span> <span style="color:#a6e22e">failedAsset</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">assetsTag</span>.<span style="color:#a6e22e">querySelector</span>(<span style="color:#e6db74">&#39;[src=\&#39;&#39;</span><span style="color:#f92672">+</span><span style="color:#a6e22e">evt</span><span style="color:#f92672">+</span><span style="color:#e6db74">&#39;\&#39;]&#39;</span>);
+  <span style="color:#66d9ef">this</span>.<span style="color:#66d9ef">delete</span>(<span style="color:#a6e22e">failedAsset</span>.<span style="color:#a6e22e">id</span>);
+  <span style="color:#a6e22e">console</span>.<span style="color:#a6e22e">info</span>(<span style="color:#e6db74">&#39;Asset tag for resource \&#39;&#39;</span><span style="color:#f92672">+</span><span style="color:#a6e22e">evt</span><span style="color:#f92672">+</span><span style="color:#e6db74">&#39;\&#39; has been removed due a problem loading it&#39;</span>);
+}
+</code></pre></div><h1 id="examples">Examples</h1>
+<p>This example shows how to display an .OBJ model loading it&rsquo;s resources at runtime (play with it <a href="/vr-programming/scenes/examples/assets-manager.html">here</a>)</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-html" data-lang="html">  &lt;<span style="color:#f92672">html</span>&gt;
+    &lt;<span style="color:#f92672">head</span>&gt;
+      &lt;<span style="color:#f92672">script</span> <span style="color:#a6e22e">src</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;https://aframe.io/releases/1.2.0/aframe.js&#34;</span>&gt;&lt;/<span style="color:#f92672">script</span>&gt;
+      &lt;<span style="color:#f92672">script</span> <span style="color:#a6e22e">src</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;https://raw.githubusercontent.com/jdjuli/vr-programming/main/static/js/assets-manager.js&#34;</span>&gt;&lt;/<span style="color:#f92672">script</span>&gt;
+    &lt;/<span style="color:#f92672">head</span>&gt;
+    &lt;<span style="color:#f92672">body</span>&gt;
+      &lt;<span style="color:#f92672">a-scene</span>&gt;
+      &lt;/<span style="color:#f92672">a-scene</span>&gt;
+      &lt;<span style="color:#f92672">script</span>&gt;
+            <span style="color:#66d9ef">let</span> <span style="color:#a6e22e">scene</span> <span style="color:#f92672">=</span> document.<span style="color:#a6e22e">querySelector</span>(<span style="color:#e6db74">&#39;a-scene&#39;</span>);
+            <span style="color:#66d9ef">let</span> <span style="color:#a6e22e">assetsMgr</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">scene</span>.<span style="color:#a6e22e">systems</span>[<span style="color:#e6db74">&#39;assets-manager&#39;</span>];
+            <span style="color:#a6e22e">assetsMgr</span>.<span style="color:#a6e22e">add</span>(<span style="color:#e6db74">&#39;model&#39;</span>,<span style="color:#e6db74">&#39;/models/box.obj&#39;</span>);
+            <span style="color:#a6e22e">assetsMgr</span>.<span style="color:#a6e22e">add</span>(<span style="color:#e6db74">&#39;texture&#39;</span>,<span style="color:#e6db74">&#39;/textures/blue_wall.png&#39;</span>);
+            <span style="color:#66d9ef">let</span> <span style="color:#a6e22e">entity</span> <span style="color:#f92672">=</span> document.<span style="color:#a6e22e">createElement</span>(<span style="color:#e6db74">&#39;a-entity&#39;</span>);
+            <span style="color:#a6e22e">entity</span>.<span style="color:#a6e22e">setAttribute</span>(<span style="color:#e6db74">&#39;position&#39;</span>,{<span style="color:#a6e22e">x</span><span style="color:#f92672">:</span><span style="color:#ae81ff">0</span>, <span style="color:#a6e22e">y</span><span style="color:#f92672">:</span><span style="color:#ae81ff">1</span>, <span style="color:#a6e22e">z</span><span style="color:#f92672">:-</span><span style="color:#ae81ff">1</span>});
+            <span style="color:#a6e22e">entity</span>.<span style="color:#a6e22e">setAttribute</span>(<span style="color:#e6db74">&#39;scale&#39;</span>,{<span style="color:#a6e22e">x</span><span style="color:#f92672">:</span><span style="color:#ae81ff">10</span>,<span style="color:#a6e22e">y</span><span style="color:#f92672">:</span><span style="color:#ae81ff">10</span>,<span style="color:#a6e22e">z</span><span style="color:#f92672">:</span><span style="color:#ae81ff">10</span>});
+            <span style="color:#a6e22e">entity</span>.<span style="color:#a6e22e">setAttribute</span>(<span style="color:#e6db74">&#39;obj-model&#39;</span>,{<span style="color:#a6e22e">obj</span><span style="color:#f92672">:</span><span style="color:#e6db74">&#39;#model&#39;</span>});
+            <span style="color:#a6e22e">entity</span>.<span style="color:#a6e22e">setAttribute</span>(<span style="color:#e6db74">&#39;material&#39;</span>,{<span style="color:#a6e22e">src</span><span style="color:#f92672">:</span><span style="color:#e6db74">&#39;#texture&#39;</span>});
+            <span style="color:#a6e22e">scene</span>.<span style="color:#a6e22e">appendChild</span>(<span style="color:#a6e22e">entity</span>);
+      &lt;/<span style="color:#f92672">script</span>&gt;
+    &lt;/<span style="color:#f92672">body</span>&gt;
+  &lt;/<span style="color:#f92672">html</span>&gt;
+</code></pre></div><p>As soon as our script is executed, we can see the changes on the scene (a lot of code has been removed here for clarity):</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-html" data-lang="html">&lt;<span style="color:#f92672">a-scene</span> <span style="color:#960050;background-color:#1e0010">(...)</span>&gt;
+  &lt;<span style="color:#f92672">a-assets</span>&gt;
+    &lt;<span style="color:#f92672">a-asset-item</span> <span style="color:#a6e22e">id</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;model&#34;</span> <span style="color:#a6e22e">src</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;/models/box.obj&#34;</span>&gt;&lt;/<span style="color:#f92672">a-asset-item</span>&gt;
+    &lt;<span style="color:#f92672">img</span> <span style="color:#a6e22e">id</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;texture&#34;</span> <span style="color:#a6e22e">src</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;/textures/blue_wall.png&#34;</span>&gt;
+  &lt;/<span style="color:#f92672">a-assets</span>&gt;
+  (...)
+  &lt;<span style="color:#f92672">a-entity</span> <span style="color:#a6e22e">position</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;&#34;</span> <span style="color:#a6e22e">scale</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;&#34;</span> <span style="color:#a6e22e">obj-model</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;&#34;</span> <span style="color:#a6e22e">material</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;&#34;</span>&gt;&lt;/<span style="color:#f92672">a-entity</span>&gt;
+  (...)
+&lt;/<span style="color:#f92672">a-scene</span>&gt;
+</code></pre></div></div>
+  
+</article></main>
+<footer class="footer">
+  <span>&copy; 2021 <a href="https://jdjuli.github.io/vr-programming/">VR Programming</a></span>
+  <span>&middot;</span>
+  <span>Powered by <a href="https://gohugo.io/" rel="noopener" target="_blank">Hugo️️</a>️</span>
+  <span>&middot;</span>
+  <span>Theme️ <a href="https://github.com/nanxiaobei/hugo-paper" rel="noopener" target="_blank">Paper</a></span>
+</footer>
+<script src="https://jdjuli.github.io/vr-programming/highlight.min.js"></script>
+<script>
+  hljs.initHighlightingOnLoad();
+</script>
+</body>
+</html>
+

@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <script src="https://aframe.io/releases/1.2.0/aframe.js"></script>
+        <script src="https://unpkg.com/aframe-state-component@7.1.0/dist/aframe-state-component.js"></script>
+        <script src="/js/variables-system.js"></script>
+        <script src="/js/instruction.js"></script>
+        <script src="/js/value.js"></script>
+    </head>
+    <body>
+        <a-scene>
+            <a-assets>
+              <!--Assets for the value component-->
+              <a-asset-item id="cylinderZ" src="/vr-programming/models/cylinderZ.obj"></a-asset-item>
+              <!--Assets to display the instruction-->
+              <a-asset-item id='instruction' src='/vr-programming/models/instruction.obj'></a-asset-item>
+              <img id='instruction_move' src='/vr-programming/textures/instruction_move.png'></img>
+            </a-assets>
+            <!--Value with inititialization of PI=3.14-->
+            <a-entity value="variable:PI;value:3.14;display:VALUE" position="-0.6 1.6 -1"></a-entity>
+            <!--Display only the name of the variable (it`s value is internally stored)-->
+            <a-entity value="variable:PI;display:NAME" position="-0.4 1.6 -1"></a-entity>
+            <!--Display the value of a variable set previously-->
+            <a-entity value="variable:PI;display:VALUE" position="-0.2 1.6 -1"></a-entity>
+            <!--Display a constant-->
+            <a-entity value="value:2.71;display:VALUE" position="0 1.6 -1"></a-entity>
+            <!--Instruction with a variable attached-->
+            <a-entity instruction="function:move;amount:PI" position="0.2 1.6 -1"></a-entity>
+            <!--Instruction with a constant attached-->
+            <a-entity instruction="function:move;amount:98.7" position="0.5 1.6 -1"></a-entity>
+        </a-scene>
+    </body>
+</html>

@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    
+    <title>emit-event-button - VR Programming</title>
+    
+    <meta name="description" content="Purpose Provide a generic button that can notify other entities through events when it has been touched
+Schema  attribute name: event  description: The name of the event that will be send type: string   attribute name: emitTo  description: The entity to be notified. By default, the event will be sent to the scene type: selector   attribute name: text  description: Text to be displayed on the button type: string    Usage Import the component with:">
+    <meta name="author" content="">
+    
+    <link href="https://jdjuli.github.io/vr-programming/an-old-hope.min.css" rel="stylesheet">
+    <link href="https://jdjuli.github.io/vr-programming/style.css" rel="stylesheet">
+    <link href="https://jdjuli.github.io/vr-programming/custom.css" rel="stylesheet">
+    
+    <link rel="apple-touch-icon" href="https://jdjuli.github.io/vr-programming/apple-touch-icon.png">
+    <link rel="icon" href="https://jdjuli.github.io/vr-programming/favicon.ico">
+    <meta name="generator" content="Hugo 0.88.1" />
+    
+    
+    
+    <script>
+      function setTheme() {
+        if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+          document.body.classList.add('dark');
+          return;
+        }
+
+        const time = new Date();
+        const prev = localStorage.getItem('date');
+        const date = String(time.getMonth() + 1) + '.' + String(time.getDate());
+
+        const now = time.getTime();
+        let sunrise;
+        let sunset;
+
+        function setBodyClass() {
+          if (now > sunrise && now < sunset) return;
+          document.body.classList.add('dark');
+        }
+
+        if (date !== prev) {
+          fetch('https://api.ipgeolocation.io/astronomy?apiKey=5ed37d85103e4defa5df4c5298ed5215')
+            .then((res) => res.json())
+            .then((data) => {
+              sunrise = data.sunrise.split(':').map(Number);
+              sunset = data.sunset.split(':').map(Number);
+            })
+            .catch(() => {
+              sunrise = [7, 0];
+              sunset = [19, 0];
+            })
+            .finally(() => {
+              sunrise = time.setHours(sunrise[0], sunrise[1], 0);
+              sunset = time.setHours(sunset[0], sunset[1], 0);
+              setBodyClass();
+              localStorage.setItem('sunrise', sunrise);
+              localStorage.setItem('sunset', sunset);
+            });
+          localStorage.setItem('date', date);
+        } else {
+          sunrise = Number(localStorage.getItem('sunrise'));
+          sunset = Number(localStorage.getItem('sunset'));
+          setBodyClass();
+        }
+      }
+    </script>
+  </head>
+  <body class="single">
+    <script>
+      setTheme();
+    </script>
+    <header class="header">
+      <nav class="nav">
+        <p class="logo"><a href="https://jdjuli.github.io/vr-programming/">VR Programming</a></p>
+        <ul class="menu">
+          <li>
+            <a href="/vr-programming/components/">Components</a>
+          </li>
+          <li>
+            <a href="/vr-programming/scenes/demos/demo19">Latest scene</a>
+          </li>
+        </ul>
+      </nav>
+    </header>
+    <main class="main">
+
+
+<article class="post-single">
+  <header class="post-header">
+    <h1 class="post-title">emit-event-button</h1>
+    <div class="post-meta">December 16, 2021</div>
+  </header>
+  <div class="post-content"><h1 id="purpose">Purpose</h1>
+<p>Provide a generic button that can notify other entities through events when it has been touched</p>
+<h1 id="schema">Schema</h1>
+<ul>
+<li>attribute name: event
+<ul>
+<li>description: The name of the event that will be send</li>
+<li>type: string</li>
+</ul>
+</li>
+<li>attribute name: emitTo
+<ul>
+<li>description: The entity to be notified. By default, the event will be sent to the scene</li>
+<li>type: selector</li>
+</ul>
+</li>
+<li>attribute name: text
+<ul>
+<li>description: Text to be displayed on the button</li>
+<li>type: string</li>
+</ul>
+</li>
+</ul>
+<h1 id="usage">Usage</h1>
+<p>Import the component with:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-html" data-lang="html">&lt;<span style="color:#f92672">script</span> <span style="color:#a6e22e">src</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;https://raw.githubusercontent.com/jdjuli/vr-programming/main/static/js/emit-event-button.js&#34;</span>&gt;&lt;/<span style="color:#f92672">script</span>&gt;
+</code></pre></div><p>When creating VR scenes, make sure that you set up another component that emits <code>collidestart</code> events when the button is touched, this can be done in two ways:</p>
+<ul>
+<li>Using the <a href="/vr-programming/components/custom-hand">custom-hand</a> component to create the hands (internally it uses <code>box-collider</code>, which emits this event)</li>
+<li>Using <a href="https://github.com/n5ro/aframe-physics-system">aframe-physics-system</a> with Ammo.js driver (<a href="https://github.com/n5ro/aframe-physics-system/blob/master/AmmoDriver.md">how-to</a>).</li>
+</ul>
+<p>If the scene is going to be used on PC, this component requires <a href="https://github.com/wmurphyrd/aframe-super-hands-component">super-hands</a> to work properly, as the &lsquo;touching the button&rsquo; gesture is replaced by the <code>click</code> event that super-hands emits to the button entity when clicked.</p>
+<p>To use the component, just attach it to any entity on the scene and configure it to match your needs.</p>
+<h1 id="implementation">Implementation</h1>
+<p>On the initialization, a box primitive is set to the entity with the following dimensions: width=0.2, height=0.1, depth=0.05 (In the future this will be parametrized) and color <code>#7d0222</code>.</p>
+<p>The component checks if the scene is being used on PC or VR device and sets the handler responsible of emitting the events to either the &lsquo;click&rsquo; or the &lsquo;collidestart&rsquo; event.</p>
+<h1 id="examples">Examples</h1>
+<p>Simplest scene for VR headset featuring three instructions an a free parameter meant to be placed on any of the two instructions that doesn&rsquo;t have it placed (play with it <a href="/vr-programming/scenes/examples/emit-event-button.html">here</a>)</p>
+<pre tabindex="0"><code>  &lt;a-scene&gt;
+      &lt;!-- Entity that will receive the events --&gt;
+      &lt;a-entity id=&quot;sphere&quot; 
+                geometry=&quot;primitive:sphere; radius:0.1&quot; material=&quot;color:blue&quot; 
+                position=&quot;0 1.6 -1&quot;
+                event-set__moveup=&quot;position:0 1.7 -1&quot; 
+                event-set__movedown=&quot;position:0 1.5 -1&quot;&gt;&lt;/a-entity&gt;
+      &lt;!-- Button to move the sphere up --&gt;
+      &lt;a-entity emit-event-button=&quot;event:moveup; emitTo:#sphere; text:up&quot;
+                position=&quot;-0.3 1.4 -0.5&quot;&gt;&lt;/a-entity&gt;
+      &lt;!-- Button to move the sphere down --&gt;
+      &lt;a-entity emit-event-button=&quot;event:movedown; emitTo:#sphere; text:down&quot;
+                position=&quot;0.3 1.4 -0.5&quot;&gt;&lt;/a-entity&gt;
+      &lt;!-- Make the scene work in both PC and VR headsets --&gt;
+      &lt;a-entity multidevice=&quot;colliderSelector:.collidable&quot;&gt;&lt;/a-entity&gt;
+  &lt;/a-scene&gt;
+</code></pre></div>
+  
+</article></main>
+<footer class="footer">
+  <span>&copy; 2021 <a href="https://jdjuli.github.io/vr-programming/">VR Programming</a></span>
+  <span>&middot;</span>
+  <span>Powered by <a href="https://gohugo.io/" rel="noopener" target="_blank">Hugo️️</a>️</span>
+  <span>&middot;</span>
+  <span>Theme️ <a href="https://github.com/nanxiaobei/hugo-paper" rel="noopener" target="_blank">Paper</a></span>
+</footer>
+<script src="https://jdjuli.github.io/vr-programming/highlight.min.js"></script>
+<script>
+  hljs.initHighlightingOnLoad();
+</script>
+</body>
+</html>
+

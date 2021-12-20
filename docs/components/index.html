@@ -80,7 +80,7 @@
             <a href="/vr-programming/components/">Components</a>
           </li>
           <li>
-            <a href="/vr-programming/scenes/demos/demo18">Latest scene</a>
+            <a href="/vr-programming/scenes/demos/demo19">Latest scene</a>
           </li>
         </ul>
       </nav>
@@ -89,6 +89,76 @@
 
 <header class="page-header"><h1>Components</h1></header>
 
+<article class="post-entry">
+  <header class="entry-header">
+    <h2>box-collider</h2>
+  </header>
+  <section class="entry-content">
+   <p>Purpose Detect collisions precisely between a point and a box shaped entity
+Schema  attribute name: colliderSelector  description: CSS selector of entities to collide with. type: string   attribute name: skipTicks  description: How many tick updates should be ignored before computing intersections again type: Number default: 0 (check for collisions on each tick call)    Usage Import the component with:
+&lt;script src=&#34;https://raw.githubusercontent.com/jdjuli/vr-programming/main/static/js/box-collider.js&#34;&gt;&lt;/script&gt; Attach the component to the entity that will represent the ‘point’ of the intersection (i....</p>
+  </section>
+  <footer class="entry-footer">
+    <time>December 18, 2021</time>
+  </footer>
+  <a class="entry-link" href="https://jdjuli.github.io/vr-programming/components/box-collider/"></a>
+</article>
+<article class="post-entry">
+  <header class="entry-header">
+    <h2>emit-event-button</h2>
+  </header>
+  <section class="entry-content">
+   <p>Purpose Provide a generic button that can notify other entities through events when it has been touched
+Schema  attribute name: event  description: The name of the event that will be send type: string   attribute name: emitTo  description: The entity to be notified. By default, the event will be sent to the scene type: selector   attribute name: text  description: Text to be displayed on the button type: string    Usage Import the component with:...</p>
+  </section>
+  <footer class="entry-footer">
+    <time>December 16, 2021</time>
+  </footer>
+  <a class="entry-link" href="https://jdjuli.github.io/vr-programming/components/emit-event-button/"></a>
+</article>
+<article class="post-entry">
+  <header class="entry-header">
+    <h2>value</h2>
+  </header>
+  <section class="entry-content">
+   <p>Purpose This component manages an entity that represent a numeric value inside the program, it can be a variable registered on variables-state or a constant.
+Schema  attribute name: variable  description: variable name to get value from, if it doesn’t exist, it will be created with the value provided. Don’t set it to represent a constant type: string   attribute name: value  description: numeric value, if variable name is set but doesn’t exist, the variable will take this value, but if it exist, this value will be ignored type: number   attribute name: display  description: what to show on the entity, either the numeric value or the variable name (if no variable name is set, it’ll display ‘#&#39;) type: string default: VALUE oneOf: VALUE, NAME    Usage Import the component with:...</p>
+  </section>
+  <footer class="entry-footer">
+    <time>December 16, 2021</time>
+  </footer>
+  <a class="entry-link" href="https://jdjuli.github.io/vr-programming/components/value/"></a>
+</article>
+<article class="post-entry">
+  <header class="entry-header">
+    <h2>variables-state</h2>
+  </header>
+  <section class="entry-content">
+   <p>Purpose This file registers a state using the aframe-state-component to provide a mechanism to have global numeric variables on the scene.
+Usage Import the JavaScript files on the &lt;head&gt; of the html with the following tags:
+&lt;script src=&#34;https://unpkg.com/aframe-state-component@7.1.0/dist/aframe-state-component.js&#34;&gt;&lt;/script&gt; &lt;script src=&#34;https://raw.githubusercontent.com/jdjuli/vr-programming/main/static/js/variables-system.js&#34;&gt;&lt;/script&gt; To access the variables in your code, you’ll need a reference to the state system, which can be obtained inside your component by doing this:
+let scene = this.el.sceneEl //Or document....</p>
+  </section>
+  <footer class="entry-footer">
+    <time>December 15, 2021</time>
+  </footer>
+  <a class="entry-link" href="https://jdjuli.github.io/vr-programming/components/variables-state/"></a>
+</article>
+<article class="post-entry">
+  <header class="entry-header">
+    <h2>assets-manager</h2>
+  </header>
+  <section class="entry-content">
+   <p>Purpose System that allows the programmer to load assets easily at runtime and handles the loading failures
+Usage Import the JavaScript file on the &lt;head&gt; of the html with the following tag:
+&lt;script src=&#34;https://raw.githubusercontent.com/jdjuli/vr-programming/main/static/js/assets-manager.js&#34;&gt;&lt;/script&gt; To access the system in your code, you’ll need a reference to the scene element, which can be obtained inside your component by doing this:
+let assetsManager = this.el.sceneEl.systems[&#39;assets-manager&#39;]; Once you have a reference to the system, it exposes two functions:...</p>
+  </section>
+  <footer class="entry-footer">
+    <time>December 14, 2021</time>
+  </footer>
+  <a class="entry-link" href="https://jdjuli.github.io/vr-programming/components/assets-manager/"></a>
+</article>
 <article class="post-entry">
   <header class="entry-header">
     <h2>custom-hand</h2>

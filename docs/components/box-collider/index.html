@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    
+    <title>box-collider - VR Programming</title>
+    
+    <meta name="description" content="Purpose Detect collisions precisely between a point and a box shaped entity
+Schema  attribute name: colliderSelector  description: CSS selector of entities to collide with. type: string   attribute name: skipTicks  description: How many tick updates should be ignored before computing intersections again type: Number default: 0 (check for collisions on each tick call)    Usage Import the component with:
+&lt;script src=&#34;https://raw.githubusercontent.com/jdjuli/vr-programming/main/static/js/box-collider.js&#34;&gt;&lt;/script&gt; Attach the component to the entity that will represent the &lsquo;point&rsquo; of the intersection (i.">
+    <meta name="author" content="">
+    
+    <link href="https://jdjuli.github.io/vr-programming/an-old-hope.min.css" rel="stylesheet">
+    <link href="https://jdjuli.github.io/vr-programming/style.css" rel="stylesheet">
+    <link href="https://jdjuli.github.io/vr-programming/custom.css" rel="stylesheet">
+    
+    <link rel="apple-touch-icon" href="https://jdjuli.github.io/vr-programming/apple-touch-icon.png">
+    <link rel="icon" href="https://jdjuli.github.io/vr-programming/favicon.ico">
+    <meta name="generator" content="Hugo 0.88.1" />
+    
+    
+    
+    <script>
+      function setTheme() {
+        if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+          document.body.classList.add('dark');
+          return;
+        }
+
+        const time = new Date();
+        const prev = localStorage.getItem('date');
+        const date = String(time.getMonth() + 1) + '.' + String(time.getDate());
+
+        const now = time.getTime();
+        let sunrise;
+        let sunset;
+
+        function setBodyClass() {
+          if (now > sunrise && now < sunset) return;
+          document.body.classList.add('dark');
+        }
+
+        if (date !== prev) {
+          fetch('https://api.ipgeolocation.io/astronomy?apiKey=5ed37d85103e4defa5df4c5298ed5215')
+            .then((res) => res.json())
+            .then((data) => {
+              sunrise = data.sunrise.split(':').map(Number);
+              sunset = data.sunset.split(':').map(Number);
+            })
+            .catch(() => {
+              sunrise = [7, 0];
+              sunset = [19, 0];
+            })
+            .finally(() => {
+              sunrise = time.setHours(sunrise[0], sunrise[1], 0);
+              sunset = time.setHours(sunset[0], sunset[1], 0);
+              setBodyClass();
+              localStorage.setItem('sunrise', sunrise);
+              localStorage.setItem('sunset', sunset);
+            });
+          localStorage.setItem('date', date);
+        } else {
+          sunrise = Number(localStorage.getItem('sunrise'));
+          sunset = Number(localStorage.getItem('sunset'));
+          setBodyClass();
+        }
+      }
+    </script>
+  </head>
+  <body class="single">
+    <script>
+      setTheme();
+    </script>
+    <header class="header">
+      <nav class="nav">
+        <p class="logo"><a href="https://jdjuli.github.io/vr-programming/">VR Programming</a></p>
+        <ul class="menu">
+          <li>
+            <a href="/vr-programming/components/">Components</a>
+          </li>
+          <li>
+            <a href="/vr-programming/scenes/demos/demo19">Latest scene</a>
+          </li>
+        </ul>
+      </nav>
+    </header>
+    <main class="main">
+
+
+<article class="post-single">
+  <header class="post-header">
+    <h1 class="post-title">box-collider</h1>
+    <div class="post-meta">December 18, 2021</div>
+  </header>
+  <div class="post-content"><h1 id="purpose">Purpose</h1>
+<p>Detect collisions precisely between a point and a box shaped entity</p>
+<h1 id="schema">Schema</h1>
+<ul>
+<li>attribute name: colliderSelector
+<ul>
+<li>description: CSS selector of entities to collide with.</li>
+<li>type: string</li>
+</ul>
+</li>
+<li>attribute name: skipTicks
+<ul>
+<li>description: How many tick updates should be ignored before computing intersections again</li>
+<li>type: Number</li>
+<li>default: 0 (check for collisions on each tick call)</li>
+</ul>
+</li>
+</ul>
+<h1 id="usage">Usage</h1>
+<p>Import the component with:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-html" data-lang="html">&lt;<span style="color:#f92672">script</span> <span style="color:#a6e22e">src</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;https://raw.githubusercontent.com/jdjuli/vr-programming/main/static/js/box-collider.js&#34;</span>&gt;&lt;/<span style="color:#f92672">script</span>&gt;
+</code></pre></div><p>Attach the component to the entity that will represent the &lsquo;point&rsquo; of the intersection (i.e. the tip of a finger), there&rsquo;s no need for that entity to have an associated geometry nor material unless you want to set it to see where the collision point is.</p>
+<p>Differenciate the entities you want to detect collisions with and set the CSS selector accordingly, but try to keep the number of entities as low as possible as it impacts the performance. If you are aware of the performance, you can tune the <code>skipTicks</code> argument to avoid calculating the intersections on each tick, increasing this number is encouraged specialy when the objects are moving slowly and/or fluency is more important than precision.</p>
+<p>Keep in mind that the entities pointed by the CSS selector are not updated if you remove or create a new entity and when this happens, a manual call to the update() function is needed to refresh the entities.</p>
+<p>This component emits the events <code>collidestart</code> when the collision starts and <code>collideend</code> when it terminates to the colliding entity (not the one that has this component attached)</p>
+<h1 id="implementation">Implementation</h1>
+<p>This components works thanks to geometric transformations provided by the <a href="https://threejs.org/">threejs</a> math classes. During the initialization only a Set and two variables to keep track of the tick calls and which of them skip are initializated. On each update call(), the set is filled with the result of quering the scene with the provided <code>colliderSelector</code> and later, the set is mapped to transform each entity to a pair of the entity and it&rsquo;s semi-size (the size of it&rsquo;s bounding box divided by two).</p>
+<p>On each tick call that computes positions, the set is iterated and for each element, the current position of the entity is translated to the coordinate space of the element so guessing if it&rsquo;s inside the volume is as simple as calculating if it&rsquo;s coordinates are inside (-halfDimension,+halfDimension).</p>
+<p>Here I show a simpler example of the procedure applied on a 2D space:
+<img src="/vr-programming/img/component_box-collider_example.png" alt="">
+<em>Red elements are on the global coordinate system and the green ones on the black box&rsquo;s coordinate system, origins of both systems are noted by OG and OL respectively</em></p>
+<p>Imagine that we want to know if the points P and Q are inside the box, but as they are on the global coordinate system (red arrows, let&rsquo;s say they are children of a-scene), the math to check this is complicated, but if we express it&rsquo;s position on a local coordinate system (green arrows), the points would be inside the box only if <code>-H/2 &lt; P_h &lt; H/2</code> and <code>-W/2 &lt; P_w &lt; W/2</code>, being H and W the heigth and width of the box respectively. Extrapolate this to the third dimension requires us to consider also the depth of the box and the Z-coordinate of the point we want to check.</p>
+<h1 id="examples">Examples</h1>
+<p>This scene demonstrate the drawbacks of using this component to detect collisions with rounded geometries, start it on a VR headset and make the &lsquo;pointing&rsquo; gesture (☝) to enable the collider, which is located on the tip of the index finger. (play with it <a href="/vr-programming/scenes/examples/box-collider.html">here</a>)</p>
+<p><img src="/vr-programming/img/component_box-collider_demonstration.gif" alt="">
+<em>the cyan sphere was added to keep track of the collider entity</em></p>
+<pre tabindex="0"><code>  &lt;a-scene&gt;
+    &lt;a-entity   geometry=&quot;primitive:sphere; radius:0.1&quot;
+                material=&quot;color:blue&quot;
+                position=&quot;-0.3 1.4 -0.5&quot;
+                event-set__collidestart=&quot;material.color:red&quot;
+                event-set__collideend=&quot;material.color:blue&quot;
+                class=&quot;collidable&quot;&gt;&lt;/a-entity&gt;
+    &lt;a-entity   geometry=&quot;primitive:box; height:0.2; width:0.2; depth:0.2&quot;
+                material=&quot;color:blue&quot;
+                position=&quot;0 1.4 -0.5&quot;
+                event-set__collidestart=&quot;material.color:red&quot;
+                event-set__collideend=&quot;material.color:blue&quot;
+                class=&quot;collidable&quot;&gt;&lt;/a-entity&gt;
+    &lt;a-entity   geometry=&quot;primitive:cone; height:0.2; radius-bottom:0.1; radius-top:0&quot;
+                material=&quot;color:blue&quot;
+                position=&quot;0.3 1.4 -0.5&quot;
+                event-set__collidestart=&quot;material.color:red&quot;
+                event-set__collideend=&quot;material.color:blue&quot;
+                class=&quot;collidable&quot;&gt;&lt;/a-entity&gt;
+    &lt;a-entity multidevice=&quot;colliderSelector:.collidable&quot;&gt;&lt;/a-entity&gt;
+  &lt;/a-scene&gt;
+</code></pre></div>
+  
+</article></main>
+<footer class="footer">
+  <span>&copy; 2021 <a href="https://jdjuli.github.io/vr-programming/">VR Programming</a></span>
+  <span>&middot;</span>
+  <span>Powered by <a href="https://gohugo.io/" rel="noopener" target="_blank">Hugo️️</a>️</span>
+  <span>&middot;</span>
+  <span>Theme️ <a href="https://github.com/nanxiaobei/hugo-paper" rel="noopener" target="_blank">Paper</a></span>
+</footer>
+<script src="https://jdjuli.github.io/vr-programming/highlight.min.js"></script>
+<script>
+  hljs.initHighlightingOnLoad();
+</script>
+</body>
+</html>
+

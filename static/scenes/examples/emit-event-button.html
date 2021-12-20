@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <script src="https://aframe.io/releases/1.2.0/aframe.js"></script>
+        <script src="https://cdn.jsdelivr.net/gh/donmccurdy/aframe-extras@v6.1.1/dist/aframe-extras.min.js"></script>
+        <script src="https://unpkg.com/super-hands@^3.0.1/dist/super-hands.min.js"></script>
+        <script src="https://unpkg.com/aframe-event-set-component@4.2.1/dist/aframe-event-set-component.min.js"></script>
+        <script src="/js/emit-event-button.js"></script>
+        <script src="/js/multidevice.js"></script>
+    </head>
+    <body>
+        <a-scene>
+            <!-- Entity that will receive the events -->
+            <a-entity id="sphere" 
+                      geometry="primitive:sphere; radius:0.1" material="color:blue" 
+                      position="0 1.6 -1"
+                      event-set__moveup="position:0 1.7 -1" 
+                      event-set__movedown="position:0 1.5 -1"></a-entity>
+            <!-- Button to move the sphere up -->
+            <a-entity emit-event-button="event:moveup; emitTo:#sphere; text:up"
+                      position="-0.3 1.4 -0.5"></a-entity>
+            <!-- Button to move the sphere down -->
+            <a-entity emit-event-button="event:movedown; emitTo:#sphere; text:down"
+                      position="0.3 1.4 -0.5"></a-entity>
+            <!-- Make the scene work in both PC and VR headsets -->
+            <a-entity multidevice="colliderSelector:.collidable"></a-entity>
+        </a-scene>
+    </body>
+</html>
