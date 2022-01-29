@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    
+    <title>Review on colliders - VR Programming</title>
+    
+    <meta name="description" content="This few past weeks I remembered a small issue I had from the begining related to the &lsquo;realism&rsquo; of the grab and touch. I&rsquo;ve already developed the component box-collider, which implements an OBB collider (i&rsquo;ll explain this later) but it&rsquo;s performance was worse than what I thought when I designed it.
+I decided to invest some time doing some research about how colliders work and creating components to use them on A-Frame, I came out with 4 types of colliders:">
+    <meta name="author" content="">
+    
+    <link href="https://jdjuli.github.io/vr-programming/an-old-hope.min.css" rel="stylesheet">
+    <link href="https://jdjuli.github.io/vr-programming/style.css" rel="stylesheet">
+    <link href="https://jdjuli.github.io/vr-programming/custom.css" rel="stylesheet">
+    
+    <link rel="apple-touch-icon" href="https://jdjuli.github.io/vr-programming/apple-touch-icon.png">
+    <link rel="icon" href="https://jdjuli.github.io/vr-programming/favicon.ico">
+    <meta name="generator" content="Hugo 0.88.1" />
+    
+    
+    
+    <script>
+      function setTheme() {
+        if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+          document.body.classList.add('dark');
+          return;
+        }
+
+        const time = new Date();
+        const prev = localStorage.getItem('date');
+        const date = String(time.getMonth() + 1) + '.' + String(time.getDate());
+
+        const now = time.getTime();
+        let sunrise;
+        let sunset;
+
+        function setBodyClass() {
+          if (now > sunrise && now < sunset) return;
+          document.body.classList.add('dark');
+        }
+
+        if (date !== prev) {
+          fetch('https://api.ipgeolocation.io/astronomy?apiKey=5ed37d85103e4defa5df4c5298ed5215')
+            .then((res) => res.json())
+            .then((data) => {
+              sunrise = data.sunrise.split(':').map(Number);
+              sunset = data.sunset.split(':').map(Number);
+            })
+            .catch(() => {
+              sunrise = [7, 0];
+              sunset = [19, 0];
+            })
+            .finally(() => {
+              sunrise = time.setHours(sunrise[0], sunrise[1], 0);
+              sunset = time.setHours(sunset[0], sunset[1], 0);
+              setBodyClass();
+              localStorage.setItem('sunrise', sunrise);
+              localStorage.setItem('sunset', sunset);
+            });
+          localStorage.setItem('date', date);
+        } else {
+          sunrise = Number(localStorage.getItem('sunrise'));
+          sunset = Number(localStorage.getItem('sunset'));
+          setBodyClass();
+        }
+      }
+    </script>
+  </head>
+  <body class="single">
+    <script>
+      setTheme();
+    </script>
+    <header class="header">
+      <nav class="nav">
+        <p class="logo"><a href="https://jdjuli.github.io/vr-programming/">VR Programming</a></p>
+        <ul class="menu">
+          <li>
+            <a href="/vr-programming/components/">Components</a>
+          </li>
+          <li>
+            <a href="/vr-programming/scenes/demos/demo19">Latest scene</a>
+          </li>
+        </ul>
+      </nav>
+    </header>
+    <main class="main">
+
+
+<article class="post-single">
+  <header class="post-header">
+    <h1 class="post-title">Review on colliders</h1>
+    <div class="post-meta">January 28, 2022</div>
+  </header>
+  <div class="post-content"><p>This few past weeks I remembered a small issue I had from the begining related to the &lsquo;realism&rsquo; of the grab and touch. I&rsquo;ve already developed the component <a href="/vr-programming/components/box-collider">box-collider</a>, which implements an OBB collider (i&rsquo;ll explain this later) but it&rsquo;s performance was worse than what I thought when I designed it.</p>
+<p>I decided to invest some time doing some research about how colliders work and creating components to use them on A-Frame, I came out with 4 types of colliders:</p>
+<ol>
+<li><code>sphere collider</code>: This are the simplest, they simply encapsullate the objects into spheres and detect if they intersect by comparing the sum of the radious and the distance between the centre of the spheres.</li>
+<li><code>AABB collider</code>: AABB stands for <em>Axis Aligned Bounding Box</em>, it works by creating the box that fits bether the geometry of the entity enforcing the edges of the box to be parallel to any of the tree axis of the world (X, Y, Z) and checking if the edges of two of this boxes overlap on the three axes simultaneosly.</li>
+<li><code>OBB collider</code>: OBB stands for <em>Oriented Bounding Box</em>, and it&rsquo;s very similar to the AABB collider but in this case, the edges of the bounding box have an arbitrary orientation. This collider is kind of a mid-point between the AABB collider and the mesh collider in terms of precission and performance.</li>
+<li><code>mesh collider</code>: As the name suggests, this collider uses the mesh of the object to test for collisions, mo matter it&rsquo;s orientation. It&rsquo;s the most precise of this four colliders, but the most important drawback is that is very computationally expensive and most of the times this can be avoiding by using a combination of the three previous colliders.</li>
+</ol>
+<h1 id="tests">Tests</h1>
+<p>Now that we know some of the most common colliders, let&rsquo;s see them in action, I&rsquo;ve prepared four scenes with a different collider on each, the entities displayed are cyan and become red when a collision is detected. VR headset is required as the scenes make use of the controllers to move the collider, which is located on the center of the hands (marked with a small golden sphere)</p>
+<h2 id="sphere-collider">Sphere collider</h2>
+<p>This collider is part of the <a href="https://wmurphyrd.github.io/aframe-super-hands-component/">aframe-extras repository</a> of <em>donmccurdy</em> and can be used by including that proyect, see the readme of his repo to have updated instructions on how to add it to your proyect.</p>
+<p><a href="/vr-programming/scenes/examples/sphereCollider.html"><strong>Test it</strong></a></p>
+<h2 id="aabb-collider">AABB collider</h2>
+<p>I&rsquo;ve modified the sphere-collider of donmccurdy to detect collisions between an AABB and an sphere, it&rsquo;s usage is exactly the same and the best part is that they are interchangeable, you&rsquo;ll only need to include this JavaScript file to your HTML:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-html" data-lang="html">   &lt;<span style="color:#f92672">script</span> <span style="color:#a6e22e">src</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;https://cdn.rawgit.com/donmccurdy/aframe-extras/v4.1.2/dist/aframe-extras.min.js&#34;</span>&gt;&lt;/<span style="color:#f92672">script</span>&gt;
+</code></pre></div><p><a href="/vr-programming/scenes/examples/aabbCollider.html"><strong>Test it</strong></a></p>
+<h2 id="obb-collider">OBB collider</h2>
+<p>As I did to create the AABB collider, this time I&rsquo;ve also modified the sphere-collider component of donmccurdy to detect collisions between an OBB and an sphere, to use it, include this JavaScript file to your HTML:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-html" data-lang="html">   &lt;<span style="color:#f92672">script</span> <span style="color:#a6e22e">src</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;https://cdn.rawgit.com/donmccurdy/aframe-extras/v4.1.2/dist/aframe-extras.min.js&#34;</span>&gt;&lt;/<span style="color:#f92672">script</span>&gt;
+</code></pre></div><p><a href="/vr-programming/scenes/examples/obbCollider.html"><strong>Test it</strong></a></p>
+<h2 id="mesh-collider">Mesh collider</h2>
+<p>This time, we can use a physics engine to simplify the process, I suggest to use <a href="https://github.com/n5ro/aframe-physics-system">aframe-physics-system</a> and <a href="https://github.com/n5ro/aframe-physics-system/blob/master/AmmoDriver.md">configure it to use the Ammo.js driver</a>. You&rsquo;ll have to assign an <code>ammo-body</code> and <code>ammo-shape</code> component to the interacting entities, make sure to set the parameter &lsquo;type&rsquo; of <code>ammo-shape</code> to <code>mesh</code>.</p>
+<p><a href="/vr-programming/scenes/examples/meshCollider.html"><strong>Test it</strong></a></p>
+</div>
+  
+</article></main>
+<footer class="footer">
+  <span>&copy; 2022 <a href="https://jdjuli.github.io/vr-programming/">VR Programming</a></span>
+  <span>&middot;</span>
+  <span>Powered by <a href="https://gohugo.io/" rel="noopener" target="_blank">Hugo️️</a>️</span>
+  <span>&middot;</span>
+  <span>Theme️ <a href="https://github.com/nanxiaobei/hugo-paper" rel="noopener" target="_blank">Paper</a></span>
+</footer>
+<script src="https://jdjuli.github.io/vr-programming/highlight.min.js"></script>
+<script>
+  hljs.initHighlightingOnLoad();
+</script>
+</body>
+</html>
+
