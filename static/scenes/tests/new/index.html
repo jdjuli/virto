@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+    <script src="https://aframe.io/releases/1.2.0/aframe.js"></script>  
+    <script src="https://cdn.jsdelivr.net/gh/donmccurdy/aframe-extras@v6.1.1/dist/aframe-extras.js"></script>
+    <script src="https://mixedreality.mozilla.org/ammo.js/builds/ammo.wasm.js"></script>  
+    <script src="https://cdn.jsdelivr.net/gh/n5ro/aframe-physics-system@v4.0.1/dist/aframe-physics-system.js"></script>
+    <script src="tmp.js"></script>
+    <script src="/js/super-hands.js"></script>
+    <script src="/js/custom-hand.js"></script>
+    <script src="/js/multidevice.js"></script>
+    <script src="/js/obb-collider.js"></script>
+  </head>  
+  <body>
+    <a-scene physics="debug: true; driver: ammo;">
+      
+        <a-entity   class="collidable"
+                  geometry="primitive: box; height: 0.05; width: 0.5; depth: 0.5"
+                  material="color: #996610"
+                  position="0 1.2 -0.2"
+                  ammo-body="type:dynamic;activationState:disableSimulation"
+                  ammo-shape="type:box"
+                  grabbable="constraintComponentName:ammo-constraint;"
+                  tmp>
+                  <a-entity geometry="primitive:box;height:0.5;width:0.05;depth:0.05"
+                    material="color: blue"
+                    position="0 0.275 0">
+                  </a-entity> 
+        </a-entity>
+
+      <a-entity multidevice="colliderSelector:.collidable"></a-entity>
+    </a-scene>
+  </body>
+</html>

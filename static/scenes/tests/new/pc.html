@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+    <script src="https://aframe.io/releases/1.2.0/aframe.js"></script>  
+    <script src="/vr-programming/js/obb.js"></script>
+    <script src="tmp.js"></script>
+  </head>  
+  <body>
+    <a-scene>
+        <a-entity   id="plane"
+                  geometry="primitive: box; height: 0.05; width: 0.5; depth: 0.5"
+                  material="color: #996610"
+                  rotation="0 0 0"
+                  position="0 1.4 -0.5">
+          <a-entity geometry="primitive:box;height:0.5;width:0.05;depth:0.05"
+                  material="color: blue"
+                  position="0 0.275 0"></a-entity>        
+        </a-entity>
+        <a-entity id="sphere"
+                  geometry="primitive: sphere; radius:0.02"
+                  position="1 1 -5"
+                  material="color: #000000"/></a-entity>
+        <a-entity camera position="0 0 0" wasd-controls rotation look-controls></a-entity>
+    </a-scene>
+  </body>
+</html>

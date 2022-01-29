@@ -10,7 +10,7 @@ AFRAME.registerComponent('multidevice',{
         camera.setAttribute('camera',{});
         if(AFRAME.utils.device.isMobileVR()){          
             this.el.appendChild(this.createController('right'));
-            this.el.appendChild(this.createController('left'));
+            //this.el.appendChild(this.createController('left'));
         }else{
             this.applyAttributesPC(this.el);
         }       

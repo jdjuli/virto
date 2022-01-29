@@ -13,7 +13,7 @@
       this.createIndexFinger = this.createIndexFinger.bind(this);
       this.destroyIndexFinger = this.destroyIndexFinger.bind(this);
 
-      this.el.setAttribute("sphere-collider",{objects:this.data.colliderSelector});
+      this.el.setAttribute("obb-collider",{objects:this.data.colliderSelector});
       this.el.setAttribute("hand-controls",{hand:this.data.hand});
       this.el.setAttribute("super-hands",{
         grabStartButtons:['gripdown'],
@@ -85,7 +85,7 @@
       this.updateInterval = setInterval(this.updateObjects,500);
     },
     updateObjects: function(){
-      this.el.components["sphere-collider"].update();
+      //this.el.components["sphere-collider"].update();
     },
     toggleMenu: function(){
       if(this.menu.isOpen){
