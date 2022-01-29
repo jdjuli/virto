@@ -8,11 +8,11 @@
     <language>en-us</language>
     <lastBuildDate>Sat, 18 Dec 2021 18:05:17 +0100</lastBuildDate><atom:link href="https://jdjuli.github.io/vr-programming/index.xml" rel="self" type="application/rss+xml" />
     <item>
-      <title>More colliders</title>
-      <link>https://jdjuli.github.io/vr-programming/more-colliders/</link>
+      <title>Review on colliders</title>
+      <link>https://jdjuli.github.io/vr-programming/review-on-colliders/</link>
       <pubDate>Fri, 28 Jan 2022 14:24:17 +0100</pubDate>
       
-      <guid>https://jdjuli.github.io/vr-programming/more-colliders/</guid>
+      <guid>https://jdjuli.github.io/vr-programming/review-on-colliders/</guid>
       <description>This few past weeks I remembered a small issue I had from the begining related to the &amp;lsquo;realism&amp;rsquo; of the grab and touch. I&amp;rsquo;ve already developed the component box-collider, which implements an OBB collider (i&amp;rsquo;ll explain this later) but it&amp;rsquo;s performance was worse than what I thought when I designed it.
 I decided to invest some time doing some research about how colliders work and creating components to use them on A-Frame, I came out with 4 types of colliders:</description>
     </item>
