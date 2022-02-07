@@ -14,43 +14,38 @@ AFRAME.registerComponent('parameter', {
         let parent = this.el.parentEl;
         this.attached = parent && parent.components['instruction'];
         this.ide = document.querySelector('[ide]');
+        this.currentPosition = this.el.object3D.position;
+        this.initialPosition = this.currentPosition.clone();
 
-        this.collisionHandler = this.collisionHandler.bind(this);
+        this.grabEndHandler = this.grabEndHandler.bind(this);
 
         this.el.setAttribute('class','collidable');
         this.el.setAttribute('obj-model',{obj:'#box'});
         this.el.addEventListener('model-loaded',(evt)=>{
+            this.el.setAttribute('grabbable',{constraintComponentName:'ammo-constraint'});
             if(!this.attached){
-                this.el.setAttribute('grabbable',{constraintComponentName:'ammo-constraint'});
                 this.el.setAttribute('draggable','');
             }else{
-                this.el.addEventListener('collidestart',this.collisionHandler);
+                this.el.addEventListener('grab-end',this.grabEndHandler);
             }
         });     
     },
     update: function(oldData){
         this.el.setAttribute('material',{src:'#box_'+this.data.type});
     },
-    remove: function(){
-        this.el.removeEventListener('collidestart',this.collisionHandler);
+    grabEndHandler: function(evt){
+        this.el.getAttribute('position').copy(this.initialPosition);
     },
-    collisionHandler: function(evt) {
-        let targetEl = evt.detail.targetEl;
-        if(targetEl.classList.contains('finger')){
-            let newPosition = this.el.getAttribute('position');
-            newPosition.add(new THREE.Vector3(0,0,0.2));
-            let parentToWorld = this.el.parentEl.object3D.localToWorld.bind(this.el.parentEl.object3D);
-            let worldToIDE = this.ide.object3D.worldToLocal.bind(this.ide.object3D);
-            newPosition = worldToIDE(parentToWorld(newPosition));
-            let newEntity = document.createElement('a-entity');
-            newEntity.setAttribute(this.attrName,this.data);
-            newEntity.setAttribute('position',newPosition);
+    tick: function(){
+        if(this.attached && this.initialPosition.distanceTo(this.currentPosition) > 0.3){
+            parameter = document.createElement('a-entity');
+            parameter = document.createElement('a-entity');
+            position = this.ide.object3D.worldToLocal(this.el.object3D.getWorldPosition());
+            parameter.setAttribute('parameter',{type:this.data.type,function:this.data.function});
+            parameter.setAttribute('position',position);
+            setTimeout(()=>{this.ide.appendChild(parameter);},10);
+            this.attached.removeParameter();
             this.el.remove();
-            this.ide.appendChild(newEntity);
-            if(this.attached){
-                this.attached.removeParameter();
-            }
         }
-        evt.stopPropagation();
     }
 });

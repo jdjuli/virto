@@ -4,7 +4,7 @@ AFRAME.registerComponent('instruction',{
     schema: {
         function:{type:'string',default:'move'},
         parameter:{type:'string'},
-        amount:{type:'string'}
+        reference:{type:'string'}
     },
     init: function(){  
         this.assetsMgr = this.el.sceneEl.systems['assets-manager'];
@@ -13,19 +13,21 @@ AFRAME.registerComponent('instruction',{
         this.ide = document.querySelector('[ide]');
         this.preview = null;
         this.parameter = null;
-        this.amount = null;
+        this.reference = null;
         this.size = new THREE.Vector3(0,0,0);
+        this.currentPosition = this.el.object3D.position;
+        this.initialPosition = this.currentPosition.clone();
 
         this.startPreviewInstruction = this.startPreviewInstruction.bind(this);
         this.startPreviewParameter = this.startPreviewParameter.bind(this);
-        this.startPreviewAmount = this.startPreviewAmount.bind(this);
+        this.startPreviewReference = this.startPreviewReference.bind(this);
         this.endPreview = this.endPreview.bind(this);
         this.addInstruction = this.addInstruction.bind(this);
         this.addParameter = this.addParameter.bind(this);
-        this.addAmount = this.addAmount.bind(this);
+        this.addReference = this.addReference.bind(this);
         this.removeParameter = this.removeParameter.bind(this);
-        this.removeAmount = this.removeAmount.bind(this);
-        this.collisionHandler = this.collisionHandler.bind(this);
+        this.removeReference = this.removeReference.bind(this);
+        this.grabEndHandler = this.grabEndHandler.bind(this);
         this.run = this.run.bind(this);
 
         this.el.setAttribute('class','collidable');
@@ -33,44 +35,39 @@ AFRAME.registerComponent('instruction',{
         this.el.setAttribute('material', {src:'#instruction_'+this.data.function});
         this.el.addEventListener('model-loaded',(evt)=>{
             this.el.setAttribute('droppable','');
+            this.el.setAttribute('grabbable',{constraintComponentName:'ammo-constraint'});
             if(!this.attached){
-                this.el.setAttribute('grabbable',{constraintComponentName:'ammo-constraint'});
                 this.el.setAttribute('draggable','');
             }else{
                 this.el.addEventListener('collideend',this.collisionHandler);
                 this.el.addEventListener('drag-drop',this.addInstruction);
                 this.el.addEventListener('dragover-start',this.startPreviewInstruction);
+                this.el.addEventListener('grab-end',this.grabEndHandler);
             }
             this.el.addEventListener('drag-drop',this.addParameter);
-            this.el.addEventListener('drag-drop',this.addAmount);
+            this.el.addEventListener('drag-drop',this.addReference);
             this.el.addEventListener('dragover-start',this.startPreviewParameter);
-            this.el.addEventListener('dragover-start',this.startPreviewAmount);
+            this.el.addEventListener('dragover-start',this.startPreviewReference);
             this.el.addEventListener('dragover-end',this.endPreview);
             this.update();
-        });     
-        
-        if(this.data.parameter){
+        });
+    },
+    update: function(oldData){
+        (new THREE.Box3().setFromObject(this.el.object3D)).getSize(this.size);
+        if(this.data.parameter && !this.parameter){
             let newEntity = document.createElement('a-entity');
             newEntity.setAttribute('parameter',{type:this.data.parameter,function:this.data.function});
             newEntity.setAttribute('position',{x:0, y:0.155, z:0.08});
             this.el.appendChild(newEntity);
             this.parameter = newEntity;
         }
-        if(this.data.amount){
+        if(this.data.reference && !this.reference){
             let newEntity = document.createElement('a-entity');
-            let amount = Number(this.data.amount);
-            if(isNaN(amount)){
-                newEntity.setAttribute('value',{variable:this.data.amount,display:'NAME'});
-            }else{
-                newEntity.setAttribute('value',{value:amount,display:'VALUE'});
-            }
+            newEntity.setAttribute('reference',{variable:this.data.reference});
             newEntity.setAttribute('position',{x:0, y:0, z:0.08});
             this.el.appendChild(newEntity);
-            this.amount = newEntity;
+            this.reference = newEntity;
         }
-    },
-    update: function(oldData){
-        (new THREE.Box3().setFromObject(this.el.object3D)).getSize(this.size);
     },
     remove: function(){
         this.el.removeEventListener('drag-drop',this.addParameter);
@@ -89,9 +86,9 @@ AFRAME.registerComponent('instruction',{
         }
         evt.stopPropagation();
     },
-    startPreviewAmount: function(evt){
+    startPreviewReference: function(evt){
         let carried = evt.detail.carried;
-        if(carried.components['value'] && !this.preview && !this.amount){
+        if(carried.components['reference'] && !this.preview && !this.reference){
             this.preview = document.createElement('a-entity');
             this.preview.setAttribute('class','preview');
             this.preview.setAttribute('obj-model',{obj:'#cylinderZ'});
@@ -147,20 +144,20 @@ AFRAME.registerComponent('instruction',{
         }
         evt.stopPropagation();
     },
-    addAmount: function(evt){
+    addReference: function(evt){
         let target = evt.detail.dropped;
-        if(target == this.el || this.amount) return;
-        let component = target.components['value'];
+        if(target == this.el || this.reference) return;
+        let component = target.components['reference'];
         if(component){
             let newEntity = document.createElement('a-entity');
             newEntity.setAttribute('class','collidable');
-            newEntity.setAttribute('value',component.data);
+            newEntity.setAttribute('reference',component.data);
             newEntity.setAttribute('position',{x:0, y:0, z:0.08});
-            this.amount = newEntity;
-            this.data.amount = component.data.name || component.data.value;
+            this.reference = newEntity;
+            this.data.reference = component.data.variable;
             this.el.appendChild(newEntity);
-            this.el.removeEventListener('drag-drop',this.addAmount);
-            this.el.removeEventListener('dragover-start',this.startPreviewAmount);
+            this.el.removeEventListener('drag-drop',this.addReference);
+            this.el.removeEventListener('dragover-start',this.startPreviewReference);
             target.remove();
         }
         evt.stopPropagation();
@@ -177,6 +174,10 @@ AFRAME.registerComponent('instruction',{
             let movingInstruction = this.el.nextElementSibling;
             while(movingInstruction){
                 movingInstruction.object3D.position.x += 0.2;
+                instruction = movingInstruction.components['instruction'];
+                if(instruction){
+                    instruction.initialPosition.copy(instruction.currentPosition);
+                }
                 movingInstruction = movingInstruction.nextElementSibling;
             }
             this.el.after(newEntity);
@@ -187,33 +188,24 @@ AFRAME.registerComponent('instruction',{
         this.data.parameter = '';
         this.parameter = null;
     },
-    removeAmount: function() {
-        this.data.amount = '';
-        this.amount = null;
+    removeReference: function() {
+        this.data.reference = '';
+        this.reference = null;
     },
-    collisionHandler: function(evt) {
-        let targetEl = evt.detail.targetEl;
-        if(targetEl.classList.contains('finger')){
-            let newPosition = this.el.getAttribute('position');
-            newPosition.add(new THREE.Vector3(0,0,0.1));
-            let parentToWorld = this.el.parentEl.object3D.localToWorld.bind(this.el.parentEl.object3D);
-            let worldToIDE = this.ide.object3D.worldToLocal.bind(this.ide.object3D);
-            newPosition = worldToIDE(parentToWorld(newPosition));
-            let newEntity = document.createElement('a-entity');
-            newEntity.setAttribute(this.attrName,this.data);
-            newEntity.setAttribute('position',newPosition);
-            if(this.el.isConnected){
-                if(this.attached){
-                    this.attached.removeInstruction.bind(this.attached)(this.el);
-                }else{
-                    this.el.remove();
-                }
-            }
-            this.ide.appendChild(newEntity);
-        }
+    grabEndHandler: function(evt){
+        this.el.getAttribute('position').copy(this.initialPosition);
     },
     run: function(drone){
-
-        drone[this.data.function](this.data.parameter,this.amount.components['value'].getValue());
+        drone[this.data.function](this.data.parameter,this.reference.components['reference'].get());
+    },
+    tick: function(){
+        if(this.attached && this.initialPosition.distanceTo(this.currentPosition) > 0.3){
+            instruction = document.createElement('a-entity');
+            position = this.ide.object3D.worldToLocal(this.el.object3D.getWorldPosition());
+            instruction.setAttribute('instruction',this.data);
+            instruction.setAttribute('position',position);
+            this.ide.appendChild(instruction);
+            this.attached.removeInstruction(this.el);
+        }
     }
 });

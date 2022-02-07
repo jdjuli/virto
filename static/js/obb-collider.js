@@ -61,14 +61,28 @@ AFRAME.registerComponent('obb-collider', {
     // Convert from NodeList to Array
     this.els = Array.prototype.slice.call(objectEls);
     this.els.map((e)=>{
-      let parameters = e.getObject3D('mesh').geometry.parameters;
-      switch (e.object3DMap.mesh.geometry.type){
-        case 'BoxGeometry':
-          e.halfExtents = new THREE.Vector3(parameters.width/2,parameters.height/2,parameters.depth/2);
-          break;
-        default:
+      let mesh = e.getObject3D('mesh');
+
+      if(!e.hasLoaded || !mesh){
+        e.addEventListener('model-loaded',()=>{
           e.halfExtents = (new THREE.Box3().setFromObject(e.object3D)).getSize(new THREE.Vector3()).divideScalar(2);
-          break;
+        });
+        return;
+      }
+
+      if(mesh.isGroup){
+        e.halfExtents = (new THREE.Box3().setFromObject(e.object3D)).getSize(new THREE.Vector3()).divideScalar(2);
+      }else{
+        let geometry = mesh.geometry;
+        let parameters = geometry.parameters;
+        switch (geometry.type){
+          case 'BoxGeometry':
+            e.halfExtents = new THREE.Vector3(parameters.width/2,parameters.height/2,parameters.depth/2);
+            break;
+          default:
+            e.halfExtents = (new THREE.Box3().setFromObject(e.object3D)).getSize(new THREE.Vector3()).divideScalar(2);
+            break;
+        }
       }
     })
   },
@@ -138,7 +152,7 @@ AFRAME.registerComponent('obb-collider', {
 
         if (distance.x < colliderRadius && distance.y < colliderRadius && distance.z < colliderRadius) {
           collisions.push(el);
-          distanceMap.set(el, distance);
+          distanceMap.set(el, distance.length());
         }
       }
       // use max of scale factors to maintain bounding sphere collision

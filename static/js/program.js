@@ -19,6 +19,11 @@ AFRAME.registerComponent('program',{
         this.btnRun.setAttribute('position',this.el.getAttribute('position').clone().add(new THREE.Vector3(0,0.2,0.2)));
         this.ide.appendChild(this.btnRun);
 
+        this.scope = document.createElement('a-entity');
+        this.scope.setAttribute('scope','');
+        this.scope.setAttribute('position',{x:0.3,y:-0.3,z:0})
+        this.el.appendChild(this.scope);
+
         this.el.setAttribute('class','collidable');
         this.el.setAttribute('geometry','primitive: box; width: 0.4; height: 0.7; depth: 0.4');
         this.el.setAttribute('material','color:#757A6D');
@@ -43,15 +48,18 @@ AFRAME.registerComponent('program',{
         let carried = evt.detail.carried;
         if(carried.components['instruction'] && !this.preview){
             let instruction = carried.components['instruction'];
+            let scope = this.scope.components['scope'];
             this.preview = document.createElement('a-entity');
             this.preview.setAttribute('class','preview');
             this.preview.setAttribute('obj-model',{obj:'/vr-programming/models/instruction.obj'});
-            this.preview.setAttribute('position',{x:(this.size.x/2 + instruction.size.x/2), y:0, z:0});
+            this.preview.setAttribute('position',{x:(this.size.x/2 + scope.size.x + instruction.size.x/2), y:0, z:0});
             this.preview.setAttribute('material',{color:'#44aa44',opacity:0.7});
-            this.el.insertBefore(this.preview,this.el.firstElementChild);
+            this.el.insertBefore(this.preview,this.el.firstElementChild.nextElementSibling);
             let movingInstruction = this.preview.nextElementSibling;
             while(movingInstruction){
                 movingInstruction.object3D.position.x += 0.2;
+                instruction = movingInstruction.components['instruction'];
+                if(instruction) instruction.initialPosition.copy(instruction.currentPosition);
                 movingInstruction = movingInstruction.nextElementSibling;
             }
         }
@@ -63,6 +71,8 @@ AFRAME.registerComponent('program',{
         let movingInstruction = this.preview.nextElementSibling;
         while(movingInstruction){
             movingInstruction.object3D.position.x -= 0.2;
+            instruction = movingInstruction.components['instruction'];
+            if(instruction) instruction.initialPosition.copy(instruction.currentPosition);
             movingInstruction = movingInstruction.nextElementSibling;
         }
         this.preview.remove();
@@ -78,13 +88,14 @@ AFRAME.registerComponent('program',{
     addInstruction: function(instruction, where) {
         if(!instruction.parentNode) return;
         let newEntity = document.createElement('a-entity');
+        let scope = this.scope.components['scope'];
         let originalComponent = instruction.components['instruction'] || instruction.components['condition'];
-        let position = new THREE.Vector3(0.3, 0, 0);
+        let position = new THREE.Vector3((this.size.x/2 + scope.size.x + originalComponent.size.x/2), 0, 0);
         let offset = new THREE.Vector3(originalComponent.size.x+0.001, 0, 0);
         let componentAttr = Object.assign({},originalComponent.data);
         newEntity.setAttribute(originalComponent.attrName,componentAttr);
         if(!where){
-            this.el.insertBefore(newEntity,this.el.firstElementChild);
+            this.el.insertBefore(newEntity,this.el.firstElementChild.nextElementSibling);
         }else{
             position.copy(where.getAttribute('position'));
             componentWhere = where.components['instruction'] || where.components['condition'];
@@ -114,6 +125,10 @@ AFRAME.registerComponent('program',{
         let offset = new THREE.Vector3(-old_component.size.x-0.001, 0, 0);
         while(moving_instruction){
             moving_instruction.getAttribute('position').add(offset);
+            instructionComponent = moving_instruction.components['instruction'];
+            if(instructionComponent){
+                instructionComponent.initialPosition.copy(instructionComponent.currentPosition);
+            }
             moving_instruction = moving_instruction.nextElementSibling;
         }
         instruction.remove();

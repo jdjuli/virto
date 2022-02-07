@@ -2,17 +2,17 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Components on VR Programming</title>
-    <link>https://jdjuli.github.io/vr-programming/components/</link>
+    <link>/vr-programming/components/</link>
     <description>Recent content in Components on VR Programming</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Sat, 18 Dec 2021 18:05:17 +0100</lastBuildDate><atom:link href="https://jdjuli.github.io/vr-programming/components/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sat, 18 Dec 2021 18:05:17 +0100</lastBuildDate><atom:link href="/vr-programming/components/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>box-collider</title>
-      <link>https://jdjuli.github.io/vr-programming/components/box-collider/</link>
+      <link>/vr-programming/components/box-collider/</link>
       <pubDate>Sat, 18 Dec 2021 18:05:17 +0100</pubDate>
       
-      <guid>https://jdjuli.github.io/vr-programming/components/box-collider/</guid>
+      <guid>/vr-programming/components/box-collider/</guid>
       <description>Purpose Detect collisions precisely between a point and a box shaped entity
 Schema  attribute name: colliderSelector  description: CSS selector of entities to collide with. type: string   attribute name: skipTicks  description: How many tick updates should be ignored before computing intersections again type: Number default: 0 (check for collisions on each tick call)    Usage Import the component with:
 &amp;lt;script src=&amp;#34;https://raw.githubusercontent.com/jdjuli/vr-programming/main/static/js/box-collider.js&amp;#34;&amp;gt;&amp;lt;/script&amp;gt; Attach the component to the entity that will represent the &amp;lsquo;point&amp;rsquo; of the intersection (i.</description>
@@ -20,30 +20,30 @@ Schema  attribute name: colliderSelector  description: CSS selector of entities 
     
     <item>
       <title>emit-event-button</title>
-      <link>https://jdjuli.github.io/vr-programming/components/emit-event-button/</link>
+      <link>/vr-programming/components/emit-event-button/</link>
       <pubDate>Thu, 16 Dec 2021 12:20:25 +0100</pubDate>
       
-      <guid>https://jdjuli.github.io/vr-programming/components/emit-event-button/</guid>
+      <guid>/vr-programming/components/emit-event-button/</guid>
       <description>Purpose Provide a generic button that can notify other entities through events when it has been touched
 Schema  attribute name: event  description: The name of the event that will be send type: string   attribute name: emitTo  description: The entity to be notified. By default, the event will be sent to the scene type: selector   attribute name: text  description: Text to be displayed on the button type: string    Usage Import the component with:</description>
     </item>
     
     <item>
       <title>value</title>
-      <link>https://jdjuli.github.io/vr-programming/components/value/</link>
+      <link>/vr-programming/components/value/</link>
       <pubDate>Thu, 16 Dec 2021 10:16:54 +0100</pubDate>
       
-      <guid>https://jdjuli.github.io/vr-programming/components/value/</guid>
+      <guid>/vr-programming/components/value/</guid>
       <description>Purpose This component manages an entity that represent a numeric value inside the program, it can be a variable registered on variables-state or a constant.
 Schema  attribute name: variable  description: variable name to get value from, if it doesn&amp;rsquo;t exist, it will be created with the value provided. Don&amp;rsquo;t set it to represent a constant type: string   attribute name: value  description: numeric value, if variable name is set but doesn&amp;rsquo;t exist, the variable will take this value, but if it exist, this value will be ignored type: number   attribute name: display  description: what to show on the entity, either the numeric value or the variable name (if no variable name is set, it&amp;rsquo;ll display &amp;lsquo;#&#39;) type: string default: VALUE oneOf: VALUE, NAME    Usage Import the component with:</description>
     </item>
     
     <item>
       <title>variables-state</title>
-      <link>https://jdjuli.github.io/vr-programming/components/variables-state/</link>
+      <link>/vr-programming/components/variables-state/</link>
       <pubDate>Wed, 15 Dec 2021 10:17:22 +0100</pubDate>
       
-      <guid>https://jdjuli.github.io/vr-programming/components/variables-state/</guid>
+      <guid>/vr-programming/components/variables-state/</guid>
       <description>Purpose This file registers a state using the aframe-state-component to provide a mechanism to have global numeric variables on the scene.
 Usage Import the JavaScript files on the &amp;lt;head&amp;gt; of the html with the following tags:
 &amp;lt;script src=&amp;#34;https://unpkg.com/aframe-state-component@7.1.0/dist/aframe-state-component.js&amp;#34;&amp;gt;&amp;lt;/script&amp;gt; &amp;lt;script src=&amp;#34;https://raw.githubusercontent.com/jdjuli/vr-programming/main/static/js/variables-system.js&amp;#34;&amp;gt;&amp;lt;/script&amp;gt; To access the variables in your code, you&amp;rsquo;ll need a reference to the state system, which can be obtained inside your component by doing this:
@@ -52,10 +52,10 @@ let scene = this.el.sceneEl //Or document.</description>
     
     <item>
       <title>assets-manager</title>
-      <link>https://jdjuli.github.io/vr-programming/components/assets-manager/</link>
+      <link>/vr-programming/components/assets-manager/</link>
       <pubDate>Tue, 14 Dec 2021 16:56:47 +0100</pubDate>
       
-      <guid>https://jdjuli.github.io/vr-programming/components/assets-manager/</guid>
+      <guid>/vr-programming/components/assets-manager/</guid>
       <description>Purpose System that allows the programmer to load assets easily at runtime and handles the loading failures
 Usage Import the JavaScript file on the &amp;lt;head&amp;gt; of the html with the following tag:
 &amp;lt;script src=&amp;#34;https://raw.githubusercontent.com/jdjuli/vr-programming/main/static/js/assets-manager.js&amp;#34;&amp;gt;&amp;lt;/script&amp;gt; To access the system in your code, you&amp;rsquo;ll need a reference to the scene element, which can be obtained inside your component by doing this:
@@ -64,20 +64,20 @@ let assetsManager = this.el.sceneEl.systems[&amp;#39;assets-manager&amp;#39;]; O
     
     <item>
       <title>custom-hand</title>
-      <link>https://jdjuli.github.io/vr-programming/components/custom-hand/</link>
+      <link>/vr-programming/components/custom-hand/</link>
       <pubDate>Wed, 24 Nov 2021 09:33:24 +0100</pubDate>
       
-      <guid>https://jdjuli.github.io/vr-programming/components/custom-hand/</guid>
+      <guid>/vr-programming/components/custom-hand/</guid>
       <description>Purpose Join multiple components into one that provides a virtual hand with minimum configuration and adapts to the scene configuration (i.e. If the scene uses physics, the components attached to the hand would be different).
 Schema  attribute name: hand  type: string oneOf: left, right   attribute name: colliderSelector  description: Selector of entities the user can interact with type: string (valid CSS selector)    Usage Attach this component to the entity that you want to become a hand (you don&amp;rsquo;t have to provide any kind of geometry for this) and make sure that you set the hand attribute to load the right model.</description>
     </item>
     
     <item>
       <title>program</title>
-      <link>https://jdjuli.github.io/vr-programming/components/program/</link>
+      <link>/vr-programming/components/program/</link>
       <pubDate>Wed, 24 Nov 2021 09:33:24 +0100</pubDate>
       
-      <guid>https://jdjuli.github.io/vr-programming/components/program/</guid>
+      <guid>/vr-programming/components/program/</guid>
       <description>Purpose Represent a program, containing all the instructions and a reference to the target of execution
 Schema  attribute name: active  description: whether the program should display it&amp;rsquo;s instructions or not type: boolean default: true    Usage This component should be placed inside an ide entity, and as the program grows on the positive X axis, keep that in mind when positioning it on the scene.
 To-Do This component is being developed right now, here are the thing I&amp;rsquo;ve planned for it but are not implemented yet:</description>
@@ -85,30 +85,30 @@ To-Do This component is being developed right now, here are the thing I&amp;rsqu
     
     <item>
       <title>multidevice</title>
-      <link>https://jdjuli.github.io/vr-programming/components/multidevice/</link>
+      <link>/vr-programming/components/multidevice/</link>
       <pubDate>Mon, 22 Nov 2021 20:06:19 +0100</pubDate>
       
-      <guid>https://jdjuli.github.io/vr-programming/components/multidevice/</guid>
+      <guid>/vr-programming/components/multidevice/</guid>
       <description>Purpose This component adapts the user controls to the inputs of the device that is using, making easier to develop scenes compatibles with both VR headsets and PC.
 Schema  attribute name: colliderSelector  description: Selector of entities the user can interact with type: string (valid CSS selector)   attribute name: acceleration  description: How fast can the user navigate the scene with the arrow keys type: number default: 20.</description>
     </item>
     
     <item>
       <title>instruction</title>
-      <link>https://jdjuli.github.io/vr-programming/components/instruction/</link>
+      <link>/vr-programming/components/instruction/</link>
       <pubDate>Mon, 22 Nov 2021 10:42:11 +0100</pubDate>
       
-      <guid>https://jdjuli.github.io/vr-programming/components/instruction/</guid>
+      <guid>/vr-programming/components/instruction/</guid>
       <description>Purpose This component represents an action inside the program, which can be parametrized by attaching a parameter and a amount (not implemented yet)
 Schema  attribute name: function  type: string default: move oneOf: move, rotate   attribute name: parameter  type: string oneOf: up, down, left, right, forward, backward (more to be added)   attribute name: amount  type: number default: 1.0    Usage The entity that has this component attached must be placed inside another with the component ide attached to it, but is not needed to put the instruction inside a program (and not recommended right now as it&amp;rsquo;s under development).</description>
     </item>
     
     <item>
       <title>parameter</title>
-      <link>https://jdjuli.github.io/vr-programming/components/parameter/</link>
+      <link>/vr-programming/components/parameter/</link>
       <pubDate>Sat, 20 Nov 2021 13:33:43 +0100</pubDate>
       
-      <guid>https://jdjuli.github.io/vr-programming/components/parameter/</guid>
+      <guid>/vr-programming/components/parameter/</guid>
       <description>Purpose This component is intended to store and represent qualitative parameters for the instructions, like the direction of displacements or axis of rotations among others.
 Schema  attribute name: n/a  description: qualitative property such as direction of movement or axis of rotation type: string default: up oneOf: up, down, left, right, forward, backward (more to be added)    Usage The entity this component is attached to must be children of another entity with the component ide as this one is aware of if it&amp;rsquo;s a child of an instruction and needs to have a reference to the ide entity to reparent to it when extracted from the instruction.</description>
     </item>
