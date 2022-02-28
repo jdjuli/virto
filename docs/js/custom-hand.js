@@ -52,22 +52,11 @@
            ]
           },
           {name:'Variables',
-           component:'value', 
+           component:'variable', 
            items:[
-            {textureAsset:'#box_text', text:'A', data:{variable:'A',value:1.0,display:'NAME'}},
-            {textureAsset:'#box_text', text:'B', data:{variable:'B',value:2.0,display:'NAME'}},
-            {textureAsset:'#box_text', text:'C', data:{variable:'C',value:3.0,display:'NAME'}},
-           ]
-          },
-          {name:'Constants',
-           component:'value', 
-           items:[
-            {textureAsset:'#box_text', text:'1', data:{value:1.0,display:'VALUE'}},
-            {textureAsset:'#box_text', text:'2', data:{value:2.0,display:'VALUE'}},
-            {textureAsset:'#box_text', text:'3', data:{value:3.0,display:'VALUE'}},
-            {textureAsset:'#box_text', text:'15', data:{value:15.0,display:'VALUE'}},
-            {textureAsset:'#box_text', text:'45', data:{value:45.0,display:'VALUE'}},
-            {textureAsset:'#box_text', text:'90', data:{value:90.0,display:'VALUE'}},
+            {textureAsset:'#box_text', text:'S', data:{value:1,min:-9,max:9}},
+            {textureAsset:'#box_text', text:'M', data:{value:2,min:-99,max:99}},
+            {textureAsset:'#box_text', text:'L', data:{value:3,min:-999,max:999}},
            ]
           },
         ]

@@ -145,6 +145,10 @@ AFRAME.registerComponent('obb-collider', {
         if (!mesh) {
           return;
         }
+
+        if(!el.halfExtents){
+          el.halfExtents = (new THREE.Box3().setFromObject(el.object3D)).getSize(new THREE.Vector3()).divideScalar(2);
+        }
         
         localPosition = el.object3D.worldToLocal(position.clone());
         absLocalPosition.set(Math.abs(localPosition.x),Math.abs(localPosition.y),Math.abs(localPosition.z));

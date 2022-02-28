@@ -107,14 +107,19 @@ AFRAME.registerComponent('hand-menu',{
       if(!this.isOpen) return;
 
       let selected = document.createElement('a-entity');
-      let position = this.el.object3D.position.clone();
       let componentName = this.data.contents[this.category].component;
       let componentArg = this.data.contents[this.category].items[this.firstItem+btnNum].data;
-      position.add(new THREE.Vector3(0,0.15,-0.1));
-      position = this.ide.object3D.worldToLocal(this.el.object3D.localToWorld(position));
-      selected.setAttribute('position',position);
       selected.setAttribute(componentName,componentArg);
-
-      this.ide.appendChild(selected);
+      
+      if(componentName != 'variable'){
+        let position = this.el.object3D.position.clone();
+        position.add(new THREE.Vector3(0,0.15,-0.1));
+        position = this.ide.object3D.worldToLocal(this.el.object3D.localToWorld(position));
+        selected.setAttribute('position',position);
+        this.ide.appendChild(selected);
+      }else{
+        scope = this.ide.querySelectorAll('[program] [scope]')[0]
+        scope.appendChild(selected)
+      }
     }
   });

@@ -1,31 +1,55 @@
+Array.prototype.shuffle = function(){
+    let randomIdx, aux;
+    for(let i = this.length-1 ; i > 0 ; i--){
+        randomIdx = Math.floor(Math.random()*(i+1));
+        aux = this[i];
+        this[i] = this[randomIdx];
+        this[randomIdx] = aux;
+    }
+    return this;
+    
+};
+
 AFRAME.registerComponent('scope',{
+    schema:{
+        width:{type:'number',default:1.5}
+    },
     init: function(){ 
         this.variables = new Map();
-        this.size = new THREE.Vector3(0.1,0.2,0.3);
-        this.currentPosition = this.el.getAttribute('position')
-        this.initialPosition = this.currentPosition.clone();
-        this.icons=['#icon_bird','#icon_cat','#icon_dog','#icon_flower','#icon_moon','#icon_rat','#icon_spider','#icon_sun','#icon_tree'];
-        this.el.setAttribute('class','collidable');
-        this.el.setAttribute('geometry',{primitive:'box',height:this.size.x,width:this.size.y,depth:this.size.z});
-        this.el.setAttribute('material',{color:'cyan'});
-        this.el.setAttribute('grabbable',{constraintComponentName:'ammo-constraint'});
-        this.el.addEventListener('grab-end',(evt)=>{
-            evt.stopPropagation();
-            this.currentPosition.copy(this.initialPosition);
-        });
+        this.update = this.update.bind(this);
+
+        this.mutationObs = new MutationObserver(this.update);
+        this.mutationObs.observe(this.el,{childList:true,attributes:true});
+    },
+    remove: function(){
+        this.mutationObs.disconnect();
     },
     update: function(){
-        (new THREE.Box3().setFromObject(this.el.object3D)).getSize(this.size);
-        //ToDo: provide a way to create new variables dynamically
-        for(i = 0 ; i < 3 ; i++) this.createNewVariable();
+        this.variables.clear();
+        let idx = 0;
+        let variableEls = this.el.getChildEntities().filter((a)=>a.getDOMAttribute('variable'));
+        let iconsEls = Array.from(this.el.sceneEl.querySelectorAll('[id^=icon]')).shuffle();
+        this.icons=iconsEls.map(el=>'#'+el.id);
+        let incrementX = Math.min(this.data.width/variableEls.length, 0.2);
+        let baseX = this.data.width*-0.5;
+        for(let variableEl of variableEls){
+            this.icons.filter(i=>i!=variableEl.getAttribute('variable','icon'));
+            let name = variableEl.getAttribute('id');
+            if(this.variables.has(name)){
+                console.error('Cannot create two variables with the same name ('+name+')');
+            }else{
+                let position = new THREE.Vector3(baseX+incrementX*idx, 0, 0);
+                variableEl.setAttribute('position',position);
+                if(variableEl.components.variable) variableEl.components.variable.initialPosition = position.clone();
+                this.variables.set(name,variableEl);
+            }
+            idx++;
+        }
     },
-    createNewVariable: function(){
-        let name = 'var_'+this.variables.size;
+    createNewVariable: function(name){
         let element = document.createElement('a-entity');
-        element.setAttribute('variable',{value:0,icon:this.icons[this.variables.size%this.icons.length]});
-        element.setAttribute('position',{x:0,y:0.1*(this.variables.size+1),z:0});
+        element.setAttribute('variable',{value:0,icon:this.icons.pop()});
         element.setAttribute('id',name);
-        this.variables.set(name,element);
-        setTimeout(()=>{this.el.appendChild(element);},10);
+        this.el.appendChild(element);
     }
 });

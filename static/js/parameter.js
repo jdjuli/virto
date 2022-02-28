@@ -13,7 +13,7 @@ AFRAME.registerComponent('parameter', {
     init: function () {
         let parent = this.el.parentEl;
         this.attached = parent && parent.components['instruction'];
-        this.ide = document.querySelector('[ide]');
+        this.program = this.el.closest('[program]');
         this.currentPosition = this.el.object3D.position;
         this.initialPosition = this.currentPosition.clone();
 
@@ -39,12 +39,10 @@ AFRAME.registerComponent('parameter', {
     tick: function(){
         if(this.attached && this.initialPosition.distanceTo(this.currentPosition) > 0.3){
             parameter = document.createElement('a-entity');
-            parameter = document.createElement('a-entity');
-            position = this.ide.object3D.worldToLocal(this.el.object3D.getWorldPosition());
+            position = this.program.object3D.worldToLocal(this.el.object3D.getWorldPosition());
             parameter.setAttribute('parameter',{type:this.data.type,function:this.data.function});
             parameter.setAttribute('position',position);
-            setTimeout(()=>{this.ide.appendChild(parameter);},10);
-            this.attached.removeParameter();
+            setTimeout(()=>{this.program.appendChild(parameter);},10);
             this.el.remove();
         }
     }
