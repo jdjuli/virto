@@ -7,8 +7,8 @@ AFRAME.registerComponent('reference',{
     },
     init: function(){  
         this.attached = this.el.parentEl && this.el.parentEl.components['instruction'];
-        this.ide = document.querySelector('[ide]');
-        this.variable = this.ide.querySelector(this.data.variable);
+        this.program = this.el.closest('[program]');
+        this.variable = this.program.querySelector(this.data.variable);
         this.variableComponent = this.variable.components.variable;
         this.initialPosition = null;
         this.grabEndHandler = this.grabEndHandler.bind(this);
@@ -46,11 +46,11 @@ AFRAME.registerComponent('reference',{
         if(this.attached && this.initialPosition.distanceTo(this.currentPosition) > 0.3){
             reference = document.createElement('a-entity');
             reference = document.createElement('a-entity');
-            position = this.ide.object3D.worldToLocal(this.el.object3D.getWorldPosition());
+            position = this.program.object3D.worldToLocal(this.el.object3D.getWorldPosition());
             reference.setAttribute('reference',{variable:this.data.variable});
             reference.setAttribute('position',position);
-            setTimeout(()=>{this.ide.appendChild(reference);},10);
-            this.attached.removeReference();
+            setTimeout(()=>{this.program.appendChild(reference);},10);
+            //this.attached.removeReference();
             this.el.remove();
         }
     }

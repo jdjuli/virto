@@ -1,173 +1,154 @@
 AFRAME.registerComponent('program',{
     schema: {
-        active:{type:'boolean',default:true},
+        name:{type:'string'},
     },
     init: function(){       
-        this.running = false;
-        this.timeoutHandles = [];
-        this.size = new THREE.Vector3(0,0,0);
-        this.ide = this.el.sceneEl.querySelector('[ide]');
-        this.drone = this.el.sceneEl.querySelector('[drone]').components.drone;
-
-        this.run = this.run.bind(this);
-        this.dragDrop = this.dragDrop.bind(this);
-        this.startPreviewInstruction = this.startPreviewInstruction.bind(this);
+        childEls = this.el.getChildEntities();
+        this.previewActive = false;
+        this.exec = this.exec().bind(this);
+        this.runButtonClick = this.runButtonClick.bind(this)();
+        this.resetButtonClick = this.resetButtonClick.bind(this)();
+        this.previewInstruction = this.previewInstruction.bind(this);
         this.endPreview = this.endPreview.bind(this);
+        this.addInstruction = this.addInstruction.bind(this);
 
-        this.btnRun = document.createElement('a-entity');
-        this.btnRun.setAttribute('emit-event-button',{emitTo:this.el,event:'run',text:'run'});    
-        this.btnRun.setAttribute('position',this.el.getAttribute('position').clone().add(new THREE.Vector3(0,0.2,0.2)));
-        this.ide.appendChild(this.btnRun);
+        this.el.setAttribute('geometry','primitive:box; height:0.1; width:2; depth:1');
+        this.el.setAttribute('material','color:gray');
 
-        this.scope = document.createElement('a-entity');
-        this.scope.setAttribute('scope','');
-        this.scope.setAttribute('position',{x:0.3,y:-0.3,z:0})
-        this.el.appendChild(this.scope);
+        this.controlEl = document.createElement('a-entity');
+        this.controlEl.setAttribute('class','collidable');
+        this.controlEl.setAttribute('geometry',{primitive:'box',height:0.6,width:0.3,depth:0.3});
+        this.controlEl.setAttribute('material','color','cyan');
+        this.controlEl.setAttribute('position',{x:-0.7,y:0.35,z:-0.1})
+        this.controlEl.setAttribute('droppable','');
+        this.controlEl.addEventListener('dragover-start',this.previewInstruction);
+        this.controlEl.addEventListener('dragover-end',this.endPreview);
+        this.controlEl.addEventListener('drag-drop',this.addInstruction);
+        this.btnRunEl = document.createElement('a-entity');
+        this.btnRunEl.setAttribute('class','collidable');
+        this.btnRunEl.setAttribute('geometry',{primitive:'box',height:0.075,width:0.15,depth:0.05});
+        this.btnRunEl.setAttribute('position',{x:0,y:0.2,z:0.15});
+        this.btnRunEl.setAttribute('material','color','green');
+        this.btnRunEl.setAttribute('text',{align:'center',value:'RUN',width:1,zOffset:0.031});
+        this.btnRunEl.addEventListener('click',this.runButtonClick);
+        this.btnRunEl.addEventListener('hitend',this.runButtonClick);
+        this.btnRunEl.addEventListener('dragover-start',(evt)=>evt.stopPropagation());
+        this.btnRunEl.addEventListener('dragover-end',(evt)=>evt.stopPropagation());
+        this.btnRunEl.addEventListener('drag-drop',(evt)=>evt.stopPropagation());
+        this.btnResetEl = document.createElement('a-entity');
+        this.btnResetEl.setAttribute('class','collidable');
+        this.btnResetEl.setAttribute('geometry',{primitive:'box',height:0.075,width:0.15,depth:0.05});
+        this.btnResetEl.setAttribute('position',{x:0,y:0.1,z:0.15});
+        this.btnResetEl.setAttribute('material','color','green');
+        this.btnResetEl.setAttribute('text',{align:'center',value:'RESET',width:1,zOffset:0.031});
+        this.btnResetEl.addEventListener('click',this.resetButtonClick);
+        this.btnResetEl.addEventListener('hitend',this.resetButtonClick);
+        this.btnResetEl.addEventListener('dragover-start',(evt)=>evt.stopPropagation());
+        this.btnResetEl.addEventListener('dragover-end',(evt)=>evt.stopPropagation());
+        this.btnResetEl.addEventListener('drag-drop',(evt)=>evt.stopPropagation());
 
-        this.el.setAttribute('class','collidable');
-        this.el.setAttribute('geometry','primitive: box; width: 0.4; height: 0.7; depth: 0.4');
-        this.el.setAttribute('material','color:#757A6D');
-        this.el.setAttribute('sound__correct',{src:'#sound_correct'});
-        this.el.setAttribute('sound__error',{src:'#sound_error'});
-        this.el.setAttribute('droppable','');
-        this.el.addEventListener('dragover-start',this.startPreviewInstruction);
-        this.el.addEventListener('dragover-end',this.endPreview);
-        this.el.addEventListener('run',this.run);
-
-        this.sndCorrect = this.el.components['sound__correct'];
-        this.sndError = this.el.components['sound__error'];
+        this.recyclebin = document.createElement('a-entity');
+        this.recyclebin.setAttribute('recyclebin','');
+        this.recyclebin.setAttribute('position',{x:0.9, y:0.105, z:0.4});
+        
+        this.controlEl.appendChild(this.btnRunEl);
+        this.controlEl.appendChild(this.btnResetEl);
+        this.el.appendChild(this.controlEl);
+        this.el.appendChild(this.recyclebin);
     },
-    update: function(oldData) {
-        (new THREE.Box3().setFromObject(this.el.object3D)).getSize(this.size);
-        if(this.data.active) this.open();  
+    update: function(){
+        this.scopeEl = childEls.find((e)=>e.components['scope']);
+        if(!this.scopeEl){
+            this.scopeEl = document.createElement('a-entity');
+            this.scopeEl.setAttribute('scope','');
+            this.el.appendChild(this.scopeEl);
+        }
+        this.scopeEl.setAttribute('position',{x:0,y:0.1,z:0.3})
+
+        this.codeEl = childEls.find((e)=>e.components['code']);
+        if(!this.codeEl){
+            this.codeEl = document.createElement('a-entity');
+            this.codeEl.setAttribute('code','');
+            this.el.appendChild(this.codeEl);
+        }
+        this.codeEl.setAttribute('position',{x:-0.45,y:0.35,z:-0.1});
     },
-    open: function(){
-        this.el.addEventListener('drag-drop',this.dragDrop);
+    exec: function(){
+        return (parentProgram, parentFindVariable=null)=>{
+            findVariable = ((selector)=>{
+                try{
+                    return this.scopeEl.querySelector(selector).components.variable;
+                }catch(e){
+                    console.log(e);
+                    if(parentFindVariable){
+                        return parentFindVariable(selector);
+                    }else{
+                        return null;
+                    }  
+                }
+            }).bind(this);
+            console.log('START program: '+this.data.name+" parentProgram:");
+            console.log(parentProgram);
+            this.codeEl.components['code'].exec(this.el, findVariable);
+            console.log('END program: '+this.data.name);
+        }
     },
-    startPreviewInstruction: function(evt){
+    previewInstruction: function(evt){
         let carried = evt.detail.carried;
-        if(carried.components['instruction'] && !this.preview){
-            let instruction = carried.components['instruction'];
-            let scope = this.scope.components['scope'];
-            this.preview = document.createElement('a-entity');
-            this.preview.setAttribute('class','preview');
-            this.preview.setAttribute('obj-model',{obj:'/vr-programming/models/instruction.obj'});
-            this.preview.setAttribute('position',{x:(this.size.x/2 + scope.size.x + instruction.size.x/2), y:0, z:0});
-            this.preview.setAttribute('material',{color:'#44aa44',opacity:0.7});
-            this.el.insertBefore(this.preview,this.el.firstElementChild.nextElementSibling);
-            let movingInstruction = this.preview.nextElementSibling;
-            while(movingInstruction){
-                movingInstruction.object3D.position.x += 0.2;
-                instruction = movingInstruction.components['instruction'];
-                if(instruction) instruction.initialPosition.copy(instruction.currentPosition);
-                movingInstruction = movingInstruction.nextElementSibling;
-            }
+        let component = carried.components['instruction'];
+        if(component && !this.codeEl.components['code'].previewInstruction){
+            let preview = document.createElement('a-entity');
+            preview.setAttribute('class','preview');
+            preview.setAttribute('obj-model',{obj:'#instruction'});
+            preview.setAttribute('position',{x:0.25, y:0, z:0});
+            preview.setAttribute('material',{color:'#44aa44',opacity:0.7});
+            this.controlEl.appendChild(preview);
+            this.codeEl.getAttribute('position').x+=0.2;
+            this.codeEl.components['code'].previewInstruction = true;
         }
         evt.stopPropagation();
     },
     endPreview: function(evt){
-        if(!this.preview) return;
-        let component = this.preview.components['instruction'] || this.preview.components['condition'];
-        let movingInstruction = this.preview.nextElementSibling;
-        while(movingInstruction){
-            movingInstruction.object3D.position.x -= 0.2;
-            instruction = movingInstruction.components['instruction'];
-            if(instruction) instruction.initialPosition.copy(instruction.currentPosition);
-            movingInstruction = movingInstruction.nextElementSibling;
+        if(this.codeEl.components['code'].previewInstruction){
+            let preview = this.controlEl.querySelector('.preview');
+            if(preview) preview.remove();
+            this.codeEl.getAttribute('position').x-=0.2;
+            this.codeEl.components['code'].previewInstruction = false;
         }
-        this.preview.remove();
-        this.preview = null;
         evt.stopPropagation();
     },
-    dragDrop: function(evt){
-        let dropped = evt.detail.dropped;
-        if(dropped.components['instruction']){
-            this.addInstruction(dropped);
+    addInstruction: function(evt){
+        let target = evt.detail.dropped;
+        if(target == this.el || this.parameter) return;
+        let component = target.components['instruction'];
+        if(component){
+            let newEntity = document.createElement('a-entity');
+            newEntity.setAttribute('class','collidable');
+            newEntity.setAttribute('instruction',component.data);
+            this.codeEl.insertBefore(newEntity, this.codeEl.firstElementChild);
+            target.remove();
+        }
+        evt.stopPropagation();
+    },
+    //As click event is fired twice each time, I had to check currentTime to ensure that is called once
+    runButtonClick: function(){
+        let lastRun;
+        let now;
+        return ()=>{
+            now = Math.round(document.timeline.currentTime);
+            if(lastRun != now) this.exec();
+            lastRun = now;
         }
     },
-    addInstruction: function(instruction, where) {
-        if(!instruction.parentNode) return;
-        let newEntity = document.createElement('a-entity');
-        let scope = this.scope.components['scope'];
-        let originalComponent = instruction.components['instruction'] || instruction.components['condition'];
-        let position = new THREE.Vector3((this.size.x/2 + scope.size.x + originalComponent.size.x/2), 0, 0);
-        let offset = new THREE.Vector3(originalComponent.size.x+0.001, 0, 0);
-        let componentAttr = Object.assign({},originalComponent.data);
-        newEntity.setAttribute(originalComponent.attrName,componentAttr);
-        if(!where){
-            this.el.insertBefore(newEntity,this.el.firstElementChild.nextElementSibling);
-        }else{
-            position.copy(where.getAttribute('position'));
-            componentWhere = where.components['instruction'] || where.components['condition'];
-            position.y += componentWhere.height;
-            this.el.insertBefore(newEntity,where.nextElementSibling);
-        }
-        newEntity.setAttribute('position',position);
-        if(!this.preview){
-            //If the program was previewing an instruction, it'll be removed and there's no need for moving the next ones
-            let moving_instruction = newEntity.nextElementSibling;
-            while(moving_instruction){
-                moving_instruction.getAttribute('position').add(offset);
-                moving_instruction = moving_instruction.nextElementSibling;
+    resetButtonClick: function(){
+        let lastRun;
+        let now;
+        return ()=>{
+            now = Math.round(document.timeline.currentTime);
+            if(lastRun != now){
+                this.el.sceneEl.querySelector('[drone]').components['drone'].resetPosition();
             }
+            lastRun = now;
         }
-        instruction.remove();
-        if(this.preview){
-            this.preview.remove();
-            this.preview = null;
-        }
-        
-        return newEntity;
     },
-    removeInstruction: function(instruction) {
-        let moving_instruction = instruction.nextElementSibling;
-        let old_component = instruction.components['instruction'] || instruction.components['condition'];
-        let offset = new THREE.Vector3(-old_component.size.x-0.001, 0, 0);
-        while(moving_instruction){
-            moving_instruction.getAttribute('position').add(offset);
-            instructionComponent = moving_instruction.components['instruction'];
-            if(instructionComponent){
-                instructionComponent.initialPosition.copy(instructionComponent.currentPosition);
-            }
-            moving_instruction = moving_instruction.nextElementSibling;
-        }
-        instruction.remove();
-    },
-    run: function() {
-        if(this.running) return;
-        this.running = true;
-        let timeout;
-        if(this.hasErrors()){
-            timeout = 664; //sndError duration
-            this.sndError.playSound();
-        }else{
-            timeout = 500; //sndCorrect duration
-            this.sndCorrect.playSound();
-            for(const e of this.el.children){
-                this.timeoutHandles.push(setTimeout(()=>{
-                    if(!e.parentEl) return;
-                    let instruction = e.components['instruction'];
-                    instruction.run.bind(instruction)(this.drone);
-                },timeout));
-                timeout += 250;
-            }
-        }
-        setTimeout(()=>{
-            this.running = false;
-            this.timeoutHandles = [];
-        }, timeout);
-    },
-    hasErrors(){
-        let errors = false;
-        let i = 0;
-        let children = this.el.children;
-        while(!errors && i < children.length){
-            let instruction = children[i].components.instruction;
-            if(instruction){
-                errors |= instruction.data.amount.length==0 || instruction.data.parameter.length==0;
-            }
-            i+=1;
-        }
-        return errors;
-    }
   });

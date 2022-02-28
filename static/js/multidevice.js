@@ -23,11 +23,11 @@ AFRAME.registerComponent('multidevice',{
     },
     applyAttributesPC: function(entity){
         entity.setAttribute('raycaster',{far: this.data.raycasterFar, objects: this.data.colliderSelector});
-        entity.setAttribute('look-controls',{});
-        entity.setAttribute('capture-mouse',{});
+        entity.setAttribute('look-controls','');
+        entity.setAttribute('capture-mouse','');
         entity.setAttribute('wasd-controls',{acceleration:this.data.acceleration});
         entity.getAttribute('position').y+=this.data.pcHeight;
-        entity.setAttribute('cursor',{rayOrigin:'mouse'});
+        entity.setAttribute('cursor',{rayOrigin:'mouse',fuseTimeout: 0});
         entity.setAttribute('super-hands',{colliderEvent:'raycaster-intersection',
                                            colliderEventProperty: 'els',
                                            colliderEndEvent:'raycaster-intersection-cleared',

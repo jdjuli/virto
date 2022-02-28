@@ -8,6 +8,7 @@ AFRAME.registerComponent('drone',{
         });
 
         this.initialPosition = this.el.getAttribute('position').clone();
+        this.initialRotation = Object.assign({},this.el.getAttribute('rotation'));
 
         this.move = this.move.bind(this);
         this.rotate = this.rotate.bind(this);
@@ -43,27 +44,25 @@ AFRAME.registerComponent('drone',{
     },
     rotate: function(axis, degrees){
         let rotation = this.el.getAttribute('rotation');
+        let vec = new Ammo.btVector3(0,0,0);
         switch(axis){
             case 'xaxis':
-                rotation.x += degrees;
+                vec.setX(degrees/22);
                 break;
             case 'yaxis':
-                rotation.y += degrees;
+                vec.setY(degrees/22);
                 break;
             case 'zaxis':
-                rotation.z += degrees;
+                vec.setZ(degrees/22);
                 break;
         }
-        this.el.setAttribute('ammo-body','type','static');
-        this.el.components['ammo-body'].updateComponent();
-        this.el.setAttribute('rotation', rotation);
-        this.el.components['ammo-body'].syncToPhysics();
-        this.el.setAttribute('ammo-body','type','dynamic');
+        this.el.body.applyLocalTorque(vec);
     },
     resetPosition:function() {
         this.el.setAttribute('ammo-body','type','static');
         this.el.components['ammo-body'].updateComponent();
         this.el.setAttribute('position',this.initialPosition);
+        this.el.setAttribute('rotation',this.initialRotation);
         this.el.components['ammo-body'].syncToPhysics();
         this.el.setAttribute('ammo-body','type','dynamic');
     }
