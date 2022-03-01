@@ -135,7 +135,7 @@ AFRAME.registerComponent('program',{
         let lastRun;
         let now;
         return ()=>{
-            now = Math.round(document.timeline.currentTime);
+            now = Date.now()>>9; //Integer division by 2^9 (512)
             if(lastRun != now) this.exec();
             lastRun = now;
         }
@@ -144,7 +144,7 @@ AFRAME.registerComponent('program',{
         let lastRun;
         let now;
         return ()=>{
-            now = Math.round(document.timeline.currentTime);
+            now = Date.now()>>9; //Integer division by 2^9 (512)
             if(lastRun != now){
                 this.el.sceneEl.querySelector('[drone]').components['drone'].resetPosition();
             }

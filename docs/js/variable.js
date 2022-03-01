@@ -9,7 +9,7 @@ AFRAME.registerComponent('variable',{
         this.currentPosition = this.el.object3D.position;
         this.initialPosition = this.currentPosition.clone();
         this.program = this.el.closest('[program]');
-        this.el.id = this.el.id || (Math.floor(Math.random()*1000)).toString(16);
+        this.el.id = this.el.id || 'var_'+(Math.floor(Math.random()*1000)).toString(16);
         this.el.setAttribute('class','collidable');
         this.el.setAttribute('geometry',{primitive:'box',width:0.1,height:0.1,depth:0.1});
         this.el.setAttribute('material',{color:'pink'});
