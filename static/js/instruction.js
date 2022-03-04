@@ -9,7 +9,9 @@ AFRAME.registerComponent('instruction',{
         reference:{type:'string'}
     },
     init: function(){  
-        this.preview = false;
+        this.preview = null;
+        this.reference = null;
+        this.parameter = null;
         this.currentPosition = this.el.object3D.position;
         this.initialPosition = this.currentPosition.clone();
         this.program = this.el.closest('[program]');
@@ -23,13 +25,18 @@ AFRAME.registerComponent('instruction',{
         this.addParameter = this.addParameter.bind(this);
         this.addInstruction = this.addInstruction.bind(this);
         this.update = this.update.bind(this);
+        this.grabStartHandler = this.grabStartHandler.bind(this);
         this.grabEndHandler = this.grabEndHandler.bind(this);
 
         this.el.setAttribute('class','collidable');
         this.el.setAttribute('obj-model',{obj:'#instruction'});
         this.el.setAttribute('material',{src:'#instruction_'+this.data.function});
         this.el.setAttribute('droppable','');
-        this.el.setAttribute('grabbable','');
+        this.el.setAttribute('grabbable',{constraintComponentName:'ammo-constraint'});
+        /*this.el.addEventListener('model-loaded',()=>{
+            this.el.setAttribute('ammo-body',{type:'dynamic',activationState:'disableSimulation'});
+            this.el.setAttribute('ammo-shape',{type:'box'});
+        });*/
 
         this.el.addEventListener('dragover-start',this.startPreviewReference);
         this.el.addEventListener('dragover-start',this.startPreviewParameter);
@@ -53,7 +60,9 @@ AFRAME.registerComponent('instruction',{
             newEntity.setAttribute('parameter',{type:this.data.parameter,function:this.data.function});
             newEntity.setAttribute('position',{x:0, y:0.155, z:0.13});
             this.el.appendChild(newEntity);
-            this.parameter = true;
+            this.parameter = newEntity;
+        }else{
+            this.parameter = this.el.querySelector('[parameter]');
         }
         if(this.data.reference && !this.reference){
             let newEntity = document.createElement('a-entity');
@@ -61,33 +70,38 @@ AFRAME.registerComponent('instruction',{
             newEntity.setAttribute('reference',{variable:this.data.reference});
             newEntity.setAttribute('position',{x:0, y:0, z:0.13});
             this.el.appendChild(newEntity);
-            this.reference = true;
+            this.reference = newEntity;
+        }else{
+            this.reference = this.el.querySelector('[reference]');
         }
-        let parameter = this.el.querySelector('[parameter]');
-        let reference = this.el.querySelector('[reference]');
-        if(parameter){
-            if(parameter.components['parameter'].attrValue.function == this.data.function){
-                this.data.parameter = parameter.components['parameter'].attrValue.type;
+        if(this.parameter){
+            if(this.parameter.components['parameter'].attrValue.function == this.data.function){
+                this.data.parameter = this.parameter.components['parameter'].attrValue.type;
             }else{
-                parameter.remove();
+                this.parameter.remove();
+                this.parameter = null;
             }
         }else{
             this.data.parameter = '';
-            this.parameter = false;
+            this.parameter = null;
         }
 
-        if(reference){
-            this.data.reference = reference.components['reference'].attrValue.variable;
+        if(this.reference){
+            this.data.reference = this.reference.components['reference'].attrValue.variable;
         }else{
             this.data.reference = '';
-            this.reference = false;
+            this.reference = null;
         }
     },
     remove: function(){
         this.mutationObs.disconnect();
     },
+    grabStartHandler: function(evt){
+        //this.el.setAttribute('ammo-body','activationState','disableSimulation');
+    },
     grabEndHandler: function(evt){
         this.el.getAttribute('position').copy(this.initialPosition);
+        //this.el.setAttribute('ammo-body','activationState','enabled');
     },
     startPreviewReference: function(evt){
         let carried = evt.detail.carried;
@@ -98,7 +112,7 @@ AFRAME.registerComponent('instruction',{
             preview.setAttribute('position',{x:0, y:0, z:0.13});
             preview.setAttribute('material',{color:'#33ffff',opacity:0.7});
             this.el.appendChild(preview);
-            this.preview = true;
+            this.preview = preview;
         }
         evt.stopPropagation();
     },
@@ -112,7 +126,7 @@ AFRAME.registerComponent('instruction',{
             preview.setAttribute('position',{x:0, y:0.155, z:0.13});
             preview.setAttribute('material',{color:'#44aa44',opacity:0.7});
             this.el.appendChild(preview);
-            this.preview = true;
+            this.preview = preview;
         }
         evt.stopPropagation();
     },
@@ -120,43 +134,23 @@ AFRAME.registerComponent('instruction',{
         let carried = evt.detail.carried;
         let component = carried.components['instruction'];
         if(component && !this.program.components['program'].codeEl.components['code'].previewInstruction){
-            let moveFollowing = false;
             let preview = document.createElement('a-entity');
             preview.setAttribute('class','preview');
             preview.setAttribute('obj-model',{obj:'#instruction'});
             preview.setAttribute('position',{x:0.2, y:0, z:0});
             preview.setAttribute('material',{color:'#44aa44',opacity:0.7});
-            this.el.appendChild(preview);
-            for(let el of this.el.parentEl.children){
-                if(moveFollowing){
-                    el.components['instruction'].currentPosition.x+=0.2;
-                    el.components['instruction'].initialPosition.x+=0.2;
-                }
-                if(el == this.el) moveFollowing = true;
-            }
-            this.preview = true;
-            this.program.components['program'].codeEl.components['code'].previewInstruction = true;
+            this.el.parentEl.insertBefore(preview,this.el.nextSibling);
+            this.el.parentEl.addState('previewing');
         }
         evt.stopPropagation();
     },
     endPreview: function(evt){
+        if(this.el.parentEl.is('previewing')){
+            this.el.parentEl.components['code'].endPreview();
+        }
         if(this.preview){
-            let els = Array.prototype.slice.apply(this.el.querySelectorAll('.preview'));
-            for(el of els){
-                el.remove();
-            }
-            this.preview = false;
-            if(this.program.components['program'].codeEl.components['code'].previewInstruction){
-                let moveFollowing = false;
-                for(let el of this.el.parentEl.children){
-                    if(moveFollowing && el.components['instruction'].initialized){
-                        el.components['instruction'].currentPosition.x-=0.2;
-                        el.components['instruction'].initialPosition.x-=0.2;
-                    }
-                    if(el == this.el) moveFollowing = true;
-                }
-                this.program.components['program'].codeEl.components['code'].previewInstruction = false;
-            }
+            this.preview.remove();
+            this.preview = null;
         }
         evt.stopPropagation();
     },
@@ -194,7 +188,6 @@ AFRAME.registerComponent('instruction',{
     },
     addInstruction: function(evt){
         let target = evt.detail.dropped;
-        if(target == this.el) return;
         let component = target.components['instruction'];
         if(component){
             let newEntity = document.createElement('a-entity');
@@ -214,12 +207,12 @@ AFRAME.registerComponent('instruction',{
         }
     },
     tick: function(){
-        if(this.program && this.program!=this.el.parentEl && this.initialPosition.distanceTo(this.currentPosition) > 0.3){
+        if(this.el.parentEl.components['code'] && this.initialPosition.distanceTo(this.currentPosition) > 0.3){
             instruction = document.createElement('a-entity');
             position = this.program.object3D.worldToLocal(this.el.object3D.getWorldPosition());
             instruction.setAttribute('instruction',this.data);
             instruction.setAttribute('position',position);
-            setTimeout(()=>{this.program.appendChild(instruction);},10);
+            this.program.appendChild(instruction);
             this.el.remove();
         }
     }

@@ -11,15 +11,12 @@ AFRAME.registerComponent('selector',{
 
         this.cursor = document.createElement('a-entity');
         this.cursor.setAttribute('class','collidable');
-        this.cursor.setAttribute('geometry',{primitive:'box',height:0.1,width:0.1,depth:0.05});
-        this.cursor.setAttribute('rotation',{x:0,y:0,z:45});
+        this.cursor.setAttribute('obj-model',{obj:'#selectorCursor'});
         this.cursor.setAttribute('material',{color:'red'});
-        //this.cursor.setAttribute('ammo-body',{type:'static'});
 
         this.textEl = document.createElement('a-entity');
         this.textEl.setAttribute('text',{value:this.value.toFixed(0), align:'center', baseline:'center', width:1});
         this.textEl.setAttribute('position',{x:0,y:0,z:0.035});
-        this.textEl.setAttribute('rotation',{x:0,y:0,z:-45});
 
         this.cursor.appendChild(this.textEl)
 

@@ -27,6 +27,7 @@
     <script src="/vr-programming/js/scope.js"></script>
     <script src="/vr-programming/js/variable.js"></script>
     <script src="/vr-programming/js/reference.js"></script>
+    <script src="/vr-programming/js/sign.js"></script>
     <script src="./assign.js"></script>
   </head>  
   <body>
@@ -62,19 +63,15 @@
         <img id='icon_spider' src='/vr-programming/textures/variables/spider.png'></img>
         <img id='icon_sun' src='/vr-programming/textures/variables/sun.png'></img>
         <img id='icon_tree' src='/vr-programming/textures/variables/tree.png'></img>
+        <img id='sign_background' src='/vr-programming/textures/Wood027_ambientCG.png'></img>
       </a-assets>
         <a-entity environment="preset: forest; skyType: atmosphere"></a-entity>
         <script>
             document.querySelector('[environment]').setAttribute('environment','lightPosition',{x:0,y:1,z:1});
         </script>
 
-        <a-entity drone position="0 2 -2"></a-entity>
-
-        <a-entity ide position="0 0.75 -0.5">
-            <a-entity   position="-0.4 0.4 0" program>
-              <a-entity assign position="0.6 0.0 0"></a-entity>
-            </a-entity>
-        </a-entity>
+        <a-entity sign
+                  position="0 1.6 -1"></a-entity>
         
         <a-entity multidevice="colliderSelector:.collidable"></a-entity>  
     </a-scene>

@@ -14,6 +14,7 @@
         <script src="/vr-programming/js/recyclebin.js"></script>
         <script src="/vr-programming/js/ide.js"></script>
         <script src="/vr-programming/js/program.js"></script>
+        <script src="/vr-programming/js/program-controls.js"></script>
         <script src="/vr-programming/js/drone.js"></script>
         <script src="/vr-programming/js/custom-hand.js"></script>
         <script src="/vr-programming/js/hand-menu.js"></script>
@@ -29,6 +30,7 @@
         <script src="/vr-programming/js/variable.js"></script>
         <script src="/vr-programming/js/reference.js"></script>
         <script src="/vr-programming/js/selector.js"></script>
+        <script src="/vr-programming/js/sign.js"></script>
 
     </head>
     <body>
@@ -39,6 +41,7 @@
                 <a-asset-item id='recyclebin' src='/vr-programming/models/recyclebin.gltf'></a-asset-item>
                 <a-asset-item id='drone' src='/vr-programming/models/drone.gltf'></a-asset-item>
                 <a-asset-item id='cylinderZ' src='/vr-programming/models/cylinderZ.obj'></a-asset-item>
+                <a-asset-item id='selectorCursor' src='/vr-programming/models/selectorCursor.obj'></a-asset-item>
                 <audio id="sound_correct" src='/vr-programming/sounds/correct.wav'></audio>
                 <audio id="sound_error" src='/vr-programming/sounds/error.wav'></audio>
                 <img id='instruction_move' src='/vr-programming/textures/instruction_move.png'></img>
@@ -64,22 +67,29 @@
                 <img id='icon_spider' src='/vr-programming/textures/variables/spider.png'></img>
                 <img id='icon_sun' src='/vr-programming/textures/variables/sun.png'></img>
                 <img id='icon_tree' src='/vr-programming/textures/variables/tree.png'></img>
+                <img id='sign_background' src='/vr-programming/textures/Wood027_ambientCG.png'></img>
             </a-assets>
 
-            <a-entity environment="preset: forest; skyType: atmosphere"></a-entity>
+            <a-entity environment="preset: contact; skyType: atmosphere"></a-entity>
             <script>
                 document.querySelector('[environment]').setAttribute('environment','lightPosition',{x:0,y:1,z:1});
             </script>
 
-            <a-entity drone position="0 2 -4"></a-entity>
+            <a-entity drone position="0 2 -2"></a-entity>
 
-            <a-entity ide position="0 0.75 -3">
-                <a-entity program="name:main" position="-1.25 0 0">
-                    <a-entity scope>
-                        <a-entity id='var1' variable="icon:#icon_tree; value:3;min:-999;max:999"></a-entity>
-                    </a-entity>
-                </a-entity>
-                <a-entity program="name:add" position="1.25 0 0">
+            <a-entity sign="width:0.5;height:0.3;text:With this buttons you can run the program on the drone and reset it's position"
+                      position="-1.15 1.2 -1.1"></a-entity>
+            <a-entity sign="width:0.5;height:0.3;text:The gray blocks represent actions that the drone can perform, they are executed from left to right"
+                      position="-0.6 1.6 -1.1"></a-entity>
+            <a-entity sign="width:0.5;height:0.3;text:The pink boxes are variables, grab them to create a reference or move the red part to change their value"
+                      position="-0.6 0.7 -0.4" rotation="-45 0 0"></a-entity>
+            <a-entity sign="width:0.5;height:0.3;text:Press the joystick of the controller to open the menu which allows you to create new elements"
+                      position="0 0.7 -0.4" rotation="-45 0 0"></a-entity>
+            <a-entity sign="width:0.5;height:0.3;text:Drop elements on this recycle bin to remove them from the scene"
+                      position="0.7 0.7 -0.4" rotation="-45 0 0"></a-entity>
+                      
+            <a-entity ide position="0 0.75 -1">
+                <a-entity program="name:main" position="0 0 0">
                     <a-entity scope>
                         <a-entity id='var1' variable="icon:#icon_tree;value:5;min:-9;max:9"></a-entity>
                         <a-entity id='var2' variable="icon:#icon_moon;value:5;min:-99;max:99"></a-entity>
@@ -97,7 +107,7 @@
                 </a-entity>
             </a-entity>
 
-            <a-entity multidevice="colliderSelector:.collidable"></a-entity>
+            <a-entity multidevice="colliderSelector:.collidable" position="0 0 1"></a-entity>
         </a-scene>
     </body>
 </html>

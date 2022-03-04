@@ -1,16 +1,19 @@
 AFRAME.registerComponent('emit-event-button', {
     schema: {event:{type:'string'},
              emitTo:{type:'selector'},
-             text:{type:'string'}},
+             text:{type:'string'},
+             height:{type:'number',default:0.1},
+             width:{type:'number',default:0.2},
+             color:{type:'string',default:'#c97f4d'}},
     init: function () {
         this.emitEvent = this.emitEvent.bind(this);
 
         if(!this.data.emitTo) this.data.emitTo = this.el.sceneEl;
 
         this.el.setAttribute('class','collidable');
-        this.el.setAttribute('geometry','primitive: box; width: 0.2; height: 0.1; depth: 0.05');
-        this.el.setAttribute('material',{color:'#7d0222'});
-        this.el.setAttribute('text',{value:this.data.text,width:1,zOffset:0.051,align:'center'});
+        this.el.setAttribute('geometry',{primitive:'box', width:this.data.width, height:this.data.height, depth: 0.05});
+        this.el.setAttribute('material',{color:this.data.color});
+        this.el.setAttribute('text',{value:this.data.text,width:1,zOffset:0.026,align:'center'});
         if(AFRAME.utils.device.isMobileVR()){
             this.el.addEventListener('collidestart',this.emitEvent); 
         }else{
