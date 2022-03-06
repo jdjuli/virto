@@ -78,30 +78,30 @@
             <a-entity drone position="0 2 -2"></a-entity>
 
             <a-entity sign="width:0.5;height:0.3;text:With this buttons you can run the program on the drone and reset it's position"
-                      position="-1.15 1.2 -1.1"></a-entity>
+                      position="-1.15 1 -1.1"></a-entity>
             <a-entity sign="width:0.5;height:0.3;text:The gray blocks represent actions that the drone can perform, they are executed from left to right"
-                      position="-0.6 1.6 -1.1"></a-entity>
+                      position="-0.6 1.4 -1.1"></a-entity>
             <a-entity sign="width:0.5;height:0.3;text:The pink boxes are variables, grab them to create a reference or move the red part to change their value"
-                      position="-0.6 0.7 -0.4" rotation="-45 0 0"></a-entity>
+                      position="-0.6 0.5 -0.4" rotation="-45 0 0"></a-entity>
             <a-entity sign="width:0.5;height:0.3;text:Press the joystick of the controller to open the menu which allows you to create new elements"
-                      position="0 0.7 -0.4" rotation="-45 0 0"></a-entity>
+                      position="0 0.5 -0.4" rotation="-45 0 0"></a-entity>
             <a-entity sign="width:0.5;height:0.3;text:Drop elements on this recycle bin to remove them from the scene"
-                      position="0.7 0.7 -0.4" rotation="-45 0 0"></a-entity>
+                      position="0.7 0.5 -0.4" rotation="-45 0 0"></a-entity>
                       
-            <a-entity ide position="0 0.75 -1">
+            <a-entity ide position="0 0.55 -1">
                 <a-entity program="name:main" position="0 0 0">
                     <a-entity scope>
                         <a-entity id='var1' variable="icon:#icon_tree;value:5;min:-9;max:9"></a-entity>
-                        <a-entity id='var2' variable="icon:#icon_moon;value:5;min:-99;max:99"></a-entity>
+                        <a-entity id='var2' variable="icon:#icon_moon;value:90;min:-99;max:99"></a-entity>
                     </a-entity>
                     <a-entity code>
-                        <a-entity instruction="function:move; parameter:forward; reference:#var1"></a-entity>
+                        <a-entity instruction="function:move; parameter:backward; reference:#var1"></a-entity>
                         <a-entity instruction="function:rotate; parameter:yaxis; reference:#var2"></a-entity>
-                        <a-entity instruction="function:move; parameter:forward; reference:#var1"></a-entity>
+                        <a-entity instruction="function:move; parameter:backward; reference:#var1"></a-entity>
                         <a-entity instruction="function:rotate; parameter:yaxis; reference:#var2"></a-entity>
-                        <a-entity instruction="function:move; parameter:forward; reference:#var1"></a-entity>
+                        <a-entity instruction="function:move; parameter:backward; reference:#var1"></a-entity>
                         <a-entity instruction="function:rotate; parameter:yaxis; reference:#var2"></a-entity>
-                        <a-entity instruction="function:move; parameter:forward; reference:#var1"></a-entity>
+                        <a-entity instruction="function:move; parameter:backward; reference:#var1"></a-entity>
                         <a-entity instruction="function:rotate; parameter:yaxis; reference:#var2"></a-entity>
                     </a-entity>
                 </a-entity>
