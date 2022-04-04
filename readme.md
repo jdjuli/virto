@@ -1,5 +1,5 @@
 # VR-Programming
-This repository is intended to mantain the code of my Bachelor thesis on Informatics Engineering. It consists on a blog on which I'll be publishing all the progress I make, you can check it out [here](https://jdjuli.github.io/vr-programming/)
+This repository is intended to mantain the code of my Undergraduate Thesis Project on Informatics Engineering. It consists on a blog on which I'll be publishing all the progress I make, you can check it out [here](https://jdjuli.github.io/vr-programming/)
 
 # About
 
