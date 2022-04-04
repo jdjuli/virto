@@ -31,10 +31,10 @@
       this.menuEl.setAttribute('hand-menu',{contents:JSON.stringify(
         [
           {name:'Instructions', 
-           component:'instruction', 
            items:[
-            {textureAsset:'#box_move', data:{function:'move'}},
-            {textureAsset:'#box_rotate', data:{function:'rotate'}}
+            {textureAsset:'#box_move', component:'instruction', data:{function:'move'}},
+            {textureAsset:'#box_rotate', component:'instruction', data:{function:'rotate'}},
+            {textureAsset:'#box_cond', component:'instruction-conditional', data:{}}
            ]
           },
           {name:'Parameters', 

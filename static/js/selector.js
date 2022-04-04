@@ -2,26 +2,29 @@ AFRAME.registerComponent('selector',{
     schema: {
         min:{type:'number', default:0},
         max:{type:'number', default:5},
-        value:{type:'number'},
+        value:{type:'string'},
+        type:{type:'string',default:'integer',oneOf:['integer','boolean']},
         width:{type:'number', default:0.5}
     },
     init: function() {
-        this.interval = this.data.max-this.data.min;
-        this.value = this.data.value || this.data.min + this.interval/2;
-
         this.cursor = document.createElement('a-entity');
         this.cursor.setAttribute('class','collidable');
         this.cursor.setAttribute('obj-model',{obj:'#selectorCursor'});
         this.cursor.setAttribute('material',{color:'red'});
-
         this.textEl = document.createElement('a-entity');
-        this.textEl.setAttribute('text',{value:this.value.toFixed(0), align:'center', baseline:'center', width:1});
-        this.textEl.setAttribute('position',{x:0,y:0,z:0.035});
 
-        this.cursor.appendChild(this.textEl)
-
-        this.cursor.setAttribute('grabbable',{constraintComponentName:'ammo-constraint'});
+        if(this.data.type == 'integer'){
+            this.interval = this.data.max-this.data.min;
+            this.value = Number.parseInt(this.data.value) || this.data.min + this.interval/2;
+            this.textEl.setAttribute('text',{value:this.value.toFixed(0), align:'center', baseline:'center', width:1});
+        }else{
+            this.value = this.data.value;
+            this.textEl.setAttribute('text',{value:this.value?'T':'F', align:'center', baseline:'center', width:1});
+        }
         
+        this.textEl.setAttribute('position',{x:0,y:0,z:0.035});
+        this.cursor.appendChild(this.textEl);
+        this.cursor.setAttribute('grabbable',{constraintComponentName:'ammo-constraint'});
         this.el.appendChild(this.cursor);
 
         this.el.addEventListener('grab-end',(evt)=>{
@@ -42,11 +45,21 @@ AFRAME.registerComponent('selector',{
                 position.x = xLimit
             }
             //Calculate value based on cursor position
-            this.data.value = Math.round(this.data.min + this.interval*(position.x+xLimit)/this.data.width);
+            if(this.data.type == 'integer'){
+                this.data.value = Math.round(this.data.min + this.interval*(position.x+xLimit)/this.data.width);
+            }else{
+                this.data.value = (position.x+xLimit)/this.data.width > 0.5 ;
+            }
+            
             if(oldValue != this.data.value){
                 this.el.emit('valuechanged',{value:this.data.value});
                 //Update text
-                this.textEl.setAttribute('text','value',this.data.value.toFixed(0));
+                if(this.data.type == 'integer'){
+                    this.textEl.setAttribute('text','value',this.data.value.toFixed(0));
+                }else{
+                    this.textEl.setAttribute('text','value',this.data.value?'T':'F');
+                }
+                
             }
             
         }

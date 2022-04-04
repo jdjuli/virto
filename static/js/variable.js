@@ -1,7 +1,8 @@
 AFRAME.registerComponent('variable',{
     schema:{
-        value:{type:'float',default:0.0},
-        icon:{type:'string',default:'#icon_spider'},
+        value:{type:'string'},
+        icon:{type:'string'},
+        type:{type:'string',default:'integer',oneOf:['integer','boolean']},
         min:{type:'number',default:-9},
         max:{type:'number',default:9}
     },
@@ -9,6 +10,7 @@ AFRAME.registerComponent('variable',{
         this.currentPosition = this.el.object3D.position;
         this.initialPosition = this.currentPosition.clone();
         this.program = this.el.closest('[program]');
+        if(this.data.type == 'boolean') this.data.value = /'[tT](rue)?'/.test(this.data.value);
         this.el.id = this.el.id || 'var_'+(Math.floor(Math.random()*1000)).toString(16);
         this.el.setAttribute('class','collidable');
         this.el.setAttribute('geometry',{primitive:'box',width:0.1,height:0.1,depth:0.1});
@@ -16,18 +18,11 @@ AFRAME.registerComponent('variable',{
         this.el.setAttribute('grabbable',{constraintComponentName:'ammo-constraint'});
         this.iconEl = document.createElement('a-entity');
         this.iconEl.setAttribute('geometry',{primitive:'plane',height:0.075,width:0.075});
-        this.iconEl.setAttribute('material',{src:this.data.icon, transparent:true});
         this.iconEl.setAttribute('position',{x:0,y:0,z:0.051});
         this.el.appendChild(this.iconEl);
-        /*
-        this.textEl = document.createElement('a-entity');
-        this.textEl.setAttribute('text',{value:this.data.value,align:'center',anchor:'center',side:'double',width:1});
-        this.textEl.setAttribute('position',{x:0,y:0.1,z:0});
-        this.el.appendChild(this.textEl);
-        */
 
         this.selectorEl = document.createElement('a-entity');
-        this.selectorEl.setAttribute('selector',{min:this.data.min,max:this.data.max,width:0.1});
+        this.selectorEl.setAttribute('selector',{min:this.data.min,max:this.data.max,width:0.1,type:this.data.type});
         this.selectorEl.setAttribute('position',{x:0,y:0.14142,z:0});
         this.el.appendChild(this.selectorEl);
         
@@ -37,31 +32,55 @@ AFRAME.registerComponent('variable',{
             evt.stopPropagation();
         });
         this.el.addEventListener('valuechanged',(evt)=>{
-            this.data.value = Math.round(this.clamp(evt.detail.value,this.data.min,this.data.max))
+            if(this.data.type == 'integer'){
+                this.data.value = Math.round(this.clamp(evt.detail.value,this.data.min,this.data.max));
+            }else{
+                this.data.value = evt.detail.value;
+            }
             evt.stopPropagation();
         });
     },
     update: function(){
         this.set(this.data.value);
+        if(this.data.icon){
+            this.iconEl.setAttribute('material',{src:this.data.icon, transparent:true});
+            this.el.emit('iconSet');
+        }
     },
     set: function(newVal){
         value = Number.parseFloat(newVal);
-        if(!Number.isNaN(value)){
+        if(!Number.isNaN(value) && this.data.type == 'integer'){
             value = Math.round(this.clamp(value,this.data.min,this.data.max));
             this.data.value = value;
             this.selectorEl.setAttribute('selector','value',value);
-        }else{
-            console.log('New variable value: \''+newVal+'\' is not recognized as a valid number');
+        }else if(this.data.type == 'boolean'){
+            newVal = /'[tT](rue)?'/.test(newVal);
+            this.data.value = newVal;
+            this.selectorEl.setAttribute('selector','value',newVal);
         }
     },
     get: function(){
-        return this.data.value;
+        let num = Number.parseInt(this.data.value);
+        if(Number.isNaN(num)){
+            return this.data.value;
+        }else{
+            return num;
+        }
     },
     clamp: function(val,min,max){
         return Math.min(Math.max(val,min),max);
     },
     getIconSelector: function(){
-        return this.data.icon;
+        return new Promise((resolve,reject)=>{
+            if(this.data.icon){
+                resolve(this.data.icon);
+            }else{
+                this.el.addEventListener('iconSet',(evt)=>{
+                    evt.stopPropagation();
+                    resolve(this.data.icon);
+                })
+            }
+        });
     },
     tick: function(){
         if(this.initialPosition.distanceTo(this.currentPosition) > 0.4){

@@ -8,6 +8,17 @@
     <language>en-us</language>
     <lastBuildDate>Sat, 18 Dec 2021 18:05:17 +0100</lastBuildDate><atom:link href="https://jdjuli.github.io/vr-programming/index.xml" rel="self" type="application/rss+xml" />
     <item>
+      <title>Version 0.1</title>
+      <link>https://jdjuli.github.io/vr-programming/version-0.1/</link>
+      <pubDate>Tue, 01 Mar 2022 12:41:28 +0100</pubDate>
+      
+      <guid>https://jdjuli.github.io/vr-programming/version-0.1/</guid>
+      <description>This is the first fully usable version of the proyect (more about it here).
+It allows the creation of sequential programs with variables that can be modified manually on runtime and is completely compatible with VR headsets and partialy with PCs.
+Things that can be done:  Write your own programs on HTML Run the program Modify the program Work with variables Build your own program from scratch  Scenes available to play with  Sample program Sample program &amp;amp; build-your-own   Write your own programs on HTML Even though you only need to know the basics of HTML to write programs with this proyect, I would recommend to get used to work with A-Frame so you can get the most of it.</description>
+    </item>
+    
+    <item>
       <title>Review on colliders</title>
       <link>https://jdjuli.github.io/vr-programming/review-on-colliders/</link>
       <pubDate>Fri, 28 Jan 2022 14:24:17 +0100</pubDate>

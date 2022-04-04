@@ -1,0 +1,10 @@
+box_left.png        : Original icon made by https://twitter.com/MrGrigri. Downloaded from https://materialdesignicons.com/icon/arrow-collapse-down
+box_right.png       : Original icon made by https://twitter.com/MrGrigri. Downloaded from https://materialdesignicons.com/icon/arrow-collapse-down
+box_up.png          : Icon made by https://twitter.com/MrGrigri. Downloaded from https://materialdesignicons.com/icon/arrow-collapse-up
+box_down.png        : Icon made by https://twitter.com/MrGrigri. Downloaded from https://materialdesignicons.com/icon/arrow-collapse-down
+box_rotate.png      : Icon made by https://twitter.com/mririgo. Downloaded from https://materialdesignicons.com/icon/rotate-orbit
+box_move.png        : Icon made by https://twitter.com/Templarian. Downloaded from https://materialdesignicons.com/icon/axis-arrow
+box_xaxis.png       : Icon made by https://twitter.com/mririgo. Downloaded from https://materialdesignicons.com/icon/axis-z-rotate-counterclockwise
+box_yaxis.png       : Icon made by https://twitter.com/mririgo. Downloaded from https://materialdesignicons.com/icon/axis-z-rotate-counterclockwise
+box_zaxis.png       : Icon made by https://twitter.com/Google. Downloaded from https://materialdesignicons.com/icon/backup-restore
+Wood027_ambientCG   : Texture image downloaded from https://ambientCG.com/a/Wood027

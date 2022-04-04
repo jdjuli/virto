@@ -28,10 +28,23 @@ AFRAME.registerComponent('parameter', {
             }else{
                 this.el.addEventListener('grab-end',this.grabEndHandler);
             }
-        });     
+        });    
+        this.el.clone = ()=>{
+            let clone = document.createElement('a-entity');
+            clone.setAttribute('parameter',this.data);
+            return clone;
+        }
     },
     update: function(oldData){
         this.el.setAttribute('material',{src:'#box_'+this.data.type});
+    },
+    remove: function(){
+        if(this.el.is('grabbed')){
+            let grabber = this.el.components.grabbable.grabber;
+            grabber.components['super-hands'].state.forEach((v,k)=>{
+                if(!v.attached) grabber.components['super-hands'].state.delete(k);
+            });
+        }
     },
     grabEndHandler: function(evt){
         this.el.getAttribute('position').copy(this.initialPosition);

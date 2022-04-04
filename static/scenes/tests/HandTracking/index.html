@@ -5,6 +5,7 @@
         <script src="https://cdn.jsdelivr.net/gh/donmccurdy/aframe-extras@v6.1.1/dist/aframe-extras.js"></script>
         <script src="https://unpkg.com/aframe-event-set-component@4.2.1/dist/aframe-event-set-component.min.js"></script>
         <script src="/vr-programming/js/super-hands.js"></script>
+        <script src="./events.js"></script>
     </head>  
     <body>
         <a-scene>
@@ -54,16 +55,17 @@
                         event-set__hitend="material.color: cyan"
                         position="0.5 1.6 -0.5"></a-entity>
 
+
             <a-entity>
                 <a-entity camera></a-entity>
-                <a-entity   hand-tracking-controls="hand:left" 
-                            super-hands>
+                <a-entity   hand-tracking-controls="hand:left"
+                            super-hands events>
                     <a-entity   geometry="primitive:sphere;radius:0.01" 
                                 material="color: gold"
                                 sphere-collider="objects:.collidable; radius:0.02"></a-entity>
                 </a-entity>
                 <a-entity   hand-tracking-controls="hand:right" 
-                            super-hands>
+                            super-hands events>
                     <a-entity   geometry="primitive:sphere;radius:0.01" 
                                 material="color: gold"
                                 sphere-collider="objects:.collidable; radius:0.02"></a-entity>

@@ -1,6 +1,9 @@
 /*
- * AUTHOR: https://github.com/fernandojsg/aframe-teleport-controls
+ * AUTHOR: https://github.com/fernandojsg
  * MODIFIED FROM: https://unpkg.com/aframe-teleport-controls@0.3.1/dist/aframe-teleport-controls.js
+ * 
+ * The changes I've made were to fix some WebGL errors.
+ * 
  */
 
 

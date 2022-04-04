@@ -17,7 +17,8 @@ AFRAME.registerComponent('scope',{
     init: function(){ 
         this.variables = new Map();
         this.update = this.update.bind(this);
-
+        this.icons = Array.from(this.el.sceneEl.querySelectorAll('[id^=icon]'))/*.shuffle()*/.map(el=>'#'+el.id);  
+        
         this.mutationObs = new MutationObserver(this.update);
         this.mutationObs.observe(this.el,{childList:true,attributes:true});
     },
@@ -28,18 +29,18 @@ AFRAME.registerComponent('scope',{
         this.variables.clear();
         let idx = 0;
         let variableEls = this.el.getChildEntities().filter((a)=>a.getDOMAttribute('variable'));
-        let iconsEls = Array.from(this.el.sceneEl.querySelectorAll('[id^=icon]')).shuffle();
-        this.icons=iconsEls.map(el=>'#'+el.id);
         let incrementX = Math.min(this.data.width/variableEls.length, 0.2);
         let baseX = this.data.width*-0.5;
         for(let variableEl of variableEls){
-            this.icons.filter(i=>i!=variableEl.getAttribute('variable','icon'));
             let name = variableEl.getAttribute('id');
             if(this.variables.has(name)){
                 console.error('Cannot create two variables with the same name ('+name+')');
             }else{
                 let position = new THREE.Vector3(baseX+incrementX*idx, 0, 0);
                 variableEl.setAttribute('position',position);
+                if(!variableEl.getAttribute('variable').icon){
+                    variableEl.setAttribute('variable','icon',this.icons.pop());
+                } 
                 if(variableEl.components.variable) variableEl.components.variable.initialPosition = position.clone();
                 this.variables.set(name,variableEl);
             }

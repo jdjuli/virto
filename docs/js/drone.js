@@ -3,7 +3,7 @@ AFRAME.registerComponent('drone',{
         const _this = this;   
         this.el.setAttribute('gltf-model','#drone')
         this.el.addEventListener('model-loaded',(evt)=>{
-            this.el.setAttribute('ammo-body',{type:'dynamic',linearDamping:0.8,angularDamping:0.8,gravity:{x:0,y:0,z:0},emitCollisionEvents:true,activationState:'disableDeactivation'});
+            this.el.setAttribute('ammo-body',{type:'dynamic',linearDamping:0,angularDamping:0.8,gravity:{x:0,y:0,z:0},emitCollisionEvents:true,activationState:'disableDeactivation'});
             this.el.setAttribute('ammo-shape',{type:'box',fit:'manual',halfExtents:{x:0.2,y:0.2,z:0.2}});
         });
 

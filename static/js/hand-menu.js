@@ -107,10 +107,12 @@ AFRAME.registerComponent('hand-menu',{
       if(!this.isOpen) return;
 
       let selected = document.createElement('a-entity');
-      let componentName = this.data.contents[this.category].component;
-      let componentArg = this.data.contents[this.category].items[this.firstItem+btnNum].data;
-      selected.setAttribute(componentName,componentArg);
-      
+      let category = this.data.contents[this.category]
+      let componentArg = category.items[this.firstItem+btnNum];
+      let componentName = category.component || componentArg.component;
+
+      selected.setAttribute(componentName,componentArg.data);
+
       if(componentName != 'variable'){
         let position = this.el.object3D.position.clone();
         position.add(new THREE.Vector3(0,0.15,-0.1));
@@ -118,8 +120,8 @@ AFRAME.registerComponent('hand-menu',{
         selected.setAttribute('position',position);
         this.ide.appendChild(selected);
       }else{
-        scope = this.ide.querySelectorAll('[program] [scope]')[0]
-        scope.appendChild(selected)
+        scope = this.ide.querySelectorAll('[program] [scope]')[0];
+        scope.appendChild(selected);
       }
     }
   });

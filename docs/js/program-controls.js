@@ -5,7 +5,8 @@ AFRAME.registerComponent('program-controls', {
         this.previewInstruction = this.previewInstruction.bind(this);
         this.endPreview = this.endPreview.bind(this);
         this.addInstruction = this.addInstruction.bind(this);
-        this.codeEl = this.el.parentEl.components['program'].codeEl;
+        this.programEl = this.el.parentEl;
+        this.codeEl = this.programEl.components['program'].codeEl;
 
         this.el.setAttribute('class','collidable');
         this.el.setAttribute('geometry',{primitive:'box',height:0.6,width:0.3,depth:0.3});
@@ -27,35 +28,50 @@ AFRAME.registerComponent('program-controls', {
     },
     previewInstruction: function(evt){
         let carried = evt.detail.carried;
-        let component = carried.components['instruction'];
-        if(component && !this.codeEl.is('previewing')){
+        let instruction = carried.components['instruction'];
+        let conditional = carried.components['instruction-conditional'];
+        let component = instruction || conditional;
+        if(component && !this.programEl.is('previewing')){
             let preview = document.createElement('a-entity');
             preview.setAttribute('class','preview');
-            preview.setAttribute('obj-model',{obj:'#instruction'});
-            preview.setAttribute('position',{x:0.25, y:0, z:0});
+            if(instruction){
+                preview.setAttribute('obj-model',{obj:'#instruction'});
+                preview.size=carried.size;
+            }else if(conditional){
+                preview.setAttribute('obj-model',{obj:'#condition_preview'});
+                preview.size=carried.minSize;
+            }
             preview.setAttribute('material',{color:'#44aa44',opacity:0.7});
             this.codeEl.prepend(preview);
-            this.codeEl.addState('previewing');
+            this.programEl.addState('previewing');
         }
         evt.stopPropagation();
     },
     endPreview: function(evt){
-        if(this.codeEl.is('previewing')){
+        if(this.programEl.is('previewing')){
             this.codeEl.components['code'].endPreview();
         }
         evt.stopPropagation();
     },
     addInstruction: function(evt){
-        let target = evt.detail.dropped;
-        if(target == this.el || this.parameter) return;
-        let component = target.components['instruction'];
-        if(component){
-            let newEntity = document.createElement('a-entity');
-            newEntity.setAttribute('class','collidable');
-            newEntity.setAttribute('instruction',component.data);
-            this.codeEl.prepend(newEntity);
-            target.remove();
+        let dropped = evt.detail.dropped;
+        if(!dropped.attached) return;
+        let instruction = dropped.components['instruction'];
+        let conditional = dropped.components['instruction-conditional'];
+        let component = instruction || conditional;
+        if(component && !dropped.parentEl.components['code'] && !this.isAncestor(dropped)){
+            this.codeEl.prepend(dropped.clone());
+            dropped.remove();
         }
         evt.stopPropagation();
+    },
+    isAncestor(entity){
+        let isAncestor = this.el == entity;
+        let ancestor = this.el.parentEl;
+        while(!isAncestor && ancestor){
+            isAncestor = ancestor==entity;
+            ancestor = ancestor.parentEl;
+        } 
+        return isAncestor;
     }
 });

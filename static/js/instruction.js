@@ -9,6 +9,7 @@ AFRAME.registerComponent('instruction',{
         reference:{type:'string'}
     },
     init: function(){  
+        this.el.size = this.el.size=new THREE.Vector3(0.2,0.5,0.2);
         this.preview = null;
         this.reference = null;
         this.parameter = null;
@@ -25,7 +26,6 @@ AFRAME.registerComponent('instruction',{
         this.addParameter = this.addParameter.bind(this);
         this.addInstruction = this.addInstruction.bind(this);
         this.update = this.update.bind(this);
-        this.grabStartHandler = this.grabStartHandler.bind(this);
         this.grabEndHandler = this.grabEndHandler.bind(this);
 
         this.el.setAttribute('class','collidable');
@@ -33,17 +33,13 @@ AFRAME.registerComponent('instruction',{
         this.el.setAttribute('material',{src:'#instruction_'+this.data.function});
         this.el.setAttribute('droppable','');
         this.el.setAttribute('grabbable',{constraintComponentName:'ammo-constraint'});
-        /*this.el.addEventListener('model-loaded',()=>{
-            this.el.setAttribute('ammo-body',{type:'dynamic',activationState:'disableSimulation'});
-            this.el.setAttribute('ammo-shape',{type:'box'});
-        });*/
 
         this.el.addEventListener('dragover-start',this.startPreviewReference);
         this.el.addEventListener('dragover-start',this.startPreviewParameter);
         this.el.addEventListener('drag-drop',this.addReference);
         this.el.addEventListener('drag-drop',this.addParameter);
         this.el.addEventListener('dragover-end',this.endPreview);
-        if(this.program && this.program!=this.el.parentEl){
+        if(this.el.parentEl.getDOMAttribute('code') != null){
             this.el.addEventListener('grab-end',this.grabEndHandler);
             this.el.addEventListener('dragover-start',this.startPreviewInstruction);
             this.el.addEventListener('drag-drop',this.addInstruction);
@@ -51,7 +47,14 @@ AFRAME.registerComponent('instruction',{
             this.el.setAttribute('draggable','');
         }
         this.mutationObs = new MutationObserver(this.update);
-        this.mutationObs.observe(this.el,{childList:true,attributes:true});
+        this.mutationObs.observe(this.el,{childList:true,attributes:true,subtree: true});
+
+        this.el.clone = ()=>{
+            let clone = document.createElement('a-entity');
+            clone.setAttribute('instruction',this.data);
+            clone.size = this.el.size;
+            return clone;
+        }
     },
     update: function(){
         if(this.data.parameter && !this.parameter){
@@ -95,23 +98,26 @@ AFRAME.registerComponent('instruction',{
     },
     remove: function(){
         this.mutationObs.disconnect();
-    },
-    grabStartHandler: function(evt){
-        //this.el.setAttribute('ammo-body','activationState','disableSimulation');
+        if(this.el.is('grabbed')){
+            let grabber = this.el.components.grabbable.grabber;
+            grabber.components['super-hands'].state.forEach((v,k)=>{
+                if(!v.attached) grabber.components['super-hands'].state.delete(k);
+            });
+        }
     },
     grabEndHandler: function(evt){
         this.el.getAttribute('position').copy(this.initialPosition);
-        //this.el.setAttribute('ammo-body','activationState','enabled');
     },
     startPreviewReference: function(evt){
         let carried = evt.detail.carried;
-        if(carried.components['reference'] && !this.preview && !this.reference){
+        if(carried.components['reference'] && !this.reference && !this.program.is('previewing')){
             let preview = document.createElement('a-entity');
             preview.setAttribute('class','preview');
             preview.setAttribute('obj-model',{obj:'#cylinderZ'});
             preview.setAttribute('position',{x:0, y:0, z:0.13});
             preview.setAttribute('material',{color:'#33ffff',opacity:0.7});
             this.el.appendChild(preview);
+            this.program.addState('previewing');
             this.preview = preview;
         }
         evt.stopPropagation();
@@ -119,34 +125,45 @@ AFRAME.registerComponent('instruction',{
     startPreviewParameter: function(evt){
         let carried = evt.detail.carried;
         let component = carried.components['parameter'];
-        if(component && !this.preview && !this.parameter && component.data.function == this.data.function ){
+        if(component && !this.program.is('previewing') && !this.parameter && component.data.function == this.data.function ){
             let preview = document.createElement('a-entity');
             preview.setAttribute('class','preview');
             preview.setAttribute('geometry',{primitive:'box',height:0.1,width:0.1,depth:0.1});
             preview.setAttribute('position',{x:0, y:0.155, z:0.13});
             preview.setAttribute('material',{color:'#44aa44',opacity:0.7});
             this.el.appendChild(preview);
+            this.program.addState('previewing');
             this.preview = preview;
         }
         evt.stopPropagation();
     },
     startPreviewInstruction: function(evt){
         let carried = evt.detail.carried;
-        let component = carried.components['instruction'];
-        if(component && !this.program.components['program'].codeEl.components['code'].previewInstruction){
+        if(!carried.attached) return;
+        let instruction = carried.components['instruction'];
+        let conditional = carried.components['instruction-conditional'];
+        let component = instruction || conditional;
+        if( component && !carried.parentEl.components['code'] &&!this.program.is('previewing') && !this.isAncestor(carried)){
             let preview = document.createElement('a-entity');
             preview.setAttribute('class','preview');
-            preview.setAttribute('obj-model',{obj:'#instruction'});
-            preview.setAttribute('position',{x:0.2, y:0, z:0});
+            if(instruction){
+                preview.setAttribute('obj-model',{obj:'#instruction'});
+                preview.size=carried.size;
+            }else if(conditional){
+                preview.setAttribute('obj-model',{obj:'#condition_preview'});
+                preview.size=carried.minSize;
+            }
             preview.setAttribute('material',{color:'#44aa44',opacity:0.7});
+            
             this.el.parentEl.insertBefore(preview,this.el.nextSibling);
-            this.el.parentEl.addState('previewing');
+            this.program.addState('previewing');
         }
         evt.stopPropagation();
     },
     endPreview: function(evt){
-        if(this.el.parentEl.is('previewing')){
+        if(this.program.is('previewing')){
             this.el.parentEl.components['code'].endPreview();
+            this.program.removeState('previewing');
         }
         if(this.preview){
             this.preview.remove();
@@ -187,33 +204,49 @@ AFRAME.registerComponent('instruction',{
         evt.stopPropagation();
     },
     addInstruction: function(evt){
-        let target = evt.detail.dropped;
-        let component = target.components['instruction'];
-        if(component){
-            let newEntity = document.createElement('a-entity');
-            newEntity.setAttribute('class','collidable');
-            newEntity.setAttribute('instruction',component.data);
-            this.el.parentNode.insertBefore(newEntity, this.el.nextSibling);
-            target.remove();
+        let dropped = evt.detail.dropped;
+        if(!dropped.attached) return;
+        let instruction = dropped.components['instruction'];
+        let conditional = dropped.components['instruction-conditional'];
+        let component = instruction || conditional;
+        if(component && !dropped.parentEl.components['code'] && !this.isAncestor(dropped)){
+            this.el.parentEl.insertBefore(dropped.clone(), this.el.nextSibling);
+            dropped.remove();
         }
         evt.stopPropagation();
-    },
-    exec: function(){
-        drone = this.el.sceneEl.querySelector('[drone]').components.drone;
-        return (program,findVariable)=>{
-            amount = findVariable(this.data.reference).get();
-            console.log('[drone] function: '+this.data.function+" , parameter: "+this.data.parameter+" , reference: "+this.data.reference);
-            drone[this.data.function](this.data.parameter,amount)
-        }
     },
     tick: function(){
         if(this.el.parentEl.components['code'] && this.initialPosition.distanceTo(this.currentPosition) > 0.3){
             instruction = document.createElement('a-entity');
-            position = this.program.object3D.worldToLocal(this.el.object3D.getWorldPosition());
+            position = this.program.object3D.worldToLocal(this.el.object3D.getWorldPosition(new THREE.Vector3()));
             instruction.setAttribute('instruction',this.data);
-            instruction.setAttribute('position',position);
-            this.program.appendChild(instruction);
+            instruction.setAttribute('position',position.clone());
+            setTimeout(()=>{this.program.appendChild(instruction);},10);
             this.el.remove();
         }
-    }
+    },
+    isAncestor(entity){
+        let isAncestor = this.el == entity;
+        let ancestor = this.el.parentEl;
+        while(!isAncestor && ancestor){
+            isAncestor = ancestor==entity;
+            ancestor = ancestor.parentEl;
+        } 
+        return isAncestor;
+    },
+    exec: function(){
+        drone = this.el.sceneEl.querySelector('[drone]').components.drone;
+        return ()=>{
+            return new Promise((resolve,reject)=>{
+                amount = this.reference.components['reference'].get();
+                console.log(Date.now());
+                console.log('[drone] function: '+this.data.function+" , parameter: "+this.data.parameter+" , reference: "+this.data.reference);
+                drone[this.data.function](this.data.parameter,amount);
+                setTimeout(()=>{
+                    resolve();
+                },512);
+            });
+            
+        }
+    },
 });

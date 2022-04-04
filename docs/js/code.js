@@ -2,35 +2,61 @@ AFRAME.registerComponent('code',{
     init: function(){
         this.instructions = [];
         this.previewInstruction = false;
-        this.exec = this.exec().bind(this);
+        this.exec = this.exec.bind(this);
         this.update = this.update().bind(this);
         this.endPreview = this.endPreview.bind(this);
+        this.programEl = this.el.closest('[program]');
+        this.parentUpdatable = this.el.parentEl.components['instruction-conditional'];
 
+        this.el.size=new THREE.Vector3(0,0,0);
         this.mutationObs = new MutationObserver(this.update);
         this.mutationObs.observe(this.el,{childList:true,attributes:true});
+
+        this.el.clone = ()=>{
+            let clone = document.createElement('a-entity');
+            clone.setAttribute('code',{});
+            clone.size = this.el.size;
+            for(instruction of this.el.getChildEntities()){
+                clone.appendChild(instruction.clone());
+            }
+            return clone;
+        }
     },
     update: function(){
         let position = new THREE.Vector3(0,0,0);
-        let i;
+        let first;
+        let component;
         return (oldData)=>{
+            let entities = this.el.getChildEntities();
             this.instructions = [];
-            i=0;
-            for(let instructionEl of this.el.getChildEntities()){
-                position.set(0.2*i++,0,0);
-                if(instructionEl.getDOMAttribute('instruction')){
-
-                    //instructionEl.setAttribute('ammo-body','type','static');
-                    //instructionEl.components['ammo-body'].updateComponent();
-                    instructionEl.object3D.position.copy(position);
-                    instructionEl.components['instruction'].initialPosition=position.clone();
-                    //instructionEl.components['ammo-body'].syncToPhysics();
-                    //instructionEl.setAttribute('ammo-body','type','dynamic');
-
-                    this.instructions.push(instructionEl);
+            position.set(0,0,0);
+            this.el.size.set(0,0,0);
+            for(let i = 0 ; i < entities.length ; i++){
+                let instructionEl = entities[i];
+                let compInstruction = instructionEl.components['instruction']
+                let compConditional = instructionEl.components['instruction-conditional'];
+                let component = compInstruction || compConditional;
+                if(component && !component.initialized) component.initComponent();
+                if(i == 0){
+                    position.x = instructionEl.size.x/2;
+                    first = false;
                 }else{
-                    instructionEl.setAttribute('position',position);
+                    position.x += instructionEl.size.x/2 + entities[i-1].size.x/2;
+                }
+                this.el.size.x += instructionEl.size.x;
+                this.el.size.y = Math.max(this.el.size.y,instructionEl.size.y);
+                this.el.size.z = Math.max(this.el.size.z,instructionEl.size.z);
+
+                instructionEl.object3D.position.copy(position);
+                if(component){
+                    if(compConditional){
+                        instructionEl.object3D.position.x -= (instructionEl.size.x-0.6)/2;
+                    }
+                    component.initialPosition=instructionEl.object3D.position.clone();
+                    this.instructions.push(component);
                 }
             }
+            if(this.parentUpdatable && this.parentUpdatable.initialized) this.parentUpdatable.update();
         }
     },
     remove: function(){
@@ -40,20 +66,18 @@ AFRAME.registerComponent('code',{
         let toRemove = this.el.getChildEntities();
         toRemove = toRemove.filter((e)=>e.classList.contains('preview'));
         for(e of toRemove) e.remove();
-        this.el.removeState('previewing');
+        this.programEl.removeState('previewing');
     },
-    exec: function(){
-        return (program,findVariable)=>{
-            if(!this.el.is('running')){
-                this.el.addState('running');
-                for(i = 0 ; i < this.instructions.length ; i++){
-                    fun = ((idx)=>()=>{
-                        this.instructions[idx].components.instruction.exec(program,findVariable);
-                    })(i);
-                    setTimeout(fun, 250*i);
+    exec: async function(){
+        return new Promise( async (resolve,reject)=>{
+            try{
+                for(instruction of this.instructions){
+                    await instruction.exec();
                 }
-                setTimeout(()=>this.el.removeState('running'), 250*i);
+            }catch(e){
+                console.warn(e);
             }
-        }
+            resolve();
+        });
     }
 });
