@@ -2,7 +2,7 @@ AFRAME.registerComponent('code',{
     init: function(){
         this.instructions = [];
         this.previewInstruction = false;
-        this.exec = this.exec().bind(this);
+        this.exec = this.exec.bind(this);
         this.update = this.update().bind(this);
         this.endPreview = this.endPreview.bind(this);
         this.programEl = this.el.closest('[program]');
@@ -37,14 +37,16 @@ AFRAME.registerComponent('code',{
         for(e of toRemove) e.remove();
         this.programEl.removeState('previewing');
     },
-    exec: function(){
-        return (program,findVariable)=>{
-            for(i = 0 ; i < this.instructions.length ; i++){
-                fun = ((idx)=>()=>{
-                    this.instructions[idx].components.instruction.exec(program,findVariable);
-                })(i);
-                setTimeout(fun, 250*i);
+    exec: async function(){
+        return new Promise( async (resolve,reject)=>{
+            try{
+                for(instruction of this.instructions){
+                    await instruction.components.instruction.exec();
+                }
+            }catch(e){
+                console.warn(e);
             }
-        }
+            resolve();
+        });
     }
 });

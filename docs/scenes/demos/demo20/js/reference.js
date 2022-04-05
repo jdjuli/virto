@@ -65,7 +65,10 @@ AFRAME.registerComponent('reference',{
             reference = this.el.clone();
             position = this.program.object3D.worldToLocal(this.el.object3D.getWorldPosition());
             reference.setAttribute('position',position);
-            setTimeout(()=>{this.program.appendChild(reference);},10);
+            setTimeout(()=>{
+                this.program.appendChild(reference);
+                reference.components.reference.initComponent();
+            },10);
             this.el.remove();
         }
     }

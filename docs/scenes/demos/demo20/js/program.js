@@ -5,7 +5,7 @@ AFRAME.registerComponent('program',{
     init: function(){       
         childEls = this.el.getChildEntities();
         this.previewActive = false;
-        this.exec = this.exec().bind(this);
+        this.exec = this.exec.bind(this);
         this.runButtonClick = this.runButtonClick.bind(this)();
         this.resetButtonClick = this.resetButtonClick.bind(this)();
 
@@ -44,21 +44,7 @@ AFRAME.registerComponent('program',{
         this.codeEl.setAttribute('position',{x:-0.45,y:0.35,z:-0.1});
     },
     exec: function(){
-        return (parentProgram, parentFindVariable=null)=>{
-            findVariable = ((selector)=>{
-                try{
-                    return this.scopeEl.querySelector(selector).components.variable;
-                }catch(e){
-                    console.log(e);
-                    if(parentFindVariable){
-                        return parentFindVariable(selector);
-                    }else{
-                        return null;
-                    }  
-                }
-            }).bind(this);
-            this.codeEl.components['code'].exec(this.el, findVariable);
-        }
+        this.codeEl.components['code'].exec();
     },
     //As click event is fired twice each time, I had to check currentTime to ensure that is called once
     runButtonClick: function(){

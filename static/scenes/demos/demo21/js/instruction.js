@@ -16,7 +16,7 @@ AFRAME.registerComponent('instruction',{
         this.initialPosition = this.currentPosition.clone();
         this.program = this.el.closest('[program]');
 
-        this.exec = (this.exec()).bind(this);
+        this.exec = this.exec().bind(this);
         this.startPreviewReference = this.startPreviewReference.bind(this);
         this.startPreviewParameter = this.startPreviewParameter.bind(this);
         this.startPreviewInstruction = this.startPreviewInstruction.bind(this);
@@ -38,7 +38,7 @@ AFRAME.registerComponent('instruction',{
         this.el.addEventListener('drag-drop',this.addReference);
         this.el.addEventListener('drag-drop',this.addParameter);
         this.el.addEventListener('dragover-end',this.endPreview);
-        if(this.el.parentEl.getDOMAttribute('code') != null){
+        if(this.el.parentElement.getDOMAttribute('code') != null){
             this.el.addEventListener('grab-end',this.grabEndHandler);
             this.el.addEventListener('dragover-start',this.startPreviewInstruction);
             this.el.addEventListener('drag-drop',this.addInstruction);
@@ -205,10 +205,17 @@ AFRAME.registerComponent('instruction',{
     },
     exec: function(){
         drone = this.el.sceneEl.querySelector('[drone]').components.drone;
-        return (program,findVariable)=>{
-            amount = findVariable(this.data.reference).get();
-            console.log('[drone] function: '+this.data.function+" , parameter: "+this.data.parameter+" , reference: "+this.data.reference);
-            drone[this.data.function](this.data.parameter,amount)
+        return ()=>{
+            return new Promise((resolve,reject)=>{
+                amount = this.reference.components['reference'].get();
+                console.log(Date.now());
+                console.log('[drone] function: '+this.data.function+" , parameter: "+this.data.parameter+" , reference: "+this.data.reference);
+                drone[this.data.function](this.data.parameter,amount);
+                setTimeout(()=>{
+                    resolve();
+                },512);
+            });
+            
         }
     },
     tick: function(){
@@ -217,7 +224,9 @@ AFRAME.registerComponent('instruction',{
             position = this.program.object3D.worldToLocal(this.el.object3D.getWorldPosition(new THREE.Vector3()));
             instruction.setAttribute('instruction',this.data);
             instruction.setAttribute('position',position.clone());
-            setTimeout(()=>{this.program.appendChild(instruction);},10);
+            setTimeout(()=>{
+                this.program.appendChild(instruction);
+            },10);
             this.el.remove();
         }
     },
