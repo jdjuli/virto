@@ -1,14 +1,5 @@
-const DIRECTIONS = {
-    UP: "up",
-    DOWN: "down",
-    LEFT: "left",
-    RIGHT: "right",
-    FORWARD: "forward",
-    BACKWARD: "backward"
-}
-
 AFRAME.registerComponent('parameter', {
-    schema: {type:{default:'up', oneOf:DIRECTIONS},
+    schema: {type:{default:'up'},
              function:{type:'string'}},
     init: function () {
         let parent = this.el.parentEl;
@@ -50,7 +41,7 @@ AFRAME.registerComponent('parameter', {
     },
     tick: function(){
         if(this.attached && this.initialPosition.distanceTo(this.currentPosition) > 0.3){
-            parameter = this.el.clone()
+            parameter = this.el.clone();
             position = this.program.object3D.worldToLocal(this.el.object3D.getWorldPosition());
             parameter.setAttribute('position',position);
             setTimeout(()=>{

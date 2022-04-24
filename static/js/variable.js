@@ -1,3 +1,7 @@
+function randomUsableColor(){
+    return '#'+(64+128*Math.random()).toString(16)+(64+128*Math.random()).toString(16)+(64+128*Math.random()).toString(16)
+}
+
 AFRAME.registerComponent('variable',{
     schema:{
         value:{type:'string'},
@@ -14,7 +18,11 @@ AFRAME.registerComponent('variable',{
         this.el.id = this.el.id || 'var_'+(Math.floor(Math.random()*1000)).toString(16);
         this.el.setAttribute('class','collidable');
         this.el.setAttribute('geometry',{primitive:'box',width:0.1,height:0.1,depth:0.1});
-        this.el.setAttribute('material',{color:'pink'});
+        if(this.data.type == 'integer'){
+            this.el.setAttribute('material',{color:'pink'});
+        }else if(this.data.type == 'boolean'){
+            this.el.setAttribute('material',{color:'#cff0ec'});
+        }
         this.el.setAttribute('grabbable',{constraintComponentName:'ammo-constraint'});
         this.iconEl = document.createElement('a-entity');
         this.iconEl.setAttribute('geometry',{primitive:'plane',height:0.075,width:0.075});
@@ -45,6 +53,8 @@ AFRAME.registerComponent('variable',{
         if(this.data.icon){
             this.iconEl.setAttribute('material',{src:this.data.icon, transparent:true});
             this.el.emit('iconSet');
+        }else{
+            this.iconEl.setAttribute('material',{color:randomUsableColor()});
         }
     },
     set: function(newVal){
@@ -77,7 +87,7 @@ AFRAME.registerComponent('variable',{
             }else{
                 this.el.addEventListener('iconSet',(evt)=>{
                     evt.stopPropagation();
-                    resolve(this.data.icon);
+                    resolve(this.data.icon || this.iconEl.components.material.color);
                 })
             }
         });

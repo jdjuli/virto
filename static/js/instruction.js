@@ -39,7 +39,7 @@ AFRAME.registerComponent('instruction',{
         this.el.addEventListener('drag-drop',this.addReference);
         this.el.addEventListener('drag-drop',this.addParameter);
         this.el.addEventListener('dragover-end',this.endPreview);
-        if(this.el.parentEl.getDOMAttribute('code') != null){
+        if(this.el.parentElement.getDOMAttribute('code') != null){
             this.el.addEventListener('grab-end',this.grabEndHandler);
             this.el.addEventListener('dragover-start',this.startPreviewInstruction);
             this.el.addEventListener('drag-drop',this.addInstruction);
@@ -110,7 +110,8 @@ AFRAME.registerComponent('instruction',{
     },
     startPreviewReference: function(evt){
         let carried = evt.detail.carried;
-        if(carried.components['reference'] && !this.reference && !this.program.is('previewing')){
+        let component = carried.components['reference'];
+        if(component && component.type=='integer' && !this.reference && !this.program.is('previewing')){
             let preview = document.createElement('a-entity');
             preview.setAttribute('class','preview');
             preview.setAttribute('obj-model',{obj:'#cylinderZ'});
@@ -142,8 +143,9 @@ AFRAME.registerComponent('instruction',{
         if(!carried.attached) return;
         let instruction = carried.components['instruction'];
         let conditional = carried.components['instruction-conditional'];
-        let component = instruction || conditional;
-        if( component && !carried.parentEl.components['code'] &&!this.program.is('previewing') && !this.isAncestor(carried)){
+        let loop = carried.components['instruction-loop'];
+        let component = instruction || conditional || loop;
+        if( component && !carried.parentEl.components['code'] && !this.program.is('previewing') && !this.isAncestor(carried)){
             let preview = document.createElement('a-entity');
             preview.setAttribute('class','preview');
             if(instruction){
@@ -151,6 +153,9 @@ AFRAME.registerComponent('instruction',{
                 preview.size=carried.size;
             }else if(conditional){
                 preview.setAttribute('obj-model',{obj:'#condition_preview'});
+                preview.size=carried.minSize;
+            }else if(loop){
+                preview.setAttribute('obj-model',{obj:'#loop_preview'});
                 preview.size=carried.minSize;
             }
             preview.setAttribute('material',{color:'#44aa44',opacity:0.7});
@@ -162,7 +167,7 @@ AFRAME.registerComponent('instruction',{
     },
     endPreview: function(evt){
         if(this.program.is('previewing')){
-            this.el.parentEl.components['code'].endPreview();
+            if(this.el.parentEl.components['code']) this.el.parentEl.components['code'].endPreview();
             this.program.removeState('previewing');
         }
         if(this.preview){
@@ -175,7 +180,7 @@ AFRAME.registerComponent('instruction',{
         let target = evt.detail.dropped;
         if(target == this.el || this.reference) return;
         let component = target.components['reference'];
-        if(component){
+        if(component && component.type=='integer'){
             let newEntity = document.createElement('a-entity');
             newEntity.setAttribute('class','collidable');
             newEntity.setAttribute('reference',component.data);
@@ -208,7 +213,8 @@ AFRAME.registerComponent('instruction',{
         if(!dropped.attached) return;
         let instruction = dropped.components['instruction'];
         let conditional = dropped.components['instruction-conditional'];
-        let component = instruction || conditional;
+        let loop = dropped.components['instruction-loop'];
+        let component = instruction || conditional || loop;
         if(component && !dropped.parentEl.components['code'] && !this.isAncestor(dropped)){
             this.el.parentEl.insertBefore(dropped.clone(), this.el.nextSibling);
             dropped.remove();

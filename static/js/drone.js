@@ -3,7 +3,7 @@ AFRAME.registerComponent('drone',{
         const _this = this;   
         this.el.setAttribute('gltf-model','#drone')
         this.el.addEventListener('model-loaded',(evt)=>{
-            this.el.setAttribute('ammo-body',{type:'dynamic',linearDamping:0,angularDamping:0.8,gravity:{x:0,y:0,z:0},emitCollisionEvents:true,activationState:'disableDeactivation'});
+            this.el.setAttribute('ammo-body',{type:'dynamic',linearDamping:0.8,angularDamping:0.8,gravity:{x:0,y:0,z:0},emitCollisionEvents:true,activationState:'disableDeactivation'});
             this.el.setAttribute('ammo-shape',{type:'box',fit:'manual',halfExtents:{x:0.2,y:0.2,z:0.2}});
         });
 
@@ -12,6 +12,7 @@ AFRAME.registerComponent('drone',{
 
         this.move = this.move.bind(this);
         this.rotate = this.rotate.bind(this);
+        this.stop = this.stop.bind(this);
     },
     move:function(direction, amount){
         let worldDirection = new THREE.Vector3(0,0,0)
@@ -36,9 +37,10 @@ AFRAME.registerComponent('drone',{
                 break;  
         }
         let worldQuaternion = this.el.object3D.getWorldQuaternion(new THREE.Quaternion(0,0,0,0))
-        let localDirection = worldQuaternion.multiplyVector3(worldDirection);
+        let localDirection = worldDirection.applyQuaternion(worldQuaternion);
         localDirection.setLength(amount);
         let ammoVector = new Ammo.btVector3(localDirection.x,localDirection.y,localDirection.z);
+        this.stop();
         this.el.body.applyCentralImpulse(ammoVector);
         Ammo.destroy(ammoVector);
     },
@@ -56,7 +58,12 @@ AFRAME.registerComponent('drone',{
                 vec.setZ(degrees/22);
                 break;
         }
+        this.stop();
         this.el.body.applyLocalTorque(vec);
+    },
+    stop: function(){
+        this.el.body.setLinearVelocity(new THREE.Vector3(0,0,0));
+        this.el.body.setAngularVelocity(new THREE.Vector3(0,0,0));
     },
     resetPosition:function() {
         this.el.setAttribute('ammo-body','type','static');

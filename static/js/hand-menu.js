@@ -45,7 +45,7 @@ AFRAME.registerComponent('hand-menu',{
     createButtons(){
       while(this.buttons.length > 0){
         let button = this.buttons.pop();
-        button.removeEventListener('collidestart',this.buttonHandlers.pop());
+        button.removeEventListener('hitend',this.buttonHandlers.pop());
         button.remove();
       }
       //Calculate the size and position of the new buttons
@@ -61,7 +61,7 @@ AFRAME.registerComponent('hand-menu',{
         button.setAttribute('position',{x:baseX+buttonSpacing*i, y:-0.01, z:0.005});
         button.setAttribute('class','collidable');
         let handler = this.buttonPressed.bind(this,i);
-        button.addEventListener('collidestart',handler);
+        button.addEventListener('hitend',handler);
         this.el.appendChild(button);
         this.buttons.push(button);
         this.buttonHandlers.push(handler);
@@ -107,21 +107,31 @@ AFRAME.registerComponent('hand-menu',{
       if(!this.isOpen) return;
 
       let selected = document.createElement('a-entity');
-      let category = this.data.contents[this.category]
-      let componentArg = category.items[this.firstItem+btnNum];
-      let componentName = category.component || componentArg.component;
+      let componentName = this.data.contents[this.category].component;
+      if(!componentName) componentName = this.data.contents[this.category].items[this.firstItem+btnNum].component;
+      let componentArg = this.data.contents[this.category].items[this.firstItem+btnNum].data;
+      let worldPos =this.el.object3D.getWorldPosition(new THREE.Vector3()); 
+      let nearestDist = Infinity;
+      let nearestProgram;
+      selected.setAttribute(componentName,componentArg);
 
-      selected.setAttribute(componentName,componentArg.data);
+      for(prog of this.ide.components.ide.programs){
+        let dist = prog[1].object3D.getWorldPosition(new THREE.Vector3()).distanceTo(worldPos)
+        if(dist < nearestDist){
+          nearestProgram = prog[1];
+          nearestDist = dist;
+        }
+      } 
 
       if(componentName != 'variable'){
         let position = this.el.object3D.position.clone();
         position.add(new THREE.Vector3(0,0.15,-0.1));
-        position = this.ide.object3D.worldToLocal(this.el.object3D.localToWorld(position));
+        position = nearestProgram.object3D.worldToLocal(this.el.object3D.localToWorld(position));
         selected.setAttribute('position',position);
-        this.ide.appendChild(selected);
+        nearestProgram.appendChild(selected);
       }else{
-        scope = this.ide.querySelectorAll('[program] [scope]')[0];
-        scope.appendChild(selected);
+        scope = nearestProgram.components.program.scopeEl;
+        scope.appendChild(selected)
       }
     }
   });

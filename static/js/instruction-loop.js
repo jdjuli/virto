@@ -1,20 +1,17 @@
-AFRAME.registerComponent('instruction-conditional',{
+AFRAME.registerComponent('instruction-loop',{
     schema: {
         reference:{type:'string'}
     },
     init: function(){  
-        this.previewingBranch = null;
-        this.branchTrue = null;
-        this.branchFalse = null;
+        this.innerLoop = null;
         this.currentPosition = this.el.object3D.position;
         this.initialPosition = this.currentPosition.clone();
         this.program = this.el.closest('[program]');
         this.code = this.el.parentEl.components['code'];
         this.el.size=new THREE.Vector3(0,0,0);
-        this.el.minSize=new THREE.Vector3(0.6,1.1,0.2);
+        this.el.minSize=new THREE.Vector3(0.6,0.7,0.2);
 
         this.exec = this.exec.bind(this);
-        this.nearestBranch = (this.nearestBranch()).bind(this);
         this.startPreviewInstruction = this.startPreviewInstruction.bind(this);
         this.startPreviewReference = this.startPreviewReference.bind(this);
         this.endPreview = this.endPreview.bind(this);
@@ -24,8 +21,8 @@ AFRAME.registerComponent('instruction-conditional',{
         this.grabEndHandler = this.grabEndHandler.bind(this);
 
         this.el.setAttribute('class','collidable');
-        this.el.setAttribute('obj-model',{obj:'#condition_open'});
-        this.el.setAttribute('material',{src:'#instruction_conditional'});
+        this.el.setAttribute('obj-model',{obj:'#loop_open'});
+        this.el.setAttribute('material',{src:'#instruction_loop'});
 
         this.el.setAttribute('droppable','');
         this.el.setAttribute('grabbable',{constraintComponentName:'ammo-constraint'});
@@ -43,33 +40,35 @@ AFRAME.registerComponent('instruction-conditional',{
 
         this.endEl = document.createElement('a-entity');
         this.endEl.setAttribute('class','collidable');
-        this.endEl.setAttribute('obj-model',{obj:'#condition_close'});
-        this.endEl.setAttribute('material',{src:'#instruction_conditional'});
-        this.endEl.setAttribute('position',new THREE.Vector3(0,0,0));
+        this.endEl.setAttribute('obj-model',{obj:'#loop_close'});
+        this.endEl.setAttribute('material',{src:'#instruction_loop'});
+        this.endEl.setAttribute('position',new THREE.Vector3(0.3,0,0));
         this.endEl.setAttribute('droppable','');
         this.endEl.addEventListener('dragover-end',this.endPreview(false));
         this.endEl.addEventListener('dragover-start',this.startPreviewInstruction(false));
-        this.endEl.addEventListener('dragover-start',(evt)=>evt.stopPropagation());
+        //this.endEl.addEventListener('dragover-start',(evt)=>evt.stopPropagation());
         this.endEl.addEventListener('drag-drop',this.addInstruction(false));
         this.el.appendChild(this.endEl);
 
-        this.branchTrue = this.el.querySelector('[code].branchTrue');
-        this.branchFalse = this.el.querySelector('[code].branchFalse');
+        this.unionEl = document.createElement('a-entity');
+        this.endEl.setAttribute('class','collidable');
+        this.unionEl.setAttribute('obj-model',{obj:'#loop_union'});
+        this.unionEl.setAttribute('material',{src:'#instruction_loop'});
+        this.unionEl.setAttribute('position',new THREE.Vector3(0.1,-0.15,0));
+        this.el.appendChild(this.unionEl);
+
+        this.innerLoop = this.el.querySelector('[code]');
 
         this.mutationObs = new MutationObserver(this.update);
         this.mutationObs.observe(this.el,{childList:true,attributes:true,subtree: true});
 
         this.el.clone = ()=>{
             let clone = document.createElement('a-entity');
-            let btClone = this.branchTrue.clone();
-            let bfClone = this.branchFalse.clone();
+            let ilClone = this.innerLoop.clone();
             let endEl = this.endEl.cloneNode();
-            clone.setAttribute('instruction-conditional',this.data);
+            clone.setAttribute('instruction-loop',this.data);
             clone.size = this.el.size;
-            btClone.setAttribute('class','branchTrue');
-            bfClone.setAttribute('class','branchFalse');
-            clone.appendChild(btClone);
-            clone.appendChild(bfClone);
+            clone.appendChild(ilClone);
             clone.appendChild(endEl);
             return clone;
         }
@@ -84,29 +83,21 @@ AFRAME.registerComponent('instruction-conditional',{
             if(this.data.reference){
                 let ref = document.createElement('a-entity');
                 ref.setAttribute('reference',{variable:this.data.reference});
-                ref.setAttribute('position',{x:-0.15,y:0,z:0.13});
+                ref.setAttribute('position',{x:0,y:0,z:0.13});
                 this.reference = ref;
                 this.el.appendChild(ref);
             }
         }
-        if(!this.branchTrue){
-            this.branchTrue = document.createElement('a-entity');
-            this.branchTrue.size = {x:0, y:0, z:0};
-            this.branchTrue.classList.add('branchTrue');
-            this.branchTrue.setAttribute('code','');
-            this.el.appendChild(this.branchTrue);
+        if(!this.innerLoop){
+            this.innerLoop = document.createElement('a-entity');
+            this.innerLoop.size = {x:0, y:0, z:0};
+            this.innerLoop.setAttribute('code','');
+            this.el.appendChild(this.innerLoop);
         }
-        if(!this.branchFalse){
-            this.branchFalse = document.createElement('a-entity');
-            this.branchFalse.size = {x:0, y:0, z:0};
-            this.branchFalse.classList.add('branchFalse');
-            this.branchFalse.setAttribute('code','');
-            this.el.appendChild(this.branchFalse);
-        }
-        this.branchTrue.object3D.position.set(0.1,0.6,0);
-        this.branchFalse.object3D.position.set(0.1,0,0);
-        this.endEl.object3D.position.set(Math.max(this.branchTrue.size.x,this.branchFalse.size.x),0,0);
-        this.el.size.set(this.el.minSize.x+Math.max(this.branchTrue.size.x,this.branchFalse.size.x), this.el.minSize.y, this.el.minSize.z);
+        this.innerLoop.object3D.position.set(0.2,0.2,0);
+        this.unionEl.object3D.scale.x = 1 + this.innerLoop.size.x/0.1;
+        this.endEl.object3D.position.set(this.innerLoop.size.x+0.3,0,0);
+        this.el.size.set(this.el.minSize.x+this.innerLoop.size.x, this.el.minSize.y, this.el.minSize.z);
         if(this.code) this.code.update();
         
     },
@@ -125,11 +116,11 @@ AFRAME.registerComponent('instruction-conditional',{
     startPreviewReference: function(evt){
         let carried = evt.detail.carried;
         let component = carried.components['reference']
-        if(component && component.type=='integer' && !this.reference && !this.program.is('previewing')){
+        if(component && component.type=='boolean' && !this.reference && !this.program.is('previewing')){
             let preview = document.createElement('a-entity');
             preview.setAttribute('class','preview');
             preview.setAttribute('obj-model',{obj:'#cylinderZ'});
-            preview.setAttribute('position',{x:-0.15, y:0, z:0.13});
+            preview.setAttribute('position',{x:0, y:0, z:0.13});
             preview.setAttribute('material',{color:'#33ffff',opacity:0.7});
             this.el.appendChild(preview);
             this.program.addState('previewing');
@@ -162,34 +153,29 @@ AFRAME.registerComponent('instruction-conditional',{
                     break;
                 }
                 preview.setAttribute('material',{color:'#44aa44',opacity:0.7});
-                
 
                 if(inside){
                     this.el.object3D.worldToLocal(carried.object3D.getWorldPosition(carriedPosition)); 
-                    this.previewingBranch = this.nearestBranch(carriedPosition);
-                    this.previewingBranch.prepend(preview);
-                    this.program.addState('previewing');
+                    this.innerLoop.prepend(preview);
                 }else if(this.code){
                     this.code.el.insertBefore(preview,this.el.nextElementSibling);
-                    this.program.addState('previewing');
                 }
+                this.program.addState('previewing');
                 evt.stopPropagation();
             }
         }).bind(this);
     },
     endPreview: function(inside){
         return ((evt)=>{
-            if(this.preview && this.preview.attached){
-                this.preview.remove();
-                this.program.removeState('previewing');
-            }else if(inside){
-                if(this.previewingBranch && this.program.is('previewing')){
-                    this.previewingBranch.components.code.endPreview();
-                    this.previewingBranch = null;
-                    this.program.removeState('previewing');
+            if(this.program.is('previewing')){
+                if(this.preview && this.preview.attached != false){
+                   this.preview.remove(); 
+                } else if(inside) {
+                    this.innerLoop.components.code.endPreview();
+                } else if (this.code) {
+                    this.code.endPreview();
                 }
-            }else if(this.code){
-                this.code.endPreview();
+                this.program.removeState('previewing');
             }
             evt.stopPropagation();
         }).bind(this);
@@ -198,9 +184,9 @@ AFRAME.registerComponent('instruction-conditional',{
         let target = evt.detail.dropped;
         if(target == this.el || this.reference) return;
         let component = target.components['reference'];
-        if(component && component.type=='integer'){
+        if(component && component.type=='boolean'){
             let newEntity = document.createElement('a-entity');
-            let position = new THREE.Vector3(-0.15,0,0.13);
+            let position = new THREE.Vector3(0,0,0.13);
             newEntity.setAttribute('class','collidable');
             newEntity.setAttribute('reference',component.data);
             newEntity.setAttribute('position',position);
@@ -214,14 +200,14 @@ AFRAME.registerComponent('instruction-conditional',{
     addInstruction: function(inside){
         return ((evt)=>{
             let dropped = evt.detail.dropped;
-            if(!dropped.attached || !this.code) return; 
+            if(!dropped.attached || !(this.code || inside)) return; 
             let component = dropped.components[dropped.getAttributeNames().filter((n)=>/instruction-?\w*/.test(n))[0]];
             if(component && component!=this && !this.isAncestor(dropped)){
                 let instruction = component.el.clone();
                 if(inside){
                     let droppedPosition = new THREE.Vector3(0,0,0);
                     this.el.object3D.worldToLocal(dropped.object3D.getWorldPosition(droppedPosition));
-                    this.nearestBranch(droppedPosition).prepend(instruction);
+                    this.innerLoop.prepend(instruction);
                 }else if(this.code){
                     this.code.el.insertBefore(instruction,this.el.nextElementSibling);
                 }
@@ -240,17 +226,6 @@ AFRAME.registerComponent('instruction-conditional',{
             this.el.remove();
         }
     },
-    nearestBranch: function(){
-        let posTrue = new THREE.Vector3(0.2,0,0);
-        let posFalse = new THREE.Vector3(0.2,0.6,0);
-        return (position)=>{
-            if(posTrue.distanceTo(position)>posFalse.distanceTo(position)){
-                return this.branchTrue;
-            }else{
-                return this.branchFalse;
-            }
-        }
-    },
     isAncestor(entity){
         let isAncestor = this.el == entity;
         let ancestor = this.el.parentEl;
@@ -262,20 +237,17 @@ AFRAME.registerComponent('instruction-conditional',{
     },
     exec: async function(){
         return new Promise( async (resolve,reject)=>{
-            boolVal = this.reference.components['reference'].get();
-            if(!Number.isNaN(Number.parseInt(boolVal))){
-                reject('Variables on conditions must be boolean');
+            const getVal = ()=>{
+                boolVal = this.reference.components['reference'].get();
+                if(!Number.isNaN(Number.parseInt(boolVal))){
+                    reject('Variables on conditions must be boolean');
+                }else{
+                    return boolVal;
+                }
             }
-            console.log(Date.now());
             
-            if(boolVal){
-                console.log('executing TRUE branch');
-                await this.branchTrue.components['code'].exec();
-                console.log('end of TRUE branch');
-            }else{
-                console.log('executing FALSE branch');
-                await this.branchFalse.components['code'].exec();
-                console.log('end of FALSE branch');
+            while(getVal()){
+                await this.innerLoop.components['code'].exec();
             }
             resolve();
         });

@@ -7,11 +7,13 @@
         <script src="https://cdn.jsdelivr.net/gh/n5ro/aframe-physics-system@v4.0.1/dist/aframe-physics-system.js"></script>
         <script src="https://unpkg.com/aframe-environment-component@1.3.1/dist/aframe-environment-component.min.js"></script>
         <script src="https://unpkg.com/aframe-state-component@7.1.0/dist/aframe-state-component.js"></script>
+        <script src="https://unpkg.com/aframe-look-at-component@1.0.0/dist/aframe-look-at-component.min.js"></script>
 
         <script src="/vr-programming/js/super-hands.js"></script>
         <script src="/vr-programming/js/parameter.js"></script>
         <script src="/vr-programming/js/instruction.js"></script>
         <script src="/vr-programming/js/instruction-conditional.js"></script>
+        <script src="/vr-programming/js/instruction-loop.js"></script>
         <script src="/vr-programming/js/recyclebin.js"></script>
         <script src="/vr-programming/js/ide.js"></script>
         <script src="/vr-programming/js/program.js"></script>
@@ -32,7 +34,9 @@
         <script src="/vr-programming/js/reference.js"></script>
         <script src="/vr-programming/js/selector.js"></script>
         <script src="/vr-programming/js/sign.js"></script>
-        <script src="/vr-programming/js/chrono.js"></script>
+        <script src="/vr-programming/js/hint.js"></script>
+        <script src="/vr-programming/js/thick-line.js"></script>
+        <script src="/vr-programming/js/controller-help.js"></script>
 
     </head>
     <body>
@@ -47,15 +51,23 @@
                 <a-asset-item id='condition_open' src='/vr-programming/models/condition_open.obj'></a-asset-item>
                 <a-asset-item id='condition_close' src='/vr-programming/models/condition_close.obj'></a-asset-item>
                 <a-asset-item id='condition_preview' src='/vr-programming/models/condition_preview.obj'></a-asset-item>
+                <a-asset-item id='loop_open' src='/vr-programming/models/loop_open.obj'></a-asset-item>
+                <a-asset-item id='loop_union' src='/vr-programming/models/loop_union.obj'></a-asset-item>
+                <a-asset-item id='loop_close' src='/vr-programming/models/loop_close.obj'></a-asset-item>
+                <a-asset-item id='loop_preview' src='/vr-programming/models/loop_preview.obj'></a-asset-item>
+                <a-asset-item id='controller_right' src='/vr-programming/models/controller_right.obj'></a-asset-item>
+                <a-asset-item id='controller_left' src='/vr-programming/models/controller_left.obj'></a-asset-item>
                 <audio id="sound_correct" src='/vr-programming/sounds/correct.wav'></audio>
                 <audio id="sound_error" src='/vr-programming/sounds/error.wav'></audio>
                 <img id='instruction_move' src='/vr-programming/textures/instruction_move.png'></img>
                 <img id='instruction_rotate' src='/vr-programming/textures/instruction_rotate.png'></img>
                 <img id='instruction_conditional' src='/vr-programming/textures/instruction_conditional.png'></img>
+                <img id='instruction_loop' src='/vr-programming/textures/instruction_loop.png'></img>
                 <img id='box_text' src='/vr-programming/textures/box_text.png'></img>
                 <img id='box_rotate' src='/vr-programming/textures/box_rotate.png'></img>
                 <img id='box_move' src='/vr-programming/textures/box_move.png'></img>
                 <img id='box_cond' src='/vr-programming/textures/box_cond.png'></img>
+                <img id='box_loop' src='/vr-programming/textures/box_loop.png'></img>
                 <img id='box_up' src='/vr-programming/textures/box_up.png'></img>
                 <img id='box_down' src='/vr-programming/textures/box_down.png'></img>
                 <img id='box_right' src='/vr-programming/textures/box_right.png'></img>
@@ -75,6 +87,7 @@
                 <img id='icon_sun' src='/vr-programming/textures/variables/sun.png'></img>
                 <img id='icon_tree' src='/vr-programming/textures/variables/tree.png'></img>
                 <img id='sign_background' src='/vr-programming/textures/Wood027_ambientCG.png'></img>
+                <img id='controller' src='/vr-programming/textures/controller.png'></img>
             </a-assets>
 
             <a-entity environment="preset: contact; skyType: atmosphere"></a-entity>
@@ -82,7 +95,10 @@
                 document.querySelector('[environment]').setAttribute('environment','lightPosition',{x:0,y:1,z:1});
             </script>
 
-            <a-entity drone chrono position="0 2 -2"></a-entity>
+            <a-entity drone position="0 2 -2"></a-entity>
+
+            <a-entity controller-help="hand:right" position="1 1 1" scale="0.5 0.5 0.5"></a-entity>
+            <a-entity controller-help="hand:left" position="-1 1 1" scale="0.5 0.5 0.5"></a-entity>
 
             <a-entity sign="width:0.5;height:0.3;text:With this buttons you can run the program on the drone and reset it's position"
                       position="-1.15 1 -1.1"></a-entity>
@@ -97,16 +113,9 @@
                       
             <a-entity ide position="0 0.55 -1">
                 <a-entity program="name:main" position="0 0 0">
-                    <a-entity instruction-conditional="reference:#var1", position="0 1 -0.3">
-                        <a-entity class="branchTrue" code>
-                            <a-entity instruction="function:move; parameter:backward; reference:#var1"></a-entity>
-                            <a-entity instruction="function:move; parameter:backward; reference:#var1"></a-entity>
-                        </a-entity>
-                        <a-entity class="branchFalse" code>
-                            <a-entity instruction="function:rotate; parameter:yaxis; reference:#var2"></a-entity>
-                            <a-entity instruction="function:rotate; parameter:yaxis; reference:#var2"></a-entity>
-                        </a-entity>
-                    </a-entity>
+                    <a-entity instruction-loop="reference:#var1", position="0 1 -0.3"></a-entity>
+                    <a-entity instruction-loop="reference:#var1", position="-1 1 -0.3"></a-entity>
+                    <a-entity instruction-loop="reference:#var1", position="1 1 -0.3"></a-entity>
                     <a-entity scope>
                         <a-entity id='var1' variable="icon:#icon_tree;type:integer;value:5;min:-9;max:9"></a-entity>
                         <a-entity id='var2' variable="icon:#icon_moon;type:integer;value:90;min:-99;max:99"></a-entity>

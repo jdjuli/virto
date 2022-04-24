@@ -30,7 +30,8 @@ AFRAME.registerComponent('program-controls', {
         let carried = evt.detail.carried;
         let instruction = carried.components['instruction'];
         let conditional = carried.components['instruction-conditional'];
-        let component = instruction || conditional;
+        let loop = carried.components['instruction-loop'];
+        let component = instruction || conditional || loop;
         if(component && !this.programEl.is('previewing')){
             let preview = document.createElement('a-entity');
             preview.setAttribute('class','preview');
@@ -39,6 +40,9 @@ AFRAME.registerComponent('program-controls', {
                 preview.size=carried.size;
             }else if(conditional){
                 preview.setAttribute('obj-model',{obj:'#condition_preview'});
+                preview.size=carried.minSize;
+            }else if(loop){
+                preview.setAttribute('obj-model',{obj:'#loop_preview'});
                 preview.size=carried.minSize;
             }
             preview.setAttribute('material',{color:'#44aa44',opacity:0.7});
@@ -58,7 +62,8 @@ AFRAME.registerComponent('program-controls', {
         if(!dropped.attached) return;
         let instruction = dropped.components['instruction'];
         let conditional = dropped.components['instruction-conditional'];
-        let component = instruction || conditional;
+        let loop = dropped.components['instruction-loop'];
+        let component = instruction || conditional || loop;
         if(component && !dropped.parentEl.components['code'] && !this.isAncestor(dropped)){
             this.codeEl.prepend(dropped.clone());
             dropped.remove();

@@ -4,10 +4,11 @@ AFRAME.registerComponent('reference',{
     },
     init: function(){  
         let parentEl = this.el.parentEl;
-        this.attached = parentEl && (parentEl.components['instruction'] || parentEl.components['instruction-conditional']);
+        this.attached = parentEl && parentEl.components[parentEl.getAttributeNames().filter((n)=>/instruction-?\w*/.test(n))[0]];
         this.program = this.el.closest('[program]');
         this.variable = this.program.querySelector(this.data.variable);
         this.initialPosition = null;
+        this.type = null;
         this.grabEndHandler = this.grabEndHandler.bind(this);
         this.update = this.update.bind(this);
 
@@ -40,8 +41,13 @@ AFRAME.registerComponent('reference',{
     update: function(){
         this.variableComponent = this.variable.components.variable;
         this.variableComponent.getIconSelector().then((icon)=>{
-            this.el.icon.setAttribute('material',{src:icon,transparent:'true'});
+            if(/'#[0-9a-fA-F]{6}'/.test(icon)){
+                this.el.icon.setAttribute('material',{color:icon});
+            }else{
+                this.el.icon.setAttribute('material',{src:icon,transparent:'true'});
+            }
         });
+        this.type = this.variableComponent.data.type;
     },
     remove: function(){
         if(this.el.is('grabbed')){
@@ -65,7 +71,10 @@ AFRAME.registerComponent('reference',{
             reference = this.el.clone();
             position = this.program.object3D.worldToLocal(this.el.object3D.getWorldPosition());
             reference.setAttribute('position',position);
-            setTimeout(()=>{this.program.appendChild(reference);},10);
+            setTimeout(()=>{
+                this.program.appendChild(reference);
+                reference.components.reference.initComponent();
+            },10);
             this.el.remove();
         }
     }
