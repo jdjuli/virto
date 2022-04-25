@@ -6,7 +6,7 @@ AFRAME.registerComponent('code',{
         this.update = this.update().bind(this);
         this.endPreview = this.endPreview.bind(this);
         this.programEl = this.el.closest('[program]');
-        this.parentUpdatable = this.el.parentEl.components['instruction-conditional'];
+        this.parentUpdatable = this.el.parentEl.components['instruction-conditional'] || this.el.parentEl.components['instruction-loop'];
 
         this.el.size=new THREE.Vector3(0,0,0);
         this.mutationObs = new MutationObserver(this.update);
@@ -16,7 +16,7 @@ AFRAME.registerComponent('code',{
             let clone = document.createElement('a-entity');
             clone.setAttribute('code',{});
             clone.size = this.el.size;
-            for(instruction of this.el.getChildEntities()){
+            for(instruction of this.el.getChildEntities().filter(e=>!e.classList.contains('preview'))){
                 clone.appendChild(instruction.clone());
             }
             return clone;
@@ -35,7 +35,8 @@ AFRAME.registerComponent('code',{
                 let instructionEl = entities[i];
                 let compInstruction = instructionEl.components['instruction']
                 let compConditional = instructionEl.components['instruction-conditional'];
-                let component = compInstruction || compConditional;
+                let compLoop = instructionEl.components['instruction-loop'];
+                let component = compInstruction || compConditional || compLoop;
                 if(component && !component.initialized) component.initComponent();
                 if(i == 0){
                     position.x = instructionEl.size.x/2;
@@ -51,6 +52,8 @@ AFRAME.registerComponent('code',{
                 if(component){
                     if(compConditional){
                         instructionEl.object3D.position.x -= (instructionEl.size.x-0.6)/2;
+                    }else if(compLoop){
+                        instructionEl.object3D.position.x -= (instructionEl.size.x-0.2)/2;
                     }
                     component.initialPosition=instructionEl.object3D.position.clone();
                     this.instructions.push(component);
@@ -64,7 +67,7 @@ AFRAME.registerComponent('code',{
     },
     endPreview: function(){
         let toRemove = this.el.getChildEntities();
-        toRemove = toRemove.filter((e)=>e.classList.contains('preview'));
+        toRemove = toRemove.filter((e)=>e.classList.contains('preview')&&e.attached!=false);
         for(e of toRemove) e.remove();
         this.programEl.removeState('previewing');
     },

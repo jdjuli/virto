@@ -34,7 +34,8 @@
            items:[
             {textureAsset:'#box_move', component:'instruction', data:{function:'move'}},
             {textureAsset:'#box_rotate', component:'instruction', data:{function:'rotate'}},
-            {textureAsset:'#box_cond', component:'instruction-conditional', data:{}}
+            {textureAsset:'#box_cond', component:'instruction-conditional', data:{}},
+            {textureAsset:'#box_loop', component:'instruction-loop', data:{}}
            ]
           },
           {name:'Parameters', 
@@ -54,9 +55,10 @@
           {name:'Variables',
            component:'variable', 
            items:[
-            {textureAsset:'#box_text', text:'S', data:{value:1,min:-9,max:9}},
-            {textureAsset:'#box_text', text:'M', data:{value:2,min:-99,max:99}},
-            {textureAsset:'#box_text', text:'L', data:{value:3,min:-999,max:999}},
+            {textureAsset:'#box_text', text:'S', data:{type:'integer',value:0,min:-9,max:9}},
+            {textureAsset:'#box_text', text:'M', data:{type:'integer',value:0,min:-99,max:99}},
+            {textureAsset:'#box_text', text:'L', data:{type:'integer',value:0,min:-999,max:999}},
+            {textureAsset:'#box_text', text:'T', data:{type:'boolean',value:'true'}},
            ]
           },
         ]
@@ -74,7 +76,7 @@
       this.updateInterval = setInterval(this.updateObjects,500);
     },
     updateObjects: function(){
-      //this.el.components["sphere-collider"].update();
+      this.el.components["obb-collider"].update();
     },
     toggleMenu: function(){
       if(this.menu.isOpen){
@@ -98,7 +100,7 @@
         }
         this.movingThumbstick = true;
         //Update finger collider
-        if(this.indexFinger) this.indexFinger.components['box-collider'].update();
+        if(this.indexFinger) this.indexFinger.components['obb-collider'].update();
       }else if(!thumbstickDisplacedEnough){
         this.movingThumbstick = false;
       }
@@ -111,7 +113,8 @@
         this.indexFinger.setAttribute("ammo-body",{type:'kinematic'});
         this.indexFinger.setAttribute("ammo-shape",{type:'sphere', fit:'manual', sphereRadius:0.005});
       }
-      this.indexFinger.setAttribute('box-collider',{colliderSelector:this.data.colliderSelector, skipTicks:1});
+      this.indexFinger.setAttribute("obb-collider",{objects:this.data.colliderSelector});
+      this.indexFinger.setAttribute('geometry',{primitive:'plane',height:0.001,width:0.001})
       if(this.data.hand == 'right'){
         this.indexFinger.setAttribute('position',{x:0.025, y:0.04, z:-0.09});
       }else if(this.data.hand == 'left'){
