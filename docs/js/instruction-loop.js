@@ -3,11 +3,11 @@ AFRAME.registerComponent('instruction-loop',{
         reference:{type:'string'}
     },
     init: function(){  
-        this.debugSphere = document.createElement('a-entity');
+        /*this.debugSphere = document.createElement('a-entity');
         this.debugSphere.setAttribute('geometry',{primitive:'sphere',radius:0.15});
         this.debugSphere.setAttribute('material',{color:'cyan',opacity:0.5});
         this.el.appendChild(this.debugSphere);
-
+*/
         this.innerLoop = null;
         this.currentPosition = this.el.object3D.position;
         this.initialPosition = this.currentPosition.clone();
@@ -42,12 +42,12 @@ AFRAME.registerComponent('instruction-loop',{
         if(this.code){
             this.el.addEventListener('grab-end',this.grabEndHandler);
         }
-
+/*
         this.debugSphere = document.createElement('a-entity');
         this.debugSphere.setAttribute('geometry',{primitive:'sphere',radius:0.15});
         this.debugSphere.setAttribute('material',{color:'cyan',opacity:0.5});
         this.endEl.appendChild(this.debugSphere);
-
+*/
         this.endEl = document.createElement('a-entity');
         this.endEl.setAttribute('class','collidable');
         this.endEl.setAttribute('obj-model',{obj:'#loop_close'});
@@ -60,12 +60,12 @@ AFRAME.registerComponent('instruction-loop',{
         this.endEl.addEventListener('drag-drop',this.addInstruction(false));
         this.el.appendChild(this.endEl);
 
-
+/*
         this.debugSphere = document.createElement('a-entity');
         this.debugSphere.setAttribute('geometry',{primitive:'sphere',radius:0.15});
         this.debugSphere.setAttribute('material',{color:'cyan',opacity:0.5});
         this.unionEl.appendChild(this.debugSphere);
-
+*/
         this.unionEl = document.createElement('a-entity');
         this.endEl.setAttribute('class','collidable');
         this.unionEl.setAttribute('obj-model',{obj:'#loop_union'});

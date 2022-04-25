@@ -8,12 +8,12 @@ AFRAME.registerComponent('instruction',{
         parameter:{type:'string'},
         reference:{type:'string'}
     },
-    init: function(){  
+    init: function(){  /*
         this.debugSphere = document.createElement('a-entity');
         this.debugSphere.setAttribute('geometry',{primitive:'sphere',radius:0.15});
         this.debugSphere.setAttribute('material',{color:'cyan',opacity:0.5});
         this.el.appendChild(this.debugSphere);
-
+*/
         this.el.size = this.el.size=new THREE.Vector3(0.2,0.5,0.2);
         this.preview = null;
         this.reference = null;
