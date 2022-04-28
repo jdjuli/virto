@@ -7,7 +7,8 @@
         <script src="https://cdn.jsdelivr.net/gh/n5ro/aframe-physics-system@v4.0.1/dist/aframe-physics-system.js"></script>
         <script src="https://unpkg.com/aframe-environment-component@1.3.1/dist/aframe-environment-component.min.js"></script>
         <script src="https://unpkg.com/aframe-state-component@7.1.0/dist/aframe-state-component.js"></script>
-        <script src="https://unpkg.com/aframe-look-at-component@1.0.0/dist/aframe-look-at-component.min.js"></script>
+        <!--<script src="https://unpkg.com/aframe-aabb-collider-component@3.1.0/dist/aframe-aabb-collider-component.min.js"></script>-->
+        <!--<script src="https://unpkg.com/super-hands@^3.0.3/dist/super-hands.js"></script>-->
 
         <script src="/vr-programming/js/super-hands.js"></script>
         <script src="/vr-programming/js/parameter.js"></script>
@@ -22,12 +23,13 @@
         <script src="/vr-programming/js/custom-hand.js"></script>
         <script src="/vr-programming/js/hand-menu.js"></script>
         <script src="/vr-programming/js/multidevice.js"></script>
-        <script src="/vr-programming/js/box-collider.js"></script>
         <script src="/vr-programming/js/assets-manager.js"></script>
         <script src="/vr-programming/js/emit-event-button.js"></script>
         <script src="/vr-programming/js/aframe-teleport-controls.js"></script>
         <script src="/vr-programming/js/model-opacity.js"></script>
         <script src="/vr-programming/js/obb-collider.js"></script>
+        <script src="/vr-programming/js/aabb-collider.js"></script>
+        <script src="/vr-programming/js/box-collider.js"></script>
         <script src="/vr-programming/js/scope.js"></script>
         <script src="/vr-programming/js/code.js"></script>
         <script src="/vr-programming/js/variable.js"></script>
@@ -97,9 +99,6 @@
 
             <a-entity drone position="0 2 -2"></a-entity>
 
-            <a-entity controller-help="hand:right" position="1 1 1" scale="0.5 0.5 0.5"></a-entity>
-            <a-entity controller-help="hand:left" position="-1 1 1" scale="0.5 0.5 0.5"></a-entity>
-
             <a-entity sign="width:0.5;height:0.3;text:With this buttons you can run the program on the drone and reset it's position"
                       position="-1.15 1 -1.1"></a-entity>
             <a-entity sign="width:0.5;height:0.3;text:The gray blocks represent actions that the drone can perform, they are executed from left to right"
@@ -113,19 +112,19 @@
                       
             <a-entity ide position="0 0.55 -1">
                 <a-entity program="name:main" position="0 0 0">
-                    <a-entity instruction-loop="reference:#var1", position="0 1 -0.3"></a-entity>
-                    <a-entity instruction-loop="reference:#var1", position="-1 1 -0.3"></a-entity>
-                    <a-entity instruction-loop="reference:#var1", position="1 1 -0.3"></a-entity>
+
                     <a-entity scope>
                         <a-entity id='var1' variable="icon:#icon_tree;type:integer;value:5;min:-9;max:9"></a-entity>
                         <a-entity id='var2' variable="icon:#icon_moon;type:integer;value:90;min:-99;max:99"></a-entity>
                         <a-entity id='var3' variable="icon:#icon_rat;type:boolean;value:T"></a-entity>
                     </a-entity>
                     <a-entity code>
+                        <a-entity instruction-conditional="reference:#var3"></a-entity>
                         <a-entity instruction="function:move; parameter:backward; reference:#var1"></a-entity>
                         <a-entity instruction="function:rotate; parameter:yaxis; reference:#var2"></a-entity>
                         <a-entity instruction="function:move; parameter:backward; reference:#var1"></a-entity>
                         <a-entity instruction="function:rotate; parameter:yaxis; reference:#var2"></a-entity>
+                        <a-entity instruction-loop="reference:#var3"></a-entity>
                         <a-entity instruction="function:move; parameter:backward; reference:#var1"></a-entity>
                         <a-entity instruction="function:rotate; parameter:yaxis; reference:#var2"></a-entity>
                         <a-entity instruction="function:move; parameter:backward; reference:#var1"></a-entity>

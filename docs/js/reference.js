@@ -7,14 +7,19 @@ AFRAME.registerComponent('reference',{
         this.attached = parentEl && parentEl.components[parentEl.getAttributeNames().filter((n)=>/instruction-?\w*/.test(n))[0]];
         this.program = this.el.closest('[program]');
         this.variable = this.program.querySelector(this.data.variable);
+        this.variableComponent = this.variable.components.variable;
         this.initialPosition = null;
-        this.type = null;
+        this.type = this.variableComponent.data.type;
         this.grabEndHandler = this.grabEndHandler.bind(this);
         this.update = this.update.bind(this);
 
         this.el.setAttribute('class','collidable');
         this.el.setAttribute('obj-model',{obj:'#cylinderZ'});
-        this.el.setAttribute('material',{color:'cyan'});
+        if(this.type == 'integer'){
+            this.el.setAttribute('material',{color:'pink'});
+        }else if(this.type == 'boolean'){
+            this.el.setAttribute('material',{color:'#cff0ec'});
+        }
 
         this.el.icon = document.createElement('a-entity');
         this.el.icon.setAttribute('geometry',{primitive:'circle',radius:0.04});
@@ -48,6 +53,11 @@ AFRAME.registerComponent('reference',{
             }
         });
         this.type = this.variableComponent.data.type;
+        if(this.type == 'integer'){
+            this.el.setAttribute('material',{color:'pink'});
+        }else if(this.data.type == 'boolean'){
+            this.el.setAttribute('material',{color:'#cff0ec'});
+        }
     },
     remove: function(){
         if(this.el.is('grabbed')){
@@ -69,7 +79,7 @@ AFRAME.registerComponent('reference',{
     tick: function(){
         if(this.attached && this.initialPosition.distanceTo(this.currentPosition) > 0.3){
             reference = this.el.clone();
-            position = this.program.object3D.worldToLocal(this.el.object3D.getWorldPosition());
+            position = this.program.object3D.worldToLocal(this.el.object3D.getWorldPosition(new THREE.Vector3()));
             reference.setAttribute('position',position);
             setTimeout(()=>{
                 this.program.appendChild(reference);

@@ -16,6 +16,7 @@ AFRAME.registerComponent('emit-event-button', {
         this.el.setAttribute('text',{value:this.data.text,width:1,zOffset:0.026,align:'center'});
         if(AFRAME.utils.device.isMobileVR()){
             this.el.addEventListener('collidestart',this.emitEvent); 
+            this.el.addEventListener('hitend',this.emitEvent); 
         }else{
             this.el.setAttribute('clickable','');
             this.el.addEventListener('click',this.emitEvent); 

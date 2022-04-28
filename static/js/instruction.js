@@ -116,7 +116,11 @@ AFRAME.registerComponent('instruction',{
             preview.setAttribute('class','preview');
             preview.setAttribute('obj-model',{obj:'#cylinderZ'});
             preview.setAttribute('position',{x:0, y:0, z:0.13});
-            preview.setAttribute('material',{color:'#33ffff',opacity:0.7});
+            if(component.type == 'integer'){
+                preview.setAttribute('material',{color:'pink',opacity:0.7});
+            }else if(this.data.type == 'boolean'){
+                preview.setAttribute('material',{color:'#cff0ec',opacity:0.7});
+            }
             this.el.appendChild(preview);
             this.program.addState('previewing');
             this.preview = preview;
@@ -141,22 +145,23 @@ AFRAME.registerComponent('instruction',{
     startPreviewInstruction: function(evt){
         let carried = evt.detail.carried;
         if(!carried.attached) return;
-        let instruction = carried.components['instruction'];
-        let conditional = carried.components['instruction-conditional'];
-        let loop = carried.components['instruction-loop'];
-        let component = instruction || conditional || loop;
+        let component = carried.components[carried.getAttributeNames().filter((n)=>/instruction-?\w*/.test(n))[0]];
         if( component && !carried.parentEl.components['code'] && !this.program.is('previewing') && !this.isAncestor(carried)){
             let preview = document.createElement('a-entity');
             preview.setAttribute('class','preview');
-            if(instruction){
-                preview.setAttribute('obj-model',{obj:'#instruction'});
-                preview.size=carried.size;
-            }else if(conditional){
-                preview.setAttribute('obj-model',{obj:'#condition_preview'});
-                preview.size=carried.minSize;
-            }else if(loop){
-                preview.setAttribute('obj-model',{obj:'#loop_preview'});
-                preview.size=carried.minSize;
+            switch(component.attrName){
+                case 'instruction':
+                    preview.setAttribute('obj-model',{obj:'#instruction'});
+                    preview.size=carried.size;
+                    break;
+                case 'instruction-conditional':
+                    preview.setAttribute('obj-model',{obj:'#condition_preview'});
+                    preview.size=carried.minSize;
+                    break;
+                case 'instruction-loop':
+                    preview.setAttribute('obj-model',{obj:'#loop_preview'});
+                    preview.size=carried.minSize;
+                    break;
             }
             preview.setAttribute('material',{color:'#44aa44',opacity:0.7});
             
@@ -211,10 +216,7 @@ AFRAME.registerComponent('instruction',{
     addInstruction: function(evt){
         let dropped = evt.detail.dropped;
         if(!dropped.attached) return;
-        let instruction = dropped.components['instruction'];
-        let conditional = dropped.components['instruction-conditional'];
-        let loop = dropped.components['instruction-loop'];
-        let component = instruction || conditional || loop;
+        let component = dropped.components[dropped.getAttributeNames().filter((n)=>/instruction-?\w*/.test(n))[0]];
         if(component && !dropped.parentEl.components['code'] && !this.isAncestor(dropped)){
             this.el.parentEl.insertBefore(dropped.clone(), this.el.nextSibling);
             dropped.remove();

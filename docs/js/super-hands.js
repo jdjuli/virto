@@ -1,3 +1,34 @@
+/* Original author: https://github.com/wmurphyrd
+ * Original URL: https://github.com/wmurphyrd/aframe-super-hands-component/blob/master/dist/super-hands.js
+ * Ammo.js compatible changes author: https://github.com/diarmidmackenzie
+ * Ammo.js compatible changes URL: https://github.com/diarmidmackenzie/aframe-super-hands-component/blob/master/dist/super-hands.js
+ * 
+ * I've joined both files to have a more complete version of the component.
+ * Also I fixed some problems that came up when using the component on my project
+
+ The MIT License (MIT)
+
+Copyright (c) 2017 William Murphy
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+*/
+
 (function(){function r(e,n,t){function o(i,f){if(!n[i]){if(!e[i]){var c="function"==typeof require&&require;if(!f&&c)return c(i,!0);if(u)return u(i,!0);var a=new Error("Cannot find module '"+i+"'");throw a.code="MODULE_NOT_FOUND",a}var p=n[i]={exports:{}};e[i][0].call(p.exports,function(r){var n=e[i][1][r];return o(n||r)},p,p.exports,r,e,n,t)}return n[i].exports}for(var u="function"==typeof require&&require,i=0;i<t.length;i++)o(t[i]);return o}return r})()({1:[function(require,module,exports){
   'use strict';
   
@@ -297,8 +328,7 @@
       return hoverNeedsUpdate;
     },
     onHit: function (evt) {
-      if(!evt.detail) return;
-      const hitEl = evt.detail[this.data.colliderEventProperty];
+      const hitEl = evt.detail && evt.detail[this.data.colliderEventProperty];
       let hoverNeedsUpdate = 0;
       if (!hitEl) {
         return;
@@ -317,7 +347,7 @@
     },
     /* search collided entities for target to hover/dragover */
     hover: function () {
-      var hvrevt, hoverEl;
+      let hvrevt, hoverEl;
       // end previous hover
       if (this.state.has(this.HOVER_EVENT)) {
         this._unHover(this.state.get(this.HOVER_EVENT), true);
@@ -347,8 +377,7 @@
     },
     /* called when controller moves out of collision range of entity */
     unHover: function (evt) {
-      if(!evt.detail) return;
-      const clearedEls = evt.detail[this.data.colliderEndEventProperty];
+      const clearedEls = evt.detail && evt.detail[this.data.colliderEndEventProperty];
       if (clearedEls) {
         if (Array.isArray(clearedEls)) {
           clearedEls.forEach(el => this._unHover(el));
@@ -385,8 +414,7 @@
       }
     },
     unWatch: function (evt) {
-      if(!evt.detail) return;
-      const clearedEls = evt.detail[this.data.colliderEndEventProperty];
+      const clearedEls = evt.detail && evt.detail[this.data.colliderEndEventProperty];
       if (clearedEls) {
         if (Array.isArray(clearedEls)) {
           clearedEls.forEach(el => this._unWatch(el));
@@ -397,7 +425,7 @@
       }
     },
     _unWatch: function (target) {
-      var hoverIndex = this.hoverEls.indexOf(target);
+      const hoverIndex = this.hoverEls.indexOf(target);
       if (hoverIndex !== -1) {
         this.hoverEls.splice(hoverIndex, 1);
         this.hoverElsIntersections.splice(hoverIndex, 1);
@@ -464,15 +492,14 @@
       });
     },
     emitCancelable: function (target, name, detail) {
-      var data, evt;
       detail = detail || {};
-      data = { bubbles: true, cancelable: true, detail: detail };
+      const data = { bubbles: true, cancelable: true, detail: detail };
       data.detail.target = data.detail.target || target;
-      evt = new window.CustomEvent(name, data);
+      const evt = new window.CustomEvent(name, data);
       return target.dispatchEvent(evt);
     },
     dispatchMouseEvent: function (target, name, relatedTarget) {
-      var mEvt = new window.MouseEvent(name, { relatedTarget: relatedTarget });
+      const mEvt = new window.MouseEvent(name, { relatedTarget: relatedTarget });
       target.dispatchEvent(mEvt);
     },
     dispatchMouseEventAll: function (name, relatedTarget, filterUsed, alsoReverse) {
@@ -492,8 +519,8 @@
       }
     },
     findTarget: function (evType, detail, filterUsed) {
-      var elIndex;
-      var eligibleEls = this.hoverEls;
+      let elIndex;
+      let eligibleEls = this.hoverEls;
       if (filterUsed) {
         eligibleEls = eligibleEls.filter(el => el !== this.state.get(this.GRAB_EVENT) && el !== this.state.get(this.DRAG_EVENT) && el !== this.state.get(this.STRETCH_EVENT));
       }
@@ -507,7 +534,7 @@
     // Helper to ensure dropping and regrabbing finds the same target for
     // for order-sorted hoverEls (grabbing; no-op for distance-sorted (pointing)
     promoteHoveredEl: function (el) {
-      var hoverIndex = this.hoverEls.indexOf(el);
+      const hoverIndex = this.hoverEls.indexOf(el);
       if (hoverIndex !== -1 && this.hoverElsIntersections[hoverIndex].distance == null) {
         this.hoverEls.splice(hoverIndex, 1);
         const sect = this.hoverElsIntersections.splice(hoverIndex, 1);
@@ -763,7 +790,7 @@
       if (acceptableEntities == null) {
         return true;
       }
-      for (let item of acceptableEntities) {
+      for (const item of acceptableEntities) {
         if (item === entity) {
           return true;
         }
@@ -848,11 +875,11 @@
       this.yFactor = (this.data.invert ? -1 : 1) * !this.data.suppressY;
     },
     tick: function () {
-      var q = new THREE.Quaternion();
-      var v = new THREE.Vector3();
+      const q = new THREE.Quaternion();
+      const v = new THREE.Vector3();
   
       return function () {
-        var entityPosition;
+        let entityPosition;
         if (this.grabber) {
           // reflect on z-axis to point in same direction as the laser
           this.targetPosition.copy(this.grabDirection);
@@ -922,14 +949,13 @@
       }
     },
     resetGrabber: function () {
-      var objPos = new THREE.Vector3();
-      var grabPos = new THREE.Vector3();
+      const objPos = new THREE.Vector3();
+      const grabPos = new THREE.Vector3();
       return function () {
-        let raycaster;
         if (!this.grabber) {
           return false;
         }
-        raycaster = this.grabber.getAttribute('raycaster');
+        const raycaster = this.grabber.getAttribute('raycaster');
         this.deltaPositionIsValid = false;
         this.grabDistance = this.el.object3D.getWorldPosition(objPos).distanceTo(this.grabber.object3D.getWorldPosition(grabPos));
         if (raycaster) {
@@ -940,7 +966,7 @@
       };
     }(),
     lostGrabber: function (evt) {
-      let i = this.grabbers.indexOf(evt.relatedTarget);
+      const i = this.grabbers.indexOf(evt.relatedTarget);
       // if a queued, non-physics grabber leaves the collision zone, forget it
       if (i !== -1 && evt.relatedTarget !== this.grabber && !this.physicsIsConstrained(evt.relatedTarget)) {
         this.grabbers.splice(i, 1);
@@ -986,7 +1012,7 @@
       if (evt.defaultPrevented) {
         return;
       }
-      var handIndex = this.hoverers.indexOf(evt.detail.hand);
+      const handIndex = this.hoverers.indexOf(evt.detail.hand);
       if (handIndex !== -1) {
         this.hoverers.splice(handIndex, 1);
       }
@@ -1010,10 +1036,10 @@
         endButtons: { default: [] }
       },
       startButtonOk: function (evt) {
-        return buttonIsValid(evt, this.data['startButtons']);
+        return buttonIsValid(evt, this.data.startButtons);
       },
       endButtonOk: function (evt) {
-        return buttonIsValid(evt, this.data['endButtons']);
+        return buttonIsValid(evt, this.data.endButtons);
       }
     };
   }();
@@ -1055,7 +1081,7 @@
       return false;
     },
     physicsEnd: function (evt) {
-      let constraintId = this.constraints.get(evt.detail.hand);
+      const constraintId = this.constraints.get(evt.detail.hand);
       if (constraintId) {
         this.el.removeAttribute(this.data.constraintComponentName + '__' + constraintId);
         this.constraints.delete(evt.detail.hand);
@@ -1063,12 +1089,8 @@
     },
     physicsClear: function () {
       if (this.el.body) {
-        for (let c of this.constraints.values()) {
-          /* 
-           * -> this.el.body.world.removeConstraint(c);
-           * This doesnt work because with Ammo, the constraints need to be removed throught ammo-body.system.removeConstraint()
-           */
-          this.el.components['ammo-body'].system.removeConstraint(c);
+        for (const c of this.constraints.values()) {
+          this.el.body.world.removeConstraint(c);
         }
       }
       this.constraints.clear();
@@ -1157,7 +1179,7 @@
       } // gesture accepted
     },
     end: function (evt) {
-      var stretcherIndex = this.stretchers.indexOf(evt.detail.hand);
+      const stretcherIndex = this.stretchers.indexOf(evt.detail.hand);
       if (evt.defaultPrevented || !this.endButtonOk(evt)) {
         return;
       }
@@ -1242,7 +1264,7 @@
       this.superHands.push(comp);
     },
     unregisterMe: function (comp) {
-      var index = this.superHands.indexOf(comp);
+      const index = this.superHands.indexOf(comp);
       if (index !== -1) {
         this.superHands.splice(index, 1);
       }

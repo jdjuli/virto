@@ -37,7 +37,7 @@ AFRAME.registerComponent('instruction-conditional',{
         this.el.addEventListener('drag-drop',this.addInstruction(true));
         this.el.addEventListener('drag-drop',this.addReference);
 
-        if(this.code){
+        if(this.el.parentElement.getDOMAttribute('code') != null){
             this.el.addEventListener('grab-end',this.grabEndHandler);
         }
 
@@ -45,8 +45,8 @@ AFRAME.registerComponent('instruction-conditional',{
         this.endEl.setAttribute('class','collidable');
         this.endEl.setAttribute('obj-model',{obj:'#condition_close'});
         this.endEl.setAttribute('material',{src:'#instruction_conditional'});
-        this.endEl.setAttribute('position',new THREE.Vector3(0,0,0));
-        this.endEl.setAttribute('droppable','');
+        this.endEl.setAttribute('position',new THREE.Vector3(0.1,0,0));
+        this.endEl.setAttribute('droppable',{});
         this.endEl.addEventListener('dragover-end',this.endPreview(false));
         this.endEl.addEventListener('dragover-start',this.startPreviewInstruction(false));
         this.endEl.addEventListener('dragover-start',(evt)=>evt.stopPropagation());
@@ -75,6 +75,7 @@ AFRAME.registerComponent('instruction-conditional',{
         }
     },
     update: function(){
+        this.code = this.el.parentEl.components['code'];
         if(this.reference){
             if(!this.reference.attached){
                 this.reference = null;
@@ -84,7 +85,7 @@ AFRAME.registerComponent('instruction-conditional',{
             if(this.data.reference){
                 let ref = document.createElement('a-entity');
                 ref.setAttribute('reference',{variable:this.data.reference});
-                ref.setAttribute('position',{x:-0.15,y:0,z:0.13});
+                ref.setAttribute('position',{x:-0.05,y:-0.3,z:0.13});
                 this.reference = ref;
                 this.el.appendChild(ref);
             }
@@ -103,9 +104,9 @@ AFRAME.registerComponent('instruction-conditional',{
             this.branchFalse.setAttribute('code','');
             this.el.appendChild(this.branchFalse);
         }
-        this.branchTrue.object3D.position.set(0.1,0.6,0);
-        this.branchFalse.object3D.position.set(0.1,0,0);
-        this.endEl.object3D.position.set(Math.max(this.branchTrue.size.x,this.branchFalse.size.x),0,0);
+        this.branchTrue.object3D.position.set(0.2,0.3,0);
+        this.branchFalse.object3D.position.set(0.2,-0.3,0);
+        this.endEl.object3D.position.set(0.3+Math.max(this.branchTrue.size.x,this.branchFalse.size.x),0,0);
         this.el.size.set(this.el.minSize.x+Math.max(this.branchTrue.size.x,this.branchFalse.size.x), this.el.minSize.y, this.el.minSize.z);
         if(this.code) this.code.update();
         
@@ -125,11 +126,11 @@ AFRAME.registerComponent('instruction-conditional',{
     startPreviewReference: function(evt){
         let carried = evt.detail.carried;
         let component = carried.components['reference']
-        if(component && component.type=='integer' && !this.reference && !this.program.is('previewing')){
+        if(component && component.type=='boolean' && !this.reference && !this.program.is('previewing')){
             let preview = document.createElement('a-entity');
             preview.setAttribute('class','preview');
             preview.setAttribute('obj-model',{obj:'#cylinderZ'});
-            preview.setAttribute('position',{x:-0.15, y:0, z:0.13});
+            preview.setAttribute('position',{x:-0.05,y:-0.3, z:0.13});
             preview.setAttribute('material',{color:'#33ffff',opacity:0.7});
             this.el.appendChild(preview);
             this.program.addState('previewing');
@@ -173,8 +174,9 @@ AFRAME.registerComponent('instruction-conditional',{
                     this.code.el.insertBefore(preview,this.el.nextElementSibling);
                     this.program.addState('previewing');
                 }
-                evt.stopPropagation();
+                
             }
+            evt.stopPropagation();
         }).bind(this);
     },
     endPreview: function(inside){
@@ -198,9 +200,9 @@ AFRAME.registerComponent('instruction-conditional',{
         let target = evt.detail.dropped;
         if(target == this.el || this.reference) return;
         let component = target.components['reference'];
-        if(component && component.type=='integer'){
+        if(component && component.type=='boolean'){
             let newEntity = document.createElement('a-entity');
-            let position = new THREE.Vector3(-0.15,0,0.13);
+            let position = new THREE.Vector3(-0.05,-0.3,0.13);
             newEntity.setAttribute('class','collidable');
             newEntity.setAttribute('reference',component.data);
             newEntity.setAttribute('position',position);
@@ -241,8 +243,8 @@ AFRAME.registerComponent('instruction-conditional',{
         }
     },
     nearestBranch: function(){
-        let posTrue = new THREE.Vector3(0.2,0,0);
-        let posFalse = new THREE.Vector3(0.2,0.6,0);
+        let posTrue = new THREE.Vector3(-0.2,0,0);
+        let posFalse = new THREE.Vector3(-0.2,0.6,0);
         return (position)=>{
             if(posTrue.distanceTo(position)>posFalse.distanceTo(position)){
                 return this.branchTrue;

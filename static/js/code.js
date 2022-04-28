@@ -8,9 +8,11 @@ AFRAME.registerComponent('code',{
         this.programEl = this.el.closest('[program]');
         this.parentUpdatable = this.el.parentEl.components['instruction-conditional'] || this.el.parentEl.components['instruction-loop'];
 
-        this.el.size=new THREE.Vector3(0,0,0);
+        this.el.size = new THREE.Vector3(0,0,0);
         this.mutationObs = new MutationObserver(this.update);
         this.mutationObs.observe(this.el,{childList:true,attributes:true});
+
+        this.el.addEventListener('dragover-start',()=>{console.log('this should never be logged')});
 
         this.el.clone = ()=>{
             let clone = document.createElement('a-entity');
@@ -33,11 +35,10 @@ AFRAME.registerComponent('code',{
             this.el.size.set(0,0,0);
             for(let i = 0 ; i < entities.length ; i++){
                 let instructionEl = entities[i];
-                let compInstruction = instructionEl.components['instruction']
-                let compConditional = instructionEl.components['instruction-conditional'];
-                let compLoop = instructionEl.components['instruction-loop'];
-                let component = compInstruction || compConditional || compLoop;
-                if(component && !component.initialized) component.initComponent();
+                let component = instructionEl.components[instructionEl.getAttributeNames().filter((n)=>/instruction-?\w*/.test(n))[0]];
+                if(component && !component.initialized){
+                    component.initComponent();
+                }
                 if(i == 0){
                     position.x = instructionEl.size.x/2;
                     first = false;
@@ -50,10 +51,15 @@ AFRAME.registerComponent('code',{
 
                 instructionEl.object3D.position.copy(position);
                 if(component){
-                    if(compConditional){
-                        instructionEl.object3D.position.x -= (instructionEl.size.x-0.6)/2;
-                    }else if(compLoop){
-                        instructionEl.object3D.position.x -= (instructionEl.size.x-0.2)/2;
+                    switch(component.attrName){
+                        case 'instruction-conditional':
+                            instructionEl.object3D.position.x -= (instructionEl.size.x-0.4)/2;
+                            instructionEl.object3D.position.y += 0.3;
+                            break;
+                        case 'instruction-loop':
+                            instructionEl.object3D.position.x -= (instructionEl.size.x-0.3)/2;
+                            instructionEl.object3D.position.y += 0.1;
+                            break;
                     }
                     component.initialPosition=instructionEl.object3D.position.clone();
                     this.instructions.push(component);

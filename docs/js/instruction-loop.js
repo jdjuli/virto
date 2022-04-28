@@ -3,16 +3,12 @@ AFRAME.registerComponent('instruction-loop',{
         reference:{type:'string'}
     },
     init: function(){  
-        /*this.debugSphere = document.createElement('a-entity');
-        this.debugSphere.setAttribute('geometry',{primitive:'sphere',radius:0.15});
-        this.debugSphere.setAttribute('material',{color:'cyan',opacity:0.5});
-        this.el.appendChild(this.debugSphere);
-*/
         this.innerLoop = null;
         this.currentPosition = this.el.object3D.position;
         this.initialPosition = this.currentPosition.clone();
         this.program = this.el.closest('[program]');
         this.code = this.el.parentEl.components['code'];
+        this.innerLoop = this.el.querySelector('[code]');
         this.el.size=new THREE.Vector3(0,0,0);
         this.el.minSize=new THREE.Vector3(0.6,0.7,0.2);
 
@@ -39,41 +35,26 @@ AFRAME.registerComponent('instruction-loop',{
         this.el.addEventListener('drag-drop',this.addInstruction(true));
         this.el.addEventListener('drag-drop',this.addReference);
 
-        if(this.code){
+        if(this.el.parentElement.getDOMAttribute('code') != null){
             this.el.addEventListener('grab-end',this.grabEndHandler);
         }
-/*
-        this.debugSphere = document.createElement('a-entity');
-        this.debugSphere.setAttribute('geometry',{primitive:'sphere',radius:0.15});
-        this.debugSphere.setAttribute('material',{color:'cyan',opacity:0.5});
-        this.endEl.appendChild(this.debugSphere);
-*/
+
         this.endEl = document.createElement('a-entity');
         this.endEl.setAttribute('class','collidable');
         this.endEl.setAttribute('obj-model',{obj:'#loop_close'});
         this.endEl.setAttribute('material',{src:'#instruction_loop'});
-        this.endEl.setAttribute('position',new THREE.Vector3(0.3,0,0));
+        this.endEl.setAttribute('position',new THREE.Vector3(0.3+(this.innerLoop?this.innerLoop.size.x:0),0,0));  
         this.endEl.setAttribute('droppable','');
         this.endEl.addEventListener('dragover-end',this.endPreview(false));
         this.endEl.addEventListener('dragover-start',this.startPreviewInstruction(false));
-        //this.endEl.addEventListener('dragover-start',(evt)=>evt.stopPropagation());
         this.endEl.addEventListener('drag-drop',this.addInstruction(false));
         this.el.appendChild(this.endEl);
 
-/*
-        this.debugSphere = document.createElement('a-entity');
-        this.debugSphere.setAttribute('geometry',{primitive:'sphere',radius:0.15});
-        this.debugSphere.setAttribute('material',{color:'cyan',opacity:0.5});
-        this.unionEl.appendChild(this.debugSphere);
-*/
         this.unionEl = document.createElement('a-entity');
-        this.endEl.setAttribute('class','collidable');
         this.unionEl.setAttribute('obj-model',{obj:'#loop_union'});
         this.unionEl.setAttribute('material',{src:'#instruction_loop'});
-        this.unionEl.setAttribute('position',new THREE.Vector3(0.1,-0.15,0));
+        this.unionEl.setAttribute('position',new THREE.Vector3(0.05,-0.25,0));
         this.el.appendChild(this.unionEl);
-
-        this.innerLoop = this.el.querySelector('[code]');
 
         this.mutationObs = new MutationObserver(this.update);
         this.mutationObs.observe(this.el,{childList:true,attributes:true,subtree: true});
@@ -81,17 +62,16 @@ AFRAME.registerComponent('instruction-loop',{
         this.el.clone = ()=>{
             let clone = document.createElement('a-entity');
             let ilClone = this.innerLoop.clone();
-            let endEl = this.endEl.cloneNode();
             clone.setAttribute('instruction-loop',this.data);
             clone.size = this.el.size;
             clone.appendChild(ilClone);
-            clone.appendChild(endEl);
             return clone;
         }
     },
     update: function(){
+        this.code = this.el.parentEl.components['code'];
         if(this.reference){
-            if(!this.reference.attached){
+            if(this.reference.attached == false){
                 this.reference = null;
                 this.data.reference = '';
             }
@@ -99,7 +79,7 @@ AFRAME.registerComponent('instruction-loop',{
             if(this.data.reference){
                 let ref = document.createElement('a-entity');
                 ref.setAttribute('reference',{variable:this.data.reference});
-                ref.setAttribute('position',{x:0,y:0,z:0.13});
+                ref.setAttribute('position',{x:-0.05,y:-0.1,z:0.13});
                 this.reference = ref;
                 this.el.appendChild(ref);
             }
@@ -110,12 +90,11 @@ AFRAME.registerComponent('instruction-loop',{
             this.innerLoop.setAttribute('code','');
             this.el.appendChild(this.innerLoop);
         }
-        this.innerLoop.object3D.position.set(0.2,0.2,0);
+        this.innerLoop.object3D.position.set(0.15,0.1,0);
         this.unionEl.object3D.scale.x = 1 + this.innerLoop.size.x/0.1;
         this.endEl.object3D.position.set(this.innerLoop.size.x+0.3,0,0);
         this.el.size.set(this.el.minSize.x+this.innerLoop.size.x, this.el.minSize.y, this.el.minSize.z);
         if(this.code) this.code.update();
-        
     },
     remove: function(){
         this.mutationObs.disconnect();
@@ -136,7 +115,7 @@ AFRAME.registerComponent('instruction-loop',{
             let preview = document.createElement('a-entity');
             preview.setAttribute('class','preview');
             preview.setAttribute('obj-model',{obj:'#cylinderZ'});
-            preview.setAttribute('position',{x:0, y:0, z:0.13});
+            preview.setAttribute('position',{x:-0.05,y:-0.1, z:0.13});
             preview.setAttribute('material',{color:'#33ffff',opacity:0.7});
             this.el.appendChild(preview);
             this.program.addState('previewing');
@@ -202,7 +181,7 @@ AFRAME.registerComponent('instruction-loop',{
         let component = target.components['reference'];
         if(component && component.type=='boolean'){
             let newEntity = document.createElement('a-entity');
-            let position = new THREE.Vector3(0,0,0.13);
+            let position = new THREE.Vector3(-0.05,-0.1,0.13);
             newEntity.setAttribute('class','collidable');
             newEntity.setAttribute('reference',component.data);
             newEntity.setAttribute('position',position);

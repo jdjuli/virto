@@ -32,6 +32,7 @@ AFRAME.registerComponent('scope',{
         let incrementX = Math.min(this.data.width/variableEls.length, 0.2);
         let baseX = this.data.width*-0.5;
         for(let variableEl of variableEls){
+            if(!variableEl.components['variable'].initialized) variableEl.components['variable'].initComponent();
             let name = variableEl.getAttribute('id');
             if(this.variables.has(name)){
                 console.error('Cannot create two variables with the same name ('+name+')');

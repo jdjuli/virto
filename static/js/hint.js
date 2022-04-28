@@ -17,11 +17,11 @@ AFRAME.registerComponent('hint', {
     },
     update:function(){
         let signPos = Object.assign({},this.data.end);
-        signPos.y += this.data.signHeight/2.1;
+        signPos.y += this.data.signHeight/2;
         let start = this.data.start.x+' '+this.data.start.y+' '+this.data.start.z;
         let end = this.data.end.x+' '+this.data.end.y+' '+this.data.end.z;
-        this.line.setAttribute('tube',{path:[start,end],radius:0.01});
-        this.line.setAttribute('material',{color:this.data.lineColor});
+        this.line.setAttribute('tube',{path:[start,end],radius:0.02});
+        this.line.setAttribute('material',{color:this.data.lineColor,side:'double'});
         this.sign.setAttribute('sign',{height:this.data.signHeight,width:this.data.signWidth,text:this.data.text});
         this.sign.setAttribute('position',signPos);
     },
