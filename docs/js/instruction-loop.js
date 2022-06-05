@@ -241,9 +241,14 @@ AFRAME.registerComponent('instruction-loop',{
                 }
             }
             
-            while(getVal()){
+            while(getVal() && this.innerLoop.childElementCount > 0){
                 await this.innerLoop.components['code'].exec();
             }
+
+            if(this.innerLoop.childElementCount <= 0){
+                reject('Cannot execute an empty loop, add some instructions to it and try again')
+            }
+
             resolve();
         });
     },

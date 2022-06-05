@@ -1,0 +1,19 @@
+flower.png:     <a href="https://www.flaticon.com/free-icons/flower" title="flower icons">Flower icons created by Vectors Market - Flaticon</a>
+
+cat.png:        <a href="https://www.flaticon.com/free-icons/cat" title="cat icons">Cat icons created by AomAm - Flaticon</a>
+
+dog.png:        <a href="https://www.flaticon.com/free-icons/dog" title="dog icons">Dog icons created by AomAm - Flaticon</a>
+
+bird.png        <a href="https://www.flaticon.com/free-icons/bird" title="bird icons">Bird icons created by Smashicons - Flaticon</a>
+
+tree.png:       <a href="https://www.flaticon.com/free-icons/tree" title="tree icons">Tree icons created by Freepik - Flaticon</a>
+
+moon.png:       <a href="https://www.flaticon.com/free-icons/moon" title="moon icons">Moon icons created by Vectors Market - Flaticon</a>
+
+sun.png:        <a href="https://www.flaticon.com/free-icons/moon" title="moon icons">Moon icons created by Vectors Market - Flaticon</a>
+
+spider.png:     <a href="https://www.flaticon.com/free-icons/animals" title="animals icons">Animals icons created by Freepik - Flaticon</a>
+
+rat.png:        <a href="https://www.flaticon.com/free-icons/rat" title="rat icons">Rat icons created by Freepik - Flaticon</a>
+
+home.png:	<a href="https://www.flaticon.com/free-icons/home" title="home icons">Home icons created by Freepik - Flaticon</a>

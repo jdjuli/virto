@@ -10,26 +10,38 @@ AFRAME.registerComponent('selector',{
         this.cursor = document.createElement('a-entity');
         this.cursor.setAttribute('class','collidable');
         this.cursor.setAttribute('obj-model',{obj:'#selectorCursor'});
-        this.cursor.setAttribute('material',{color:'red'});
         this.textEl = document.createElement('a-entity');
+        this.grabEndHandler = this.grabEndHandler.bind(this);
 
-        if(this.data.type == 'integer'){
-            this.interval = this.data.max-this.data.min;
-            this.value = Number.parseInt(this.data.value) || this.data.min + this.interval/2;
-            this.textEl.setAttribute('text',{value:this.value.toFixed(0), align:'center', baseline:'center', width:1});
-        }else{
-            this.value = this.data.value;
-            this.textEl.setAttribute('text',{value:this.value?'T':'F', align:'center', baseline:'center', width:1});
-        }
-        
         this.textEl.setAttribute('position',{x:0,y:0,z:0.035});
         this.cursor.appendChild(this.textEl);
         this.cursor.setAttribute('grabbable',{constraintComponentName:'ammo-constraint'});
         this.el.appendChild(this.cursor);
 
+        if(this.data.type == 'integer'){
+            this.interval = this.data.max-this.data.min;
+            this.value = Number.parseInt(this.data.value) || this.data.min + this.interval/2;
+            this.textEl.setAttribute('text',{value:this.value.toFixed(0), align:'center', baseline:'center', width:1});
+            this.cursor.setAttribute('material',{color:'#336699'});
+        }else{
+            this.value = this.data.value;
+            this.textEl.setAttribute('text',{value:this.value?'T':'F', align:'center', baseline:'center', width:1});
+            this.cursor.addEventListener('grab-end',this.grabEndHandler);
+            this.cursor.getAttribute('position').x = this.value?this.data.width / 2 : -this.data.width / 2;
+            this.cursor.setAttribute('material','color',this.data.value?'#33cc33':'#cc3333');
+        }
+        
         this.el.addEventListener('grab-end',(evt)=>{
             evt.stopPropagation();
         });
+    },
+    grabEndHandler: function(evt){
+        let position = this.cursor.getAttribute('position');
+        if(position.x > 0){
+            position.x = this.data.width/2;
+        }else{
+            position.x = -this.data.width/2;
+        }
     },
     tick: function (params) {
         if(this.cursor.is('grabbed')){
@@ -42,7 +54,7 @@ AFRAME.registerComponent('selector',{
             if(position.x < -xLimit){
                 position.x = -xLimit;
             }else if(position.x > xLimit){
-                position.x = xLimit
+                position.x = xLimit;
             }
             //Calculate value based on cursor position
             if(this.data.type == 'integer'){
@@ -58,6 +70,7 @@ AFRAME.registerComponent('selector',{
                     this.textEl.setAttribute('text','value',this.data.value.toFixed(0));
                 }else{
                     this.textEl.setAttribute('text','value',this.data.value?'T':'F');
+                    this.cursor.setAttribute('material','color',this.data.value?'#33cc33':'#cc3333');
                 }
                 
             }

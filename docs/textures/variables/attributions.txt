@@ -16,5 +16,4 @@ spider.png:     <a href="https://www.flaticon.com/free-icons/animals" title="ani
 
 rat.png:        <a href="https://www.flaticon.com/free-icons/rat" title="rat icons">Rat icons created by Freepik - Flaticon</a>
 
-https://www.flaticon.com/premium-icon/home_2544056?term=home&related_id=2544056
-
+home.png:	<a href="https://www.flaticon.com/free-icons/home" title="home icons">Home icons created by Freepik - Flaticon</a>
