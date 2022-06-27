@@ -1,7 +1,7 @@
 baseURL: "https://jdjuli.github.io/virto/"
 #baseURL: /virto/
 languageCode: "en-us"
-title: "VR Programming"
+title: "ViRto"
 theme: "paper"
 publishDir: "docs"
 
