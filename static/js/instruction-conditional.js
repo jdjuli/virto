@@ -63,14 +63,12 @@ AFRAME.registerComponent('instruction-conditional',{
             let clone = document.createElement('a-entity');
             let btClone = this.branchTrue.clone();
             let bfClone = this.branchFalse.clone();
-            let endEl = this.endEl.cloneNode();
             clone.setAttribute('instruction-conditional',this.data);
             clone.size = this.el.size;
             btClone.setAttribute('class','branchTrue');
             bfClone.setAttribute('class','branchFalse');
             clone.appendChild(btClone);
             clone.appendChild(bfClone);
-            clone.appendChild(endEl);
             return clone;
         }
     },
@@ -106,7 +104,7 @@ AFRAME.registerComponent('instruction-conditional',{
         }
         this.branchTrue.object3D.position.set(0.2,0.3,0);
         this.branchFalse.object3D.position.set(0.2,-0.3,0);
-        this.endEl.object3D.position.set(0.3+Math.max(this.branchTrue.size.x,this.branchFalse.size.x),0,0);
+        this.endEl.setAttribute('position',{x:0.3+Math.max(this.branchTrue.size.x,this.branchFalse.size.x),y:0,z:0});
         this.el.size.set(this.el.minSize.x+Math.max(this.branchTrue.size.x,this.branchFalse.size.x), this.el.minSize.y, this.el.minSize.z);
         if(this.code) this.code.update();
         
@@ -216,7 +214,7 @@ AFRAME.registerComponent('instruction-conditional',{
     addInstruction: function(inside){
         return ((evt)=>{
             let dropped = evt.detail.dropped;
-            if(!dropped.attached || !this.code) return; 
+            if(!dropped.attached || !(this.code || inside)) return; 
             let component = dropped.components[dropped.getAttributeNames().filter((n)=>/instruction-?\w*/.test(n))[0]];
             if(component && component!=this && !this.isAncestor(dropped)){
                 let instruction = component.el.clone();

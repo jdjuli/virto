@@ -12,14 +12,14 @@ I've forked the [super-hands-component](https://github.com/wmurphyrd/aframe-supe
 
 Here I show 4 scenes I created to illustrate the problem. Note that in the first two we can only grab the entities on the one which uses `cannon.js`, but on the last two I replaced the [super-hands-component](https://github.com/wmurphyrd/aframe-super-hands-component) script mine, on which I've introduced the modifications required to be able to grab the entities with both `cannon.js` and `ammo.js` engines.
 
-+ [Scene with cannon before the changes](/vr-programming/scenes/tests/CannonBefore) ( [Code](https://github.com/jdjuli/aframe-vr-programming/blob/main/docs/scenes/tests/CannonBefore/index.html) )
-  ![](/vr-programming/img/testCannonBefore_VR.gif)
-+ [Scene with ammo before the changes](/vr-programming/scenes/tests/AmmoBefore) ( [Code](https://github.com/jdjuli/aframe-vr-programming/blob/main/docs/scenes/tests/AmmoBefore/index.html) )
-  ![](/vr-programming/img/testAmmoBefore_VR.gif)
-+ [Scene with cannon after the changes](/vr-programming/scenes/tests/CannonAfter) ( [Code](https://github.com/jdjuli/aframe-vr-programming/blob/main/docs/scenes/tests/CannonAfter/index.html) )
-  ![](/vr-programming/img/testCannonAfter_VR.gif)
-+ [Scene with ammo after the changes](/vr-programming/scenes/tests/AmmoAfter) ( [Code](https://github.com/jdjuli/aframe-vr-programming/blob/main/docs/scenes/tests/AmmoAfter/index.html) )
-  ![](/vr-programming/img/testAmmoAfter_VR.gif) 
++ [Scene with cannon before the changes](/virto/scenes/tests/CannonBefore) ( [Code](https://github.com/jdjuli/virto/blob/main/docs/scenes/tests/CannonBefore/index.html) )
+  ![](/virto/img/testCannonBefore_VR.gif)
++ [Scene with ammo before the changes](/virto/scenes/tests/AmmoBefore) ( [Code](https://github.com/jdjuli/virto/blob/main/docs/scenes/tests/AmmoBefore/index.html) )
+  ![](/virto/img/testAmmoBefore_VR.gif)
++ [Scene with cannon after the changes](/virto/scenes/tests/CannonAfter) ( [Code](https://github.com/jdjuli/virto/blob/main/docs/scenes/tests/CannonAfter/index.html) )
+  ![](/virto/img/testCannonAfter_VR.gif)
++ [Scene with ammo after the changes](/virto/scenes/tests/AmmoAfter) ( [Code](https://github.com/jdjuli/virto/blob/main/docs/scenes/tests/AmmoAfter/index.html) )
+  ![](/virto/img/testAmmoAfter_VR.gif) 
 
 ## Solution adopted
 After making my own modifications over the [super-hands-component](https://github.com/wmurphyrd/aframe-super-hands-component) code, I finally decided to use the fork made by [diarmidmackenzie](https://github.com/diarmidmackenzie/aframe-super-hands-component) as he considered more things when making the code compatible with `ammo.js` than I did (I changed the bare minimum to make the component work on my use case)

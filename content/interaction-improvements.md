@@ -26,12 +26,12 @@ At the same time I've implemented the preview of instructions, I'd retaken the i
 
 As usual, I'll provide the links to the demo and the code as well as some images demonstrating the changes.
 
-*=>* Checkout the [Demo](/vr-programming/demos/scenes/demo17) & [Code](https://github.com/jdjuli/aframe-vr-programming/blob/main/docs/demos/scenes/demo17/index.html) *<=*
+*=>* Checkout the [Demo](/virto/demos/scenes/demo17) & [Code](https://github.com/jdjuli/virto/blob/main/docs/demos/scenes/demo17/index.html) *<=*
 
-![](/vr-programming/img/demo17_VR.jpg)
+![](/virto/img/demo17_VR.jpg)
 *Before adding the instructions, a preview is made*
 
-![](/vr-programming/img/demo17_VR.gif)
+![](/virto/img/demo17_VR.gif)
 *The preview remains there until the entity is dropped or the hand is moved away*
 
 ## Known issues

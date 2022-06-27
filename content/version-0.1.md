@@ -4,7 +4,7 @@ date: 2022-04-04T11:08:50+02:00
 draft: false
 ---
 
-This is the first fully usable version of the proyect (more about it [here](/vr-programming/about-vr-programming)). 
+This is the first fully usable version of the proyect (more about it [here](/virto/about-virto)). 
 
 It allows the creation of sequential programs with variables that can be modified manually on runtime and is completely compatible with VR headsets and partialy with PCs.
 
@@ -17,8 +17,8 @@ It allows the creation of sequential programs with variables that can be modifie
 
 
 ### Scenes available to play with
- - [Sample program](/vr-programming/scenes/demos/demo20)
- - [Sample program & build-your-own](/vr-programming/scenes/demos/demo21)
+ - [Sample program](/virto/scenes/demos/demo20)
+ - [Sample program & build-your-own](/virto/scenes/demos/demo21)
 
 ---
 
@@ -163,7 +163,7 @@ The program is executed as if we were debugging it, in the sense that if we modi
 
 # Build your own program from scratch
 
-If you want to create your own program from scratch without any help, you can use [this scene](/vr-programming/scenes/demos/demo21) to do so, it has two programs, one prebuilt to serve as an example as how a valid program looks like and another one completely empty and prepared to start building your own sequence of instructions.
+If you want to create your own program from scratch without any help, you can use [this scene](/virto/scenes/demos/demo21) to do so, it has two programs, one prebuilt to serve as an example as how a valid program looks like and another one completely empty and prepared to start building your own sequence of instructions.
 
 {{< youtube VzPBErIsWwk >}}
 

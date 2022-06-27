@@ -14,7 +14,7 @@ AFRAME.registerComponent('variable',{
         this.currentPosition = this.el.object3D.position;
         this.initialPosition = this.currentPosition.clone();
         this.program = this.el.closest('[program]');
-        if(this.data.type == 'boolean') this.data.value = /'[tT](rue)?'/.test(this.data.value);
+        if(this.data.type == 'boolean') this.data.value = /[tT](rue)?/.test(this.data.value);
         this.el.id = this.el.id || 'var_'+(Math.floor(Math.random()*1000)).toString(16);
         this.el.setAttribute('class','collidable');
         this.el.setAttribute('geometry',{primitive:'box',width:0.1,height:0.1,depth:0.1});
@@ -64,7 +64,7 @@ AFRAME.registerComponent('variable',{
             this.data.value = value;
             this.selectorEl.setAttribute('selector','value',value);
         }else if(this.data.type == 'boolean'){
-            newVal = /'[tT](rue)?'/.test(newVal);
+            newVal = /[tT](rue)?/.test(newVal);
             this.data.value = newVal;
             this.selectorEl.setAttribute('selector','value',newVal);
         }

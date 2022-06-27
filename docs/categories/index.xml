@@ -2,9 +2,9 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Categories on VR Programming</title>
-    <link>https://jdjuli.github.io/vr-programming/categories/</link>
+    <link>https://jdjuli.github.io/virto/categories/</link>
     <description>Recent content in Categories on VR Programming</description>
     <generator>Hugo -- gohugo.io</generator>
-    <language>en-us</language><atom:link href="https://jdjuli.github.io/vr-programming/categories/index.xml" rel="self" type="application/rss+xml" />
+    <language>en-us</language><atom:link href="https://jdjuli.github.io/virto/categories/index.xml" rel="self" type="application/rss+xml" />
   </channel>
 </rss>

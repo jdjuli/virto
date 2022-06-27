@@ -11,12 +11,12 @@
 I decided to invest some time doing some research about how colliders work and creating components to use them on A-Frame, I came out with 4 types of colliders:">
     <meta name="author" content="">
     
-    <link href="https://jdjuli.github.io/vr-programming/an-old-hope.min.css" rel="stylesheet">
-    <link href="https://jdjuli.github.io/vr-programming/style.css" rel="stylesheet">
-    <link href="https://jdjuli.github.io/vr-programming/custom.css" rel="stylesheet">
+    <link href="https://jdjuli.github.io/virto/an-old-hope.min.css" rel="stylesheet">
+    <link href="https://jdjuli.github.io/virto/style.css" rel="stylesheet">
+    <link href="https://jdjuli.github.io/virto/custom.css" rel="stylesheet">
     
-    <link rel="apple-touch-icon" href="https://jdjuli.github.io/vr-programming/apple-touch-icon.png">
-    <link rel="icon" href="https://jdjuli.github.io/vr-programming/favicon.ico">
+    <link rel="apple-touch-icon" href="https://jdjuli.github.io/virto/apple-touch-icon.png">
+    <link rel="icon" href="https://jdjuli.github.io/virto/favicon.ico">
     <meta name="generator" content="Hugo 0.88.1" />
     
     
@@ -74,13 +74,13 @@ I decided to invest some time doing some research about how colliders work and c
     </script>
     <header id="top" class="header">
       <nav class="nav">
-        <p class="logo"><a href="https://jdjuli.github.io/vr-programming/">VR Programming</a></p>
+        <p class="logo"><a href="https://jdjuli.github.io/virto/">VR Programming</a></p>
         <ul class="menu">
           <li>
-            <a href="/vr-programming/components/">Components</a>
+            <a href="/virto/components/">Components</a>
           </li>
           <li>
-            <a href="/vr-programming/scenes/demos/demo21">Latest scene</a>
+            <a href="/virto/scenes/demos/demo21">Latest scene</a>
           </li>
         </ul>
       </nav>
@@ -93,7 +93,7 @@ I decided to invest some time doing some research about how colliders work and c
     <h1 class="post-title">Review on colliders</h1>
     <div class="post-meta">January 28, 2022</div>
   </header>
-  <div class="post-content"><p>This few past weeks I remembered a small issue I had from the begining related to the &lsquo;realism&rsquo; of the grab and touch. I&rsquo;ve already developed the component <a href="/vr-programming/components/box-collider">box-collider</a>, which implements an OBB collider (i&rsquo;ll explain this later) but it&rsquo;s performance was worse than what I thought when I designed it.</p>
+  <div class="post-content"><p>This few past weeks I remembered a small issue I had from the begining related to the &lsquo;realism&rsquo; of the grab and touch. I&rsquo;ve already developed the component <a href="/virto/components/box-collider">box-collider</a>, which implements an OBB collider (i&rsquo;ll explain this later) but it&rsquo;s performance was worse than what I thought when I designed it.</p>
 <p>I decided to invest some time doing some research about how colliders work and creating components to use them on A-Frame, I came out with 4 types of colliders:</p>
 <ol>
 <li><code>sphere collider</code>: This are the simplest, they simply encapsullate the objects into spheres and detect if they intersect by comparing the sum of the radious and the distance between the centre of the spheres.</li>
@@ -105,29 +105,29 @@ I decided to invest some time doing some research about how colliders work and c
 <p>Now that we know some of the most common colliders, let&rsquo;s see them in action, I&rsquo;ve prepared four scenes with a different collider on each, the entities displayed are cyan and become red when a collision is detected. VR headset is required as the scenes make use of the controllers to move the collider, which is located on the center of the hands (marked with a small golden sphere)</p>
 <h2 id="sphere-collider">Sphere collider</h2>
 <p>This collider is part of the <a href="https://wmurphyrd.github.io/aframe-super-hands-component/">aframe-extras repository</a> of <em>donmccurdy</em> and can be used by including that proyect, see the readme of his repo to have updated instructions on how to add it to your proyect.</p>
-<p><a href="/vr-programming/scenes/examples/sphereCollider.html"><strong>Test it</strong></a></p>
+<p><a href="/virto/scenes/examples/sphereCollider.html"><strong>Test it</strong></a></p>
 <h2 id="aabb-collider">AABB collider</h2>
 <p>I&rsquo;ve modified the sphere-collider of donmccurdy to detect collisions between an AABB and an sphere, it&rsquo;s usage is exactly the same and the best part is that they are interchangeable, you&rsquo;ll only need to include this JavaScript file to your HTML:</p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-html" data-lang="html">   &lt;<span style="color:#f92672">script</span> <span style="color:#a6e22e">src</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;https://cdn.rawgit.com/donmccurdy/aframe-extras/v4.1.2/dist/aframe-extras.min.js&#34;</span>&gt;&lt;/<span style="color:#f92672">script</span>&gt;
-</code></pre></div><p><a href="/vr-programming/scenes/examples/aabbCollider.html"><strong>Test it</strong></a></p>
+</code></pre></div><p><a href="/virto/scenes/examples/aabbCollider.html"><strong>Test it</strong></a></p>
 <h2 id="obb-collider">OBB collider</h2>
 <p>As I did to create the AABB collider, this time I&rsquo;ve also modified the sphere-collider component of donmccurdy to detect collisions between an OBB and an sphere, to use it, include this JavaScript file to your HTML:</p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-html" data-lang="html">   &lt;<span style="color:#f92672">script</span> <span style="color:#a6e22e">src</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;https://cdn.rawgit.com/donmccurdy/aframe-extras/v4.1.2/dist/aframe-extras.min.js&#34;</span>&gt;&lt;/<span style="color:#f92672">script</span>&gt;
-</code></pre></div><p><a href="/vr-programming/scenes/examples/obbCollider.html"><strong>Test it</strong></a></p>
+</code></pre></div><p><a href="/virto/scenes/examples/obbCollider.html"><strong>Test it</strong></a></p>
 <h2 id="mesh-collider">Mesh collider</h2>
 <p>This time, we can use a physics engine to simplify the process, I suggest to use <a href="https://github.com/n5ro/aframe-physics-system">aframe-physics-system</a> and <a href="https://github.com/n5ro/aframe-physics-system/blob/master/AmmoDriver.md">configure it to use the Ammo.js driver</a>. You&rsquo;ll have to assign an <code>ammo-body</code> and <code>ammo-shape</code> component to the interacting entities, make sure to set the parameter &lsquo;type&rsquo; of <code>ammo-shape</code> to <code>mesh</code>.</p>
-<p><a href="/vr-programming/scenes/examples/meshCollider.html"><strong>Test it</strong></a></p>
+<p><a href="/virto/scenes/examples/meshCollider.html"><strong>Test it</strong></a></p>
 </div>
   
 </article></main>
 <footer class="footer">
-  <span>&copy; 2022 <a href="https://jdjuli.github.io/vr-programming/">VR Programming</a></span>
+  <span>&copy; 2022 <a href="https://jdjuli.github.io/virto/">VR Programming</a></span>
   <span>&middot;</span>
   <span>Powered by <a href="https://gohugo.io/" rel="noopener" target="_blank">Hugo️️</a>️</span>
   <span>&middot;</span>
   <span>Theme️ <a href="https://github.com/nanxiaobei/hugo-paper" rel="noopener" target="_blank">Paper</a></span>
 </footer>
-<script src="https://jdjuli.github.io/vr-programming/highlight.min.js"></script>
+<script src="https://jdjuli.github.io/virto/highlight.min.js"></script>
 <script>
   hljs.initHighlightingOnLoad();
 </script>

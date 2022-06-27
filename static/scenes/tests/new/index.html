@@ -8,62 +8,62 @@
     <script src="https://unpkg.com/aframe-environment-component@1.3.1/dist/aframe-environment-component.min.js"></script>
     <script src="https://unpkg.com/aframe-state-component@7.1.0/dist/aframe-state-component.js"></script>
 
-    <script src="/vr-programming/js/super-hands.js"></script>
-    <script src="/vr-programming/js/parameter.js"></script>
-    <script src="/vr-programming/js/instruction.js"></script>
-    <script src="/vr-programming/js/recyclebin.js"></script>
-    <script src="/vr-programming/js/ide.js"></script>
-    <script src="/vr-programming/js/program.js"></script>
-    <script src="/vr-programming/js/drone.js"></script>
-    <script src="/vr-programming/js/custom-hand.js"></script>
-    <script src="/vr-programming/js/hand-menu.js"></script>
-    <script src="/vr-programming/js/multidevice.js"></script>
-    <script src="/vr-programming/js/box-collider.js"></script>
-    <script src="/vr-programming/js/assets-manager.js"></script>
-    <script src="/vr-programming/js/emit-event-button.js"></script>
-    <script src="/vr-programming/js/aframe-teleport-controls.js"></script>
-    <script src="/vr-programming/js/model-opacity.js"></script>
-    <script src="/vr-programming/js/obb-collider.js"></script>
-    <script src="/vr-programming/js/scope.js"></script>
-    <script src="/vr-programming/js/variable.js"></script>
-    <script src="/vr-programming/js/reference.js"></script>
-    <script src="/vr-programming/js/sign.js"></script>
+    <script src="/virto/js/super-hands.js"></script>
+    <script src="/virto/js/parameter.js"></script>
+    <script src="/virto/js/instruction.js"></script>
+    <script src="/virto/js/recyclebin.js"></script>
+    <script src="/virto/js/ide.js"></script>
+    <script src="/virto/js/program.js"></script>
+    <script src="/virto/js/drone.js"></script>
+    <script src="/virto/js/custom-hand.js"></script>
+    <script src="/virto/js/hand-menu.js"></script>
+    <script src="/virto/js/multidevice.js"></script>
+    <script src="/virto/js/box-collider.js"></script>
+    <script src="/virto/js/assets-manager.js"></script>
+    <script src="/virto/js/emit-event-button.js"></script>
+    <script src="/virto/js/aframe-teleport-controls.js"></script>
+    <script src="/virto/js/model-opacity.js"></script>
+    <script src="/virto/js/obb-collider.js"></script>
+    <script src="/virto/js/scope.js"></script>
+    <script src="/virto/js/variable.js"></script>
+    <script src="/virto/js/reference.js"></script>
+    <script src="/virto/js/sign.js"></script>
     <script src="./assign.js"></script>
   </head>  
   <body>
     <a-scene physics="driver: ammo;">
       <a-assets>
-        <a-asset-item id='instruction' src='/vr-programming/models/instruction.obj'></a-asset-item>
-        <a-asset-item id='box' src='/vr-programming/models/box.obj'></a-asset-item>
-        <a-asset-item id='recyclebin' src='/vr-programming/models/recyclebin.gltf'></a-asset-item>
-        <a-asset-item id='drone' src='/vr-programming/models/drone.gltf'></a-asset-item>
-        <a-asset-item id='cylinderZ' src='/vr-programming/models/cylinderZ.obj'></a-asset-item>
-        <audio id="sound_correct" src='/vr-programming/sounds/correct.wav'></audio>
-        <audio id="sound_error" src='/vr-programming/sounds/error.wav'></audio>
-        <img id='instruction_move' src='/vr-programming/textures/instruction_move.png'></img>
-        <img id='instruction_rotate' src='/vr-programming/textures/instruction_rotate.png'></img>
-        <img id='box_text' src='/vr-programming/textures/box_text.png'></img>
-        <img id='box_rotate' src='/vr-programming/textures/box_rotate.png'></img>
-        <img id='box_move' src='/vr-programming/textures/box_move.png'></img>
-        <img id='box_up' src='/vr-programming/textures/box_up.png'></img>
-        <img id='box_down' src='/vr-programming/textures/box_down.png'></img>
-        <img id='box_right' src='/vr-programming/textures/box_right.png'></img>
-        <img id='box_left' src='/vr-programming/textures/box_left.png'></img>
-        <img id='box_forward' src='/vr-programming/textures/box_forward.png'></img>
-        <img id='box_backward' src='/vr-programming/textures/box_backward.png'></img>
-        <img id='box_xaxis' src='/vr-programming/textures/box_xaxis.png'></img>
-        <img id='box_yaxis' src='/vr-programming/textures/box_yaxis.png'></img>
-        <img id='box_zaxis' src='/vr-programming/textures/box_zaxis.png'></img>
-        <img id='icon_bird' src='/vr-programming/textures/variables/bird.png'></img>
-        <img id='icon_cat' src='/vr-programming/textures/variables/cat.png'></img>
-        <img id='icon_dog' src='/vr-programming/textures/variables/dog.png'></img>
-        <img id='icon_flower' src='/vr-programming/textures/variables/flower.png'></img>
-        <img id='icon_moon' src='/vr-programming/textures/variables/moon.png'></img>
-        <img id='icon_rat' src='/vr-programming/textures/variables/rat.png'></img>
-        <img id='icon_spider' src='/vr-programming/textures/variables/spider.png'></img>
-        <img id='icon_sun' src='/vr-programming/textures/variables/sun.png'></img>
-        <img id='icon_tree' src='/vr-programming/textures/variables/tree.png'></img>
-        <img id='sign_background' src='/vr-programming/textures/Wood027_ambientCG.png'></img>
+        <a-asset-item id='instruction' src='/virto/models/instruction.obj'></a-asset-item>
+        <a-asset-item id='box' src='/virto/models/box.obj'></a-asset-item>
+        <a-asset-item id='recyclebin' src='/virto/models/recyclebin.gltf'></a-asset-item>
+        <a-asset-item id='drone' src='/virto/models/drone.gltf'></a-asset-item>
+        <a-asset-item id='cylinderZ' src='/virto/models/cylinderZ.obj'></a-asset-item>
+        <audio id="sound_correct" src='/virto/sounds/correct.wav'></audio>
+        <audio id="sound_error" src='/virto/sounds/error.wav'></audio>
+        <img id='instruction_move' src='/virto/textures/instruction_move.png'></img>
+        <img id='instruction_rotate' src='/virto/textures/instruction_rotate.png'></img>
+        <img id='box_text' src='/virto/textures/box_text.png'></img>
+        <img id='box_rotate' src='/virto/textures/box_rotate.png'></img>
+        <img id='box_move' src='/virto/textures/box_move.png'></img>
+        <img id='box_up' src='/virto/textures/box_up.png'></img>
+        <img id='box_down' src='/virto/textures/box_down.png'></img>
+        <img id='box_right' src='/virto/textures/box_right.png'></img>
+        <img id='box_left' src='/virto/textures/box_left.png'></img>
+        <img id='box_forward' src='/virto/textures/box_forward.png'></img>
+        <img id='box_backward' src='/virto/textures/box_backward.png'></img>
+        <img id='box_xaxis' src='/virto/textures/box_xaxis.png'></img>
+        <img id='box_yaxis' src='/virto/textures/box_yaxis.png'></img>
+        <img id='box_zaxis' src='/virto/textures/box_zaxis.png'></img>
+        <img id='icon_bird' src='/virto/textures/variables/bird.png'></img>
+        <img id='icon_cat' src='/virto/textures/variables/cat.png'></img>
+        <img id='icon_dog' src='/virto/textures/variables/dog.png'></img>
+        <img id='icon_flower' src='/virto/textures/variables/flower.png'></img>
+        <img id='icon_moon' src='/virto/textures/variables/moon.png'></img>
+        <img id='icon_rat' src='/virto/textures/variables/rat.png'></img>
+        <img id='icon_spider' src='/virto/textures/variables/spider.png'></img>
+        <img id='icon_sun' src='/virto/textures/variables/sun.png'></img>
+        <img id='icon_tree' src='/virto/textures/variables/tree.png'></img>
+        <img id='sign_background' src='/virto/textures/Wood027_ambientCG.png'></img>
       </a-assets>
         <a-entity environment="preset: forest; skyType: atmosphere"></a-entity>
         <script>

@@ -4,7 +4,7 @@ date: 2022-01-28T14:24:17+01:00
 draft: false
 ---
 
-This few past weeks I remembered a small issue I had from the begining related to the 'realism' of the grab and touch. I've already developed the component [box-collider](/vr-programming/components/box-collider), which implements an OBB collider (i'll explain this later) but it's performance was worse than what I thought when I designed it.
+This few past weeks I remembered a small issue I had from the begining related to the 'realism' of the grab and touch. I've already developed the component [box-collider](/virto/components/box-collider), which implements an OBB collider (i'll explain this later) but it's performance was worse than what I thought when I designed it.
 
 I decided to invest some time doing some research about how colliders work and creating components to use them on A-Frame, I came out with 4 types of colliders:
  1) `sphere collider`: This are the simplest, they simply encapsullate the objects into spheres and detect if they intersect by comparing the sum of the radious and the distance between the centre of the spheres.
@@ -18,7 +18,7 @@ I decided to invest some time doing some research about how colliders work and c
  ## Sphere collider
  This collider is part of the [aframe-extras repository](https://wmurphyrd.github.io/aframe-super-hands-component/) of _donmccurdy_ and can be used by including that proyect, see the readme of his repo to have updated instructions on how to add it to your proyect.
 
- [__Test it__](/vr-programming/scenes/examples/sphereCollider.html)
+ [__Test it__](/virto/scenes/examples/sphereCollider.html)
 
  ## AABB collider
  I've modified the sphere-collider of donmccurdy to detect collisions between an AABB and an sphere, it's usage is exactly the same and the best part is that they are interchangeable, you'll only need to include this JavaScript file to your HTML:
@@ -26,7 +26,7 @@ I decided to invest some time doing some research about how colliders work and c
     <script src="https://cdn.rawgit.com/donmccurdy/aframe-extras/v4.1.2/dist/aframe-extras.min.js"></script>
  ```
 
- [__Test it__](/vr-programming/scenes/examples/aabbCollider.html)
+ [__Test it__](/virto/scenes/examples/aabbCollider.html)
 
  ## OBB collider
  As I did to create the AABB collider, this time I've also modified the sphere-collider component of donmccurdy to detect collisions between an OBB and an sphere, to use it, include this JavaScript file to your HTML:
@@ -34,9 +34,9 @@ I decided to invest some time doing some research about how colliders work and c
     <script src="https://cdn.rawgit.com/donmccurdy/aframe-extras/v4.1.2/dist/aframe-extras.min.js"></script>
  ```
 
- [__Test it__](/vr-programming/scenes/examples/obbCollider.html)
+ [__Test it__](/virto/scenes/examples/obbCollider.html)
 
 ## Mesh collider
 This time, we can use a physics engine to simplify the process, I suggest to use [aframe-physics-system](https://github.com/n5ro/aframe-physics-system) and [configure it to use the Ammo.js driver](https://github.com/n5ro/aframe-physics-system/blob/master/AmmoDriver.md). You'll have to assign an `ammo-body` and `ammo-shape` component to the interacting entities, make sure to set the parameter 'type' of `ammo-shape` to `mesh`.
 
-[__Test it__](/vr-programming/scenes/examples/meshCollider.html)
+[__Test it__](/virto/scenes/examples/meshCollider.html)

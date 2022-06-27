@@ -18,7 +18,7 @@ RUTA_ARCHIVOS = "./docs"
 #
 # El propósito es usar rutas relativas que funcionen tanto en nuestro ordenador como en Gitlab/Github pages
 #
-NOMBRE_REPOSITORIO = "vr-programming/"
+NOMBRE_REPOSITORIO = "virto/"
 
 os.chdir("./docs")
 

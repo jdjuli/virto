@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <script src="https://aframe.io/releases/1.2.0/aframe.js"></script>  
+        <script src="https://cdn.jsdelivr.net/gh/n5ro/aframe-extras@v6.1.1/dist/aframe-extras.js"></script>
+        <script src="https://mixedreality.mozilla.org/ammo.js/builds/ammo.wasm.js"></script>  
+        <script src="https://cdn.jsdelivr.net/gh/n5ro/aframe-physics-system@v4.0.1/dist/aframe-physics-system.js"></script>
+        <script src="https://unpkg.com/aframe-environment-component@1.3.1/dist/aframe-environment-component.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/gh/diarmidmackenzie/aframe-super-hands-component@3.0.2/dist/super-hands.js"></script>
+        <!--<script src="https://unpkg.com/super-hands@^3.0.3/dist/super-hands.js"></script>-->
+
+        <!--<script src="/virto/js/super-hands.js"></script>-->
+        <script src="/virto/js/parameter.js"></script>
+        <script src="/virto/js/instruction.js"></script>
+        <script src="/virto/js/instruction-conditional.js"></script>
+        <script src="/virto/js/instruction-loop.js"></script>
+        <script src="/virto/js/recyclebin.js"></script>
+        <script src="/virto/js/ide.js"></script>
+        <script src="/virto/js/program.js"></script>
+        <script src="/virto/js/program-controls.js"></script>
+        <script src="/virto/js/drone.js"></script>
+        <script src="/virto/js/custom-hand.js"></script>
+        <script src="/virto/js/hand-menu.js"></script>
+        <script src="/virto/js/multidevice.js"></script>
+        <script src="/virto/js/assets-manager.js"></script>
+        <script src="/virto/js/emit-event-button.js"></script>
+        <script src="/virto/js/aframe-teleport-controls.js"></script>
+        <script src="/virto/js/model-opacity.js"></script>
+        <script src="/virto/js/obb-collider.js"></script>
+        <script src="/virto/js/aabb-collider.js"></script>
+        <script src="/virto/js/box-collider.js"></script>
+        <script src="/virto/js/scope.js"></script>
+        <script src="/virto/js/code.js"></script>
+        <script src="/virto/js/variable.js"></script>
+        <script src="/virto/js/reference.js"></script>
+        <script src="/virto/js/selector.js"></script>
+        <script src="/virto/js/sign.js"></script>
+        <script src="/virto/js/hint.js"></script>
+        <script src="/virto/js/thick-line.js"></script>
+        <script src="/virto/js/controller-help.js"></script>
+
+    </head>
+    <body>
+        <a-scene physics="driver: ammo">
+            <a-assets>
+                <a-asset-item id='instruction' src='/virto/models/instruction.obj'></a-asset-item>
+                <a-asset-item id='box' src='/virto/models/box.obj'></a-asset-item>
+                <a-asset-item id='recyclebin' src='/virto/models/recyclebin.gltf'></a-asset-item>
+                <a-asset-item id='drone' src='/virto/models/drone.gltf'></a-asset-item>
+                <a-asset-item id='cylinderZ' src='/virto/models/cylinderZ.obj'></a-asset-item>
+                <a-asset-item id='selectorCursor' src='/virto/models/selectorCursor.obj'></a-asset-item>
+                <a-asset-item id='condition_open' src='/virto/models/condition_open.obj'></a-asset-item>
+                <a-asset-item id='condition_close' src='/virto/models/condition_close.obj'></a-asset-item>
+                <a-asset-item id='condition_preview' src='/virto/models/condition_preview.obj'></a-asset-item>
+                <a-asset-item id='loop_open' src='/virto/models/loop_open.obj'></a-asset-item>
+                <a-asset-item id='loop_union' src='/virto/models/loop_union.obj'></a-asset-item>
+                <a-asset-item id='loop_close' src='/virto/models/loop_close.obj'></a-asset-item>
+                <a-asset-item id='loop_preview' src='/virto/models/loop_preview.obj'></a-asset-item>
+                <a-asset-item id='controller_right' src='/virto/models/controller_right.obj'></a-asset-item>
+                <a-asset-item id='controller_left' src='/virto/models/controller_left.obj'></a-asset-item>
+                <audio id="sound_correct" src='/virto/sounds/correct.wav'></audio>
+                <audio id="sound_error" src='/virto/sounds/error.wav'></audio>
+                <img id='instruction_move' src='/virto/textures/instruction_move.png'></img>
+                <img id='instruction_rotate' src='/virto/textures/instruction_rotate.png'></img>
+                <img id='instruction_conditional' src='/virto/textures/instruction_conditional.png'></img>
+                <img id='instruction_loop' src='/virto/textures/instruction_loop.png'></img>
+                <img id='box_text' src='/virto/textures/box_text.png'></img>
+                <img id='box_rotate' src='/virto/textures/box_rotate.png'></img>
+                <img id='box_move' src='/virto/textures/box_move.png'></img>
+                <img id='box_cond' src='/virto/textures/box_cond.png'></img>
+                <img id='box_loop' src='/virto/textures/box_loop.png'></img>
+                <img id='box_up' src='/virto/textures/box_up.png'></img>
+                <img id='box_down' src='/virto/textures/box_down.png'></img>
+                <img id='box_right' src='/virto/textures/box_right.png'></img>
+                <img id='box_left' src='/virto/textures/box_left.png'></img>
+                <img id='box_forward' src='/virto/textures/box_forward.png'></img>
+                <img id='box_backward' src='/virto/textures/box_backward.png'></img>
+                <img id='box_xaxis' src='/virto/textures/box_xaxis.png'></img>
+                <img id='box_yaxis' src='/virto/textures/box_yaxis.png'></img>
+                <img id='box_zaxis' src='/virto/textures/box_zaxis.png'></img>
+                <img id='icon_bird' src='/virto/textures/variables/bird.png'></img>
+                <img id='icon_cat' src='/virto/textures/variables/cat.png'></img>
+                <img id='icon_dog' src='/virto/textures/variables/dog.png'></img>
+                <img id='icon_flower' src='/virto/textures/variables/flower.png'></img>
+                <img id='icon_moon' src='/virto/textures/variables/moon.png'></img>
+                <img id='icon_rat' src='/virto/textures/variables/rat.png'></img>
+                <img id='icon_spider' src='/virto/textures/variables/spider.png'></img>
+                <img id='icon_sun' src='/virto/textures/variables/sun.png'></img>
+                <img id='icon_tree' src='/virto/textures/variables/tree.png'></img>
+                <img id='sign_background' src='/virto/textures/Wood027_ambientCG.png'></img>
+                <img id='controller' src='/virto/textures/controller.png'></img>
+            </a-assets>
+
+            <a-entity environment="preset: contact; skyType: atmosphere"></a-entity>
+            <script>
+                document.querySelector('[environment]').setAttribute('environment','lightPosition',{x:0,y:1,z:1});
+            </script>
+
+            <a-entity drone position="0 2 -2"></a-entity>
+
+            <a-entity ide position="0 0.55 -1">
+                <a-entity program="name:main" position="0 0 0"></a-entity>
+            </a-entity>
+
+            <a-entity multidevice="colliderSelector:.collidable" position="0 0 1"></a-entity>
+        </a-scene>
+    </body>
+</html>

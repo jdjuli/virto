@@ -13,12 +13,12 @@ Scenes developed   Non parametric component
 This scene shows one brown sphere, it&rsquo;s entity element on the DOM has the attribute &ldquo;esfera_marron&rdquo; set, which maps to the component with the same name.">
     <meta name="author" content="">
     
-    <link href="https://jdjuli.github.io/vr-programming/an-old-hope.min.css" rel="stylesheet">
-    <link href="https://jdjuli.github.io/vr-programming/style.css" rel="stylesheet">
-    <link href="https://jdjuli.github.io/vr-programming/custom.css" rel="stylesheet">
+    <link href="https://jdjuli.github.io/virto/an-old-hope.min.css" rel="stylesheet">
+    <link href="https://jdjuli.github.io/virto/style.css" rel="stylesheet">
+    <link href="https://jdjuli.github.io/virto/custom.css" rel="stylesheet">
     
-    <link rel="apple-touch-icon" href="https://jdjuli.github.io/vr-programming/apple-touch-icon.png">
-    <link rel="icon" href="https://jdjuli.github.io/vr-programming/favicon.ico">
+    <link rel="apple-touch-icon" href="https://jdjuli.github.io/virto/apple-touch-icon.png">
+    <link rel="icon" href="https://jdjuli.github.io/virto/favicon.ico">
     <meta name="generator" content="Hugo 0.88.1" />
     
     
@@ -76,13 +76,13 @@ This scene shows one brown sphere, it&rsquo;s entity element on the DOM has the 
     </script>
     <header id="top" class="header">
       <nav class="nav">
-        <p class="logo"><a href="https://jdjuli.github.io/vr-programming/">VR Programming</a></p>
+        <p class="logo"><a href="https://jdjuli.github.io/virto/">VR Programming</a></p>
         <ul class="menu">
           <li>
-            <a href="/vr-programming/components/">Components</a>
+            <a href="/virto/components/">Components</a>
           </li>
           <li>
-            <a href="/vr-programming/scenes/demos/demo21">Latest scene</a>
+            <a href="/virto/scenes/demos/demo21">Latest scene</a>
           </li>
         </ul>
       </nav>
@@ -102,38 +102,38 @@ This scene shows one brown sphere, it&rsquo;s entity element on the DOM has the 
 <li>
 <p>Non parametric component</p>
 <p>This scene shows one brown sphere, it&rsquo;s entity element on the DOM has the attribute &ldquo;esfera_marron&rdquo; set, which maps to the component with the same name. When this component initializes, it adds the attributes geometry and material to the entity to which it has been attached and makes it look brown and spheric.</p>
-<p><img src="/vr-programming/img/demo1_PC.jpg" alt="">
+<p><img src="/virto/img/demo1_PC.jpg" alt="">
 <em>You can move and rotate the camera with the arrow keys and the mouse respectively</em></p>
-<p><em>=&gt;</em> Checkout the <a href="/vr-programming/scenes/demos/demo1">Demo</a> &amp; <a href="https://github.com/jdjuli/aframe-vr-programming/blob/main/docs/scenes/demos/demo1/index.html">Code</a> <em>&lt;=</em></p>
+<p><em>=&gt;</em> Checkout the <a href="/virto/scenes/demos/demo1">Demo</a> &amp; <a href="https://github.com/jdjuli/virto/blob/main/docs/scenes/demos/demo1/index.html">Code</a> <em>&lt;=</em></p>
 </li>
 <li>
 <p>Parametric component</p>
 <p>Visually, this scene is very similar to the previous one, it shows two spheres, red and green. If we dive into the HTML code, we can see that now, the attribute has been renamed to &ldquo;esfera_parametrica&rdquo; and on it&rsquo;s associated value, we specify two properties &ldquo;radio&rdquo; (radius of the sphere) and &ldquo;color&rdquo; (color of the material that will be applied).</p>
-<p><img src="/vr-programming/img/demo2_PC.jpg" alt="">
+<p><img src="/virto/img/demo2_PC.jpg" alt="">
 <em>Different entities can have distinct colors as they have attached different instances of the same component</em></p>
-<p><em>=&gt;</em> Checkout the <a href="/vr-programming/scenes/demos/demo2">Demo</a> &amp; <a href="https://github.com/jdjuli/aframe-vr-programming/blob/main/docs/scenes/demos/demo2/index.html">Code</a> <em>&lt;=</em></p>
+<p><em>=&gt;</em> Checkout the <a href="/virto/scenes/demos/demo2">Demo</a> &amp; <a href="https://github.com/jdjuli/virto/blob/main/docs/scenes/demos/demo2/index.html">Code</a> <em>&lt;=</em></p>
 </li>
 <li>
 <p>Responding to click events</p>
 <p>The first interacting scene consist on two boxes that will &ldquo;jump&rdquo; (just teleport themselves up and down) when the user clicks on them. To implement this behaviour I created the component &ldquo;salta&rdquo;, which during it&rsquo;s initialization sets the event listener responsible of the jump effect when the user clicks on the entity.</p>
-<p><img src="/vr-programming/img/demo3_PC.gif" alt="">
+<p><img src="/virto/img/demo3_PC.gif" alt="">
 <em>When you click on an entity, it will jump once</em></p>
-<p><em>=&gt;</em> Checkout the <a href="/vr-programming/scenes/demos/demo3">Demo</a> &amp; <a href="https://github.com/jdjuli/aframe-vr-programming/blob/main/docs/scenes/demos/demo3/index.html">Code</a> <em>&lt;=</em></p>
+<p><em>=&gt;</em> Checkout the <a href="/virto/scenes/demos/demo3">Demo</a> &amp; <a href="https://github.com/jdjuli/virto/blob/main/docs/scenes/demos/demo3/index.html">Code</a> <em>&lt;=</em></p>
 </li>
 <li>
 <p>Acting over other entities</p>
 <p>This scene shows a cube and a sphere, that when clicked, make &ldquo;jump&rdquo; the opposite entity. This has been done by creating a component (&ldquo;salta_otro&rdquo;) that receives through its parameter &ldquo;target&rdquo; the id of the target over which it has to act when a click event is received.</p>
 <p>The implementation of this scene is not the best because the behaviour should be decoupled on two components, one responsible of making a entity jump (let&rsquo;s say &ldquo;jump&rdquo;) and another that listen for a click event on the entity (&ldquo;makes_jump&rdquo; for example) and when received, tells the jump component to make it&rsquo;s associated entity jump.</p>
-<p><img src="/vr-programming/img/demo4_PC.gif" alt="">
+<p><img src="/virto/img/demo4_PC.gif" alt="">
 <em>You have to click the opposite entity to make it jump</em></p>
-<p><em>=&gt;</em> <a href="/vr-programming/scenes/demos/demo4">Demo</a> &amp; <a href="https://github.com/jdjuli/aframe-vr-programming/blob/main/docs/scenes/demos/demo4/index.html">Code</a> <em>&lt;=</em></p>
+<p><em>=&gt;</em> <a href="/virto/scenes/demos/demo4">Demo</a> &amp; <a href="https://github.com/jdjuli/virto/blob/main/docs/scenes/demos/demo4/index.html">Code</a> <em>&lt;=</em></p>
 </li>
 <li>
 <p>Adding some physics</p>
 <p>On this scene I started playing with a the JS physics engine <a href="https://github.com/kripken/ammo.js/">ammo.js</a>. The scene is visually the same that the previous one, but the entities now really jump and not just teleport themselves and can move arround the scene.</p>
-<p><img src="/vr-programming/img/demo5_PC.gif" alt="">
+<p><img src="/virto/img/demo5_PC.gif" alt="">
 <em>When you click on an entity, it will jump and move in a more realistic way than on the previous demos.</em></p>
-<p><em>=&gt;</em> <a href="/vr-programming/scenes/demos/demo5">Demo</a> &amp; <a href="https://github.com/jdjuli/aframe-vr-programming/blob/main/docs/scenes/demos/demo5/index.html">Code</a> <em>&lt;=</em></p>
+<p><em>=&gt;</em> <a href="/virto/scenes/demos/demo5">Demo</a> &amp; <a href="https://github.com/jdjuli/virto/blob/main/docs/scenes/demos/demo5/index.html">Code</a> <em>&lt;=</em></p>
 </li>
 </ul>
 <h2 id="problems-found">Problems found</h2>
@@ -142,13 +142,13 @@ This scene shows one brown sphere, it&rsquo;s entity element on the DOM has the 
   
 </article></main>
 <footer class="footer">
-  <span>&copy; 2022 <a href="https://jdjuli.github.io/vr-programming/">VR Programming</a></span>
+  <span>&copy; 2022 <a href="https://jdjuli.github.io/virto/">VR Programming</a></span>
   <span>&middot;</span>
   <span>Powered by <a href="https://gohugo.io/" rel="noopener" target="_blank">Hugo️️</a>️</span>
   <span>&middot;</span>
   <span>Theme️ <a href="https://github.com/nanxiaobei/hugo-paper" rel="noopener" target="_blank">Paper</a></span>
 </footer>
-<script src="https://jdjuli.github.io/vr-programming/highlight.min.js"></script>
+<script src="https://jdjuli.github.io/virto/highlight.min.js"></script>
 <script>
   hljs.initHighlightingOnLoad();
 </script>

@@ -6,15 +6,19 @@ AFRAME.registerComponent('multidevice',{
         pcHeight:{type:'number',default:1.6}
     },
     init: function(){
-        var camera = document.createElement('a-entity');
-        camera.setAttribute('camera',{});
+        var camera = this.el.querySelector('[camera]');
+        if(!camera){
+            camera = document.createElement('a-entity');
+            camera.setAttribute('camera',{});
+            this.el.appendChild(camera);
+        }
+        camera.setAttribute('camera','active',true);
         if(AFRAME.utils.device.isMobileVR()){          
             this.el.appendChild(this.createController('right'));
             this.el.appendChild(this.createController('left'));
         }else{
             this.applyAttributesPC(this.el);
         }       
-        this.el.appendChild(camera);
     },
     createController: function(hand){
         var controller = document.createElement('a-entity');

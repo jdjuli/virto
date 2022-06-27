@@ -13,6 +13,7 @@ AFRAME.registerComponent('hand-menu',{
       this.category = 0;
       this.firstItem = 0;
       this.isOpen = false;
+      this.performButtonAction = true;
       this.text = document.createElement('a-entity');
       this.ide = document.querySelector('[ide]');
       this.buttons = [];
@@ -104,7 +105,9 @@ AFRAME.registerComponent('hand-menu',{
       }
     },
     buttonPressed: function(btnNum, evt){
-      if(!this.isOpen) return;
+      if(!this.isOpen || !this.performButtonAction) return;
+      this.performButtonAction = false;
+      setTimeout(()=>{this.performButtonAction=true},500);
 
       let selected = document.createElement('a-entity');
       let componentName = this.data.contents[this.category].component;

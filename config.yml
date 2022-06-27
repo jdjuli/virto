@@ -1,5 +1,5 @@
-baseURL: "https://jdjuli.github.io/vr-programming/"
-#baseURL: /vr-programming/
+baseURL: "https://jdjuli.github.io/virto/"
+#baseURL: /virto/
 languageCode: "en-us"
 title: "VR Programming"
 theme: "paper"

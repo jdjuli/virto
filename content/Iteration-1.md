@@ -13,29 +13,29 @@ This first scenes are very basic and not so interactive, because I used them as 
 		
     This scene shows one brown sphere, it's entity element on the DOM has the attribute "esfera_marron" set, which maps to the component with the same name. When this component initializes, it adds the attributes geometry and material to the entity to which it has been attached and makes it look brown and spheric.
 		
-    ![](/vr-programming/img/demo1_PC.jpg)
+    ![](/virto/img/demo1_PC.jpg)
 		*You can move and rotate the camera with the arrow keys and the mouse respectively*
 		
-    *=>* Checkout the [Demo](/vr-programming/scenes/demos/demo1) & [Code](https://github.com/jdjuli/aframe-vr-programming/blob/main/docs/scenes/demos/demo1/index.html) *<=*
+    *=>* Checkout the [Demo](/virto/scenes/demos/demo1) & [Code](https://github.com/jdjuli/virto/blob/main/docs/scenes/demos/demo1/index.html) *<=*
     
 
 - Parametric component
 
     Visually, this scene is very similar to the previous one, it shows two spheres, red and green. If we dive into the HTML code, we can see that now, the attribute has been renamed to "esfera_parametrica" and on it's associated value, we specify two properties "radio" (radius of the sphere) and "color" (color of the material that will be applied).
     
-    ![](/vr-programming/img/demo2_PC.jpg)
+    ![](/virto/img/demo2_PC.jpg)
 		*Different entities can have distinct colors as they have attached different instances of the same component*
 		
-    *=>* Checkout the [Demo](/vr-programming/scenes/demos/demo2) & [Code](https://github.com/jdjuli/aframe-vr-programming/blob/main/docs/scenes/demos/demo2/index.html) *<=*
+    *=>* Checkout the [Demo](/virto/scenes/demos/demo2) & [Code](https://github.com/jdjuli/virto/blob/main/docs/scenes/demos/demo2/index.html) *<=*
 
 - Responding to click events
 
     The first interacting scene consist on two boxes that will "jump" (just teleport themselves up and down) when the user clicks on them. To implement this behaviour I created the component "salta", which during it's initialization sets the event listener responsible of the jump effect when the user clicks on the entity.
 		
-    ![](/vr-programming/img/demo3_PC.gif)
+    ![](/virto/img/demo3_PC.gif)
 		*When you click on an entity, it will jump once*
 		
-    *=>* Checkout the [Demo](/vr-programming/scenes/demos/demo3) & [Code](https://github.com/jdjuli/aframe-vr-programming/blob/main/docs/scenes/demos/demo3/index.html) *<=*
+    *=>* Checkout the [Demo](/virto/scenes/demos/demo3) & [Code](https://github.com/jdjuli/virto/blob/main/docs/scenes/demos/demo3/index.html) *<=*
 		
 - Acting over other entities
 
@@ -43,19 +43,19 @@ This first scenes are very basic and not so interactive, because I used them as 
 		
     The implementation of this scene is not the best because the behaviour should be decoupled on two components, one responsible of making a entity jump (let's say "jump") and another that listen for a click event on the entity ("makes_jump" for example) and when received, tells the jump component to make it's associated entity jump.
 		
-    ![](/vr-programming/img/demo4_PC.gif)
+    ![](/virto/img/demo4_PC.gif)
 		*You have to click the opposite entity to make it jump*
 		
-    *=>* [Demo](/vr-programming/scenes/demos/demo4) & [Code](https://github.com/jdjuli/aframe-vr-programming/blob/main/docs/scenes/demos/demo4/index.html) *<=*
+    *=>* [Demo](/virto/scenes/demos/demo4) & [Code](https://github.com/jdjuli/virto/blob/main/docs/scenes/demos/demo4/index.html) *<=*
 		
 - Adding some physics
     
     On this scene I started playing with a the JS physics engine [ammo.js](https://github.com/kripken/ammo.js/). The scene is visually the same that the previous one, but the entities now really jump and not just teleport themselves and can move arround the scene.
 		
-    ![](/vr-programming/img/demo5_PC.gif)
+    ![](/virto/img/demo5_PC.gif)
 		*When you click on an entity, it will jump and move in a more realistic way than on the previous demos.*
 		
-    *=>* [Demo](/vr-programming/scenes/demos/demo5) & [Code](https://github.com/jdjuli/aframe-vr-programming/blob/main/docs/scenes/demos/demo5/index.html) *<=*
+    *=>* [Demo](/virto/scenes/demos/demo5) & [Code](https://github.com/jdjuli/virto/blob/main/docs/scenes/demos/demo5/index.html) *<=*
 
 ## Problems found
 The first problems I faced up were about how to modelize correctly the components, because I'm more used to the object-oriented paradigm and the entity-component paradigm is something new for me. I decided to program them in an iterative manner, so the first versions will lack many details that I'll be adding as I need them, also refactoring everything to make it more usable.

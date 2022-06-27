@@ -9,24 +9,41 @@ AFRAME.registerComponent('custom-hand',{
       this.el.setAttribute("super-hands","");
       this.el.setAttribute("ammo-body",{type:"kinematic"});
       this.el.setAttribute("ammo-shape",{type:"sphere",fit:"manual",sphereRadius:0.01});
-            
-      this.picker = this.el.firstElementChild;
-
-      if(this.picker && this.picker.components['picker']){
-        this.el.addEventListener("thumbstickdown",this.togglePicker.bind(this));
+      
+      this.indexFinger = document.createElement("a-entity");
+      this.indexFinger.setAttribute("geometry",{primitive:"box",height:0.01,width:0.01,depth:0.05});
+      this.indexFinger.setAttribute("material",{opacity:0.0});
+      this.indexFinger.setAttribute("ammo-body",{type:"kinematic",activationState:"disableSimulation"});
+      this.indexFinger.setAttribute("ammo-shape",{type:"box"});
+      if(this.data.hand == "right"){
+        this.indexFinger.setAttribute("position",{x:0.025, y:0.04, z:-0.07})
+      }else if(this.data.hand == "left"){
+        this.indexFinger.setAttribute("position",{x:-0.025, y:0.04, z:-0.07})
       }
-      this.updateInterval = setInterval(this.updateObjects.bind(this),500);
+      this.el.appendChild(this.indexFinger);
+      
+      this.picker = this.el.sceneEl.querySelector("[picker]");
+
+      this.el.addEventListener("pointingstart",this.enableIndex.bind(this));
+      this.el.addEventListener("pointingend",this.disableIndex.bind(this));
+      this.el.addEventListener("thumbstickdown",this.togglePicker.bind(this));
+      this.updateObjects = setInterval(this.updateObjects.bind(this),250);
+    },
+    enableIndex: function(){
+      this.indexFinger.setAttribute("ammo-body","activationState","active");
+    },
+    disableIndex: function(){
+      this.indexFinger.setAttribute("ammo-body","activationState","disableSimulation");
     },
     updateObjects: function(){
       this.el.components["sphere-collider"].update();
     },
     togglePicker: function(){
-      this.picker.components['picker'].toggleVisibility();
-      if(this.picker.is('visible')){
-        clearInterval(this.updateInterval);
-        this.el.removeAttribute('super-hands'); 
-      }else{
-        this.el.setAttribute('super-hands',''); 
+      if(this.picker === null){
+        this.picker = this.el.sceneEl.querySelector("[picker]");
+      } 
+      if(this.picker !== null){
+        this.picker.components["picker"].toggleVisibility();
       }
     }
   });
