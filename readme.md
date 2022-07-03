@@ -12,6 +12,6 @@ To generate the blog, I'm using [HUGO](https://gohugo.io/) and to serve the webp
 
 # I want to see the code and run it
 
-I'm using an iterative approach on this proyect and you can see each of my steps under the folder `/static/demos/` of this repository, each folder contains everything needed to run the VR-Scene. 
+I'm using an iterative approach on this proyect and you can see each of my steps under the folder `/static/scenes/demos/` of this repository, each folder contains everything needed to run the VR-Scene. 
 You can run the scenes directly from their URL, but I recommend you to check out the [blog](https://jdjuli.github.io/virto/) first, as on it I'll explain what to expect from each demo and how to interact with it.
 
