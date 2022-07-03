@@ -39,6 +39,7 @@ AFRAME.registerComponent('code',{
                 if(component && !component.initialized){
                     component.initComponent();
                 }
+                if(!component) continue
                 if(i == 0){
                     position.x = instructionEl.size.x/2;
                     first = false;
@@ -84,7 +85,7 @@ AFRAME.registerComponent('code',{
                     await instruction.exec();
                 }
             }catch(e){
-                console.warn(e);
+                reject(e);
             }
             resolve();
         });

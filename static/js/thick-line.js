@@ -22,7 +22,6 @@ AFRAME.registerComponent('thick-line', {
                                          'segments-height':1, 
                                          'segments-radial':9});
         this.el.setAttribute('position',this.center);
-        //this.el.object3D.rotation = this.rotation;
         this.el.setAttribute('rotation',this.rotation.multiplyScalar(180/Math.PI));
     }
 });

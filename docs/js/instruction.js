@@ -247,8 +247,6 @@ AFRAME.registerComponent('instruction',{
         return ()=>{
             return new Promise((resolve,reject)=>{
                 amount = this.reference.components['reference'].get();
-                console.log(Date.now());
-                console.log('[drone] function: '+this.data.function+" , parameter: "+this.data.parameter+" , reference: "+this.data.reference);
                 drone[this.data.function](this.data.parameter,amount);
                 setTimeout(()=>{
                     resolve();
