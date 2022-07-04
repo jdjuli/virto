@@ -39,7 +39,6 @@ AFRAME.registerComponent('code',{
                 if(component && !component.initialized){
                     component.initComponent();
                 }
-                if(!component) continue
                 if(i == 0){
                     position.x = instructionEl.size.x/2;
                     first = false;
