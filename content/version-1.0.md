@@ -1,5 +1,5 @@
 ---
-title: "Version 0.1"
+title: "Version 1.0"
 date: 2022-04-04T11:08:50+02:00
 draft: false
 ---

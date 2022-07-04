@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    
+    <title>Version 1.0 - ViRto</title>
+    
+    <meta name="description" content="This is the first fully usable version of the proyect (more about it here).
+It allows the creation of sequential programs with variables that can be modified manually on runtime and is completely compatible with VR headsets and partialy with PCs.
+Things that can be done:  Write your own programs on HTML Run the program Modify the program Work with variables Build your own program from scratch  Scenes available to play with  Sample program Sample program &amp; build-your-own   Write your own programs on HTML Even though you only need to know the basics of HTML to write programs with this proyect, I would recommend to get used to work with A-Frame so you can get the most of it.">
+    <meta name="author" content="">
+    
+    <link href="https://jdjuli.github.io/virto/an-old-hope.min.css" rel="stylesheet">
+    <link href="https://jdjuli.github.io/virto/style.css" rel="stylesheet">
+    <link href="https://jdjuli.github.io/virto/custom.css" rel="stylesheet">
+    
+    <link rel="apple-touch-icon" href="https://jdjuli.github.io/virto/apple-touch-icon.png">
+    <link rel="icon" href="https://jdjuli.github.io/virto/favicon.ico">
+    <meta name="generator" content="Hugo 0.88.1" />
+    
+    
+    
+    <script>
+      function setTheme() {
+        if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+          document.body.classList.add('dark');
+          return;
+        }
+
+        const time = new Date();
+        const prev = localStorage.getItem('date');
+        const date = String(time.getMonth() + 1) + '.' + String(time.getDate());
+
+        const now = time.getTime();
+        let sunrise;
+        let sunset;
+
+        function setBodyClass() {
+          if (now > sunrise && now < sunset) return;
+          document.body.classList.add('dark');
+        }
+
+        if (date !== prev) {
+          fetch('https://api.ipgeolocation.io/astronomy?apiKey=5ed37d85103e4defa5df4c5298ed5215')
+            .then((res) => res.json())
+            .then((data) => {
+              sunrise = data.sunrise.split(':').map(Number);
+              sunset = data.sunset.split(':').map(Number);
+            })
+            .catch(() => {
+              sunrise = [7, 0];
+              sunset = [19, 0];
+            })
+            .finally(() => {
+              sunrise = time.setHours(sunrise[0], sunrise[1], 0);
+              sunset = time.setHours(sunset[0], sunset[1], 0);
+              setBodyClass();
+              localStorage.setItem('sunrise', sunrise);
+              localStorage.setItem('sunset', sunset);
+            });
+          localStorage.setItem('date', date);
+        } else {
+          sunrise = Number(localStorage.getItem('sunrise'));
+          sunset = Number(localStorage.getItem('sunset'));
+          setBodyClass();
+        }
+      }
+    </script>
+  </head>
+  <body class="single">
+    <script>
+      setTheme();
+    </script>
+    <header id="top" class="header">
+      <nav class="nav">
+        <p class="logo"><a href="https://jdjuli.github.io/virto/">ViRto</a></p>
+        <ul class="menu">
+          <li>
+            <a href="/virto/components/">Components</a>
+          </li>
+          <li>
+            <a href="/virto/scenes/demos/demo23">Latest scene</a>
+          </li>
+        </ul>
+      </nav>
+    </header>
+    <main class="main">
+
+
+<article class="post-single">
+  <header class="post-header">
+    <h1 class="post-title">Version 1.0</h1>
+    <div class="post-meta">April 4, 2022</div>
+  </header>
+  <div class="post-content"><p>This is the first fully usable version of the proyect (more about it <a href="/virto/about-virto">here</a>).</p>
+<p>It allows the creation of sequential programs with variables that can be modified manually on runtime and is completely compatible with VR headsets and partialy with PCs.</p>
+<h2 id="things-that-can-be-done">Things that can be done:</h2>
+<ul>
+<li><a href="#write-your-own-programs-on-html">Write your own programs on HTML</a></li>
+<li><a href="#run-the-program">Run the program</a></li>
+<li><a href="#modify-the-program">Modify the program</a></li>
+<li><a href="#work-with-variables">Work with variables</a></li>
+<li><a href="#build-your-own-program-from-scratch">Build your own program from scratch</a></li>
+</ul>
+<h3 id="scenes-available-to-play-with">Scenes available to play with</h3>
+<ul>
+<li><a href="/virto/scenes/demos/demo20">Sample program</a></li>
+<li><a href="/virto/scenes/demos/demo21">Sample program &amp; build-your-own</a></li>
+</ul>
+<hr>
+<h1 id="write-your-own-programs-on-html">Write your own programs on HTML</h1>
+<p>Even though you only need to know the basics of HTML to write programs with this proyect, I would recommend to get used to work with A-Frame so you can get the most of it.</p>
+<p>I&rsquo;ll start showing a simple (yet valid and runnable) program before explaining each component</p>
+<ul>
+<li><strong>Simplified schema of the components hierarchy</strong></li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-txt" data-lang="txt">ide -&gt; program &#34;moveForward&#34;
+          |
+          +-&gt; scope
+          |     |
+          |     +-&gt; variable &#34;amount&#34;
+          |
+          +-&gt; code
+                |
+                +-&gt; instruction &#34;move&#34;
+                        |
+                        +-&gt; parameter &#34;forward&#34;
+                        +-&gt; reference &#34;amount&#34;
+</code></pre></div><ul>
+<li><strong>Actual HTML code</strong></li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-HTML" data-lang="HTML">&lt;<span style="color:#f92672">a-scene</span>&gt;
+    &lt;<span style="color:#f92672">a-entity</span> <span style="color:#a6e22e">drone</span> <span style="color:#a6e22e">position</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;0 2 -2&#34;</span>&gt;&lt;/<span style="color:#f92672">a-entity</span>&gt;
+    &lt;<span style="color:#f92672">a-entity</span> <span style="color:#a6e22e">ide</span>&gt;
+        &lt;<span style="color:#f92672">a-entity</span> <span style="color:#a6e22e">program</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;name:amount&#34;</span>&gt;
+            &lt;<span style="color:#f92672">a-entity</span> <span style="color:#a6e22e">scope</span>&gt;
+                <span style="color:#75715e">&lt;!-- Variable declaration goes here --&gt;</span>
+                &lt;<span style="color:#f92672">a-entity</span> <span style="color:#a6e22e">variable</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;name:amount;icon:icon_sun;value:5;min:0;max:10&#34;</span>&gt;&lt;/<span style="color:#f92672">a-entity</span>&gt;
+            &lt;/<span style="color:#f92672">a-entity</span>&gt;
+            &lt;<span style="color:#f92672">a-entity</span> <span style="color:#a6e22e">code</span>&gt;
+                <span style="color:#75715e">&lt;!-- Instructions go here --&gt;</span>
+                &lt;<span style="color:#f92672">a-entity</span> <span style="color:#a6e22e">instruction</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;function:move&#34;</span>&gt;
+                    <span style="color:#75715e">&lt;!-- Every instruction must have a reference and a parameter --&gt;</span>
+                    &lt;<span style="color:#f92672">a-entity</span> <span style="color:#a6e22e">parameter</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;type:forward&#34;</span>&gt;&lt;/<span style="color:#f92672">a-entity</span>&gt;
+                    &lt;<span style="color:#f92672">a-entity</span> <span style="color:#a6e22e">reference</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;variable:#amount&#34;</span>&gt;&lt;/<span style="color:#f92672">a-entity</span>&gt;
+                &lt;/<span style="color:#f92672">a-entity</span>&gt;
+            &lt;/<span style="color:#f92672">a-entity</span>&gt;
+        &lt;/<span style="color:#f92672">a-entity</span>&gt;
+    &lt;/<span style="color:#f92672">a-entity</span>&gt;
+&lt;/<span style="color:#f92672">a-scene</span>&gt;
+</code></pre></div><p>As you can see on the code snippet, inside the <!-- raw HTML omitted --> tag we&rsquo;ll only use <!-- raw HTML omitted --> tags and the behaviour is defined by the attributes we have on the oppening tag, which are called <code>components</code> and, apart from the ones I&rsquo;ll describe, we can add more to modify several aspects like the rotation, position or scale.</p>
+<ul>
+<li>
+<p><strong>drone</strong></p>
+<p>Combined with <code>position</code>, places a 3D model of a drone on the scene that will be controlled by the program we write.</p>
+</li>
+<li>
+<p><strong>ide</strong></p>
+<p>Keeps track of the programs created on it, every program has to be placed as a child of this entity.</p>
+</li>
+<li>
+<p><strong>program</strong></p>
+<p>It&rsquo;s possible to assign them a name to clarify what it does. Inside it&rsquo;s tag we&rsquo;ll place the scope and the block of code (data and behaviour) of our program.</p>
+</li>
+<li>
+<p><strong>scope</strong></p>
+<p>contains variable definitions that will be used inside the code entity</p>
+</li>
+<li>
+<p><strong>variable</strong></p>
+<p>must have a name (will become the ID of the entity) and an icon to be able to recognize it and the references to it. All the variables are integer and have a configurable range (arguments &lsquo;min&rsquo; and &lsquo;max&rsquo;). We can set an initial value though the argument &lsquo;value&rsquo;.</p>
+</li>
+<li>
+<p><strong>code</strong></p>
+<p>Coordinates the execution of the instructions placed inside it.</p>
+</li>
+<li>
+<p><strong>instruction</strong></p>
+<p>It can move or rotate the drone, this is set through the argument &lsquo;function&rsquo;, which takes the values &lsquo;move&rsquo; or &lsquo;rotate&rsquo;. It&rsquo;s parameter and reference can be set using the arguments &lsquo;parameter&rsquo; and &lsquo;reference&rsquo;, but it&rsquo;s clearer to put them as separate entities inside the instruction.</p>
+</li>
+<li>
+<p><strong>reference</strong></p>
+<p>Tells the instruction how strong has to perform the action indicated by the parameter, the attribute &lsquo;variable&rsquo; must contain a selector that points to the entity with the &lsquo;variable&rsquo; component (the best option is to locate it by ID, i.e. &lsquo;#varName&rsquo;)</p>
+</li>
+<li>
+<p><strong>parameter</strong></p>
+<p>Gives qualitative information to the instruction it belongs, the possible values depend on the function of the instruction:</p>
+<ul>
+<li><strong>move</strong> : &lsquo;<em>up</em>&rsquo;, &lsquo;<em>down</em>&rsquo;, &lsquo;<em>left</em>&rsquo;, &lsquo;<em>right</em>&rsquo;, &lsquo;<em>backward</em>&rsquo;, &lsquo;<em>forward</em>&rsquo;</li>
+<li><strong>rotate</strong> : &lsquo;<em>xaxis</em>&rsquo;, &lsquo;<em>yaxis</em>&rsquo;, &lsquo;<em>zaxis</em>&rsquo;</li>
+</ul>
+</li>
+</ul>
+<p><a href="#top"><em>↑ go back up ↑</em></a></p>
+<hr>
+<h1 id="run-the-program">Run the program</h1>
+<p>To run the program, we have to put on the VR headset, go to our scene and with any of the hands, make the &lsquo;pointing&rsquo; gesture and press the &lsquo;RUN&rsquo; button.
+If the drone ends up very far from us, we can make it return to it&rsquo;s original position by pressing the button &lsquo;RESET&rsquo;.</p>
+
+<div style="position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden;">
+  <iframe src="https://www.youtube.com/embed/zao8LDIXaiA" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; border:0;" allowfullscreen title="YouTube Video"></iframe>
+</div>
+
+<p><a href="#top"><em>↑ go back up ↑</em></a></p>
+<hr>
+<h1 id="modify-the-program">Modify the program</h1>
+<p>We can interact with the elements of the program by grabbing them and moving them apart if we want to remove it from the program or bringing it near the desired location to preview it in place and placing it there by just releasing it.</p>
+<p>This interaction works for instructions (gray tall blocks), parameters (green boxes) and references (cyan cylinders)</p>
+
+<div style="position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden;">
+  <iframe src="https://www.youtube.com/embed/0aR6S85Mtdo" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; border:0;" allowfullscreen title="YouTube Video"></iframe>
+</div>
+
+<p><a href="#top"><em>↑ go back up ↑</em></a></p>
+<h2 id="create-new-elements-on-it">Create new elements on it</h2>
+<p>Also you might find the programs limited to whatever was written on the HTML, fortunately, you can add more elements to the program. To do this, press the joystick of any of the controllers and a handheld menu will show up (press again to make it dissapear) on which you&rsquo;ll be able to navigate moving the joystick up-down to change the category and left-right to see all the items of that category in case there are more than three.</p>
+<p>To create a new instance of those elements, just make the pointing gesture with the opposite hand and press the corresponding button with the index finger.</p>
+<p>I consider important to know that all the changes made to the HTML written program won&rsquo;t be saved, which means that closing the browser or refreshing the page will revert all of them.</p>
+
+<div style="position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden;">
+  <iframe src="https://www.youtube.com/embed/zqnAsZH67KE" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; border:0;" allowfullscreen title="YouTube Video"></iframe>
+</div>
+
+<p><a href="#top"><em>↑ go back up ↑</em></a></p>
+<hr>
+<h1 id="work-with-variables">Work with variables</h1>
+<p>The variables can be created by the same procedure explained in the <a href="#create-new-elements-on-it">previous section</a>, but it&rsquo;s a bit diferent from the other elements in the sense that we have three buttons to create a new variable, named <strong>S</strong>, <strong>M</strong> and <strong>L</strong>, standing for <em><strong>S</strong>mall</em> (range [-9, 9]), <em><strong>M</strong>edium</em> (range [-99, 99]) and <em><strong>L</strong>arge</em> (range [-999, 999]). Most of the time an small or medium variable will be enough, but for completeness you can try to use also a large one.</p>
+<p>Once created they don&rsquo;t differ in apperance, the only way to know the range of an existing variable is to drag the slider on top of it and check what are the minimum and maximum value we can assign to it.</p>
+<p>The program is executed as if we were debugging it, in the sense that if we modify the value of a variable while the program is running, that change will affect to the instructions that haven&rsquo;t been executed yet.</p>
+
+<div style="position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden;">
+  <iframe src="https://www.youtube.com/embed/u7pj1snSvSw" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; border:0;" allowfullscreen title="YouTube Video"></iframe>
+</div>
+
+<p><a href="#top"><em>↑ go back up ↑</em></a></p>
+<hr>
+<h1 id="build-your-own-program-from-scratch">Build your own program from scratch</h1>
+<p>If you want to create your own program from scratch without any help, you can use <a href="/virto/scenes/demos/demo21">this scene</a> to do so, it has two programs, one prebuilt to serve as an example as how a valid program looks like and another one completely empty and prepared to start building your own sequence of instructions.</p>
+
+<div style="position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden;">
+  <iframe src="https://www.youtube.com/embed/VzPBErIsWwk" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; border:0;" allowfullscreen title="YouTube Video"></iframe>
+</div>
+
+<p><a href="#top"><em>↑ go back up ↑</em></a></p>
+</div>
+  
+</article></main>
+<footer class="footer">
+  <span>&copy; 2022 <a href="https://jdjuli.github.io/virto/">ViRto</a></span>
+  <span>&middot;</span>
+  <span>Powered by <a href="https://gohugo.io/" rel="noopener" target="_blank">Hugo️️</a>️</span>
+  <span>&middot;</span>
+  <span>Theme️ <a href="https://github.com/nanxiaobei/hugo-paper" rel="noopener" target="_blank">Paper</a></span>
+</footer>
+<script src="https://jdjuli.github.io/virto/highlight.min.js"></script>
+<script>
+  hljs.initHighlightingOnLoad();
+</script>
+</body>
+</html>
+
